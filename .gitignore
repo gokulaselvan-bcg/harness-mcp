@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local runtime state — regenerable from seed.yaml + migrations
+data/*.db
+data/*.db-shm
+data/*.db-wal
+data/*.sqlite3
+data/*.sqlite3-shm
+data/*.sqlite3-wal
+backups/
+
+# Logs
+*.log
+
+# Claude Code — local-only settings (skills/ stays tracked)
+.claude/settings.local.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp

@@ -1,0 +1,21 @@
+[project]
+name = "sdlc-mcp"
+version = "0.1.0"
+description = "MCP server holding SDLC standards, decisions, failure patterns, and agent personas for a single project."
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=1.0.0",
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+]
+
+[project.scripts]
+sdlc-mcp = "sdlc_mcp.__main__:main"
+sdlc-mcp-seed = "sdlc_mcp.seed:main"   # equivalent to `python seed.py`
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
