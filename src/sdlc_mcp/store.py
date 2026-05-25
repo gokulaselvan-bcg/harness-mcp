@@ -5,6 +5,8 @@ import json
 import logging
 import secrets
 import sqlite3
+import threading
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Iterable
@@ -13,6 +15,11 @@ from .models import ID_PREFIX, Entry, utcnow_iso
 from .validation import find_conflicts
 
 log = logging.getLogger(__name__)
+
+# Reference-count writes are buffered in-memory and flushed opportunistically
+# so they don't serialize behind every concurrent query on WAL.
+_REF_FLUSH_INTERVAL_S = 2.0
+_REF_FLUSH_MAX_BUFFERED = 256
 
 
 def _row_to_entry(row: sqlite3.Row) -> Entry:
@@ -40,6 +47,9 @@ def _row_to_dict(row: sqlite3.Row) -> dict[str, Any]:
 class Store:
     def __init__(self, conn: sqlite3.Connection):
         self.conn = conn
+        self._ref_buffer: dict[str, int] = {}
+        self._ref_lock = threading.Lock()
+        self._ref_last_flush = time.monotonic()
 
     # -- ID generation ------------------------------------------------------
 
@@ -148,14 +158,54 @@ class Store:
         return [_row_to_entry(r) for r in rows]
 
     def mark_referenced(self, ids: Iterable[str]) -> None:
+        """Buffer reference-count increments; flush opportunistically.
+
+        Writes used to serialize behind every concurrent query in WAL mode
+        because each call issued N UPDATEs in the read path. Now we coalesce
+        in memory and flush when enough time has passed or the buffer fills.
+        A short delay in `reference_count` becoming visible is acceptable;
+        it's a usage metric, not a correctness invariant.
+        """
         ids = list(ids)
         if not ids:
             return
+        flush_now = False
+        with self._ref_lock:
+            for eid in ids:
+                self._ref_buffer[eid] = self._ref_buffer.get(eid, 0) + 1
+            if (
+                len(self._ref_buffer) >= _REF_FLUSH_MAX_BUFFERED
+                or time.monotonic() - self._ref_last_flush >= _REF_FLUSH_INTERVAL_S
+            ):
+                flush_now = True
+        if flush_now:
+            self.flush_references()
+
+    def flush_references(self) -> None:
+        """Drain the in-memory reference buffer to the entries table.
+
+        Wrapped in a single transaction so the N row updates commit once
+        instead of once per row (the connection runs in autocommit mode).
+        """
+        with self._ref_lock:
+            if not self._ref_buffer:
+                self._ref_last_flush = time.monotonic()
+                return
+            pending = list(self._ref_buffer.items())
+            self._ref_buffer.clear()
+            self._ref_last_flush = time.monotonic()
         now = utcnow_iso()
-        self.conn.executemany(
-            "UPDATE entries SET last_referenced_at = ?, reference_count = reference_count + 1 WHERE id = ?",
-            [(now, eid) for eid in ids],
-        )
+        try:
+            self.conn.execute("BEGIN")
+            self.conn.executemany(
+                "UPDATE entries SET last_referenced_at = ?, "
+                "reference_count = reference_count + ? WHERE id = ?",
+                [(now, count, eid) for eid, count in pending],
+            )
+            self.conn.execute("COMMIT")
+        except sqlite3.Error:
+            self.conn.execute("ROLLBACK")
+            raise
 
     # -- Query --------------------------------------------------------------
 
