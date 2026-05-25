@@ -165,6 +165,7 @@ class Store:
         types: list[str] | None,
         tags: list[str] | None,
         status_filter: list[str] | None,
+        limit: int = 20,
     ) -> list[Entry]:
         where: list[str] = []
         params: list[Any] = []
@@ -195,6 +196,10 @@ class Store:
         if where:
             sql += " WHERE " + " AND ".join(where)
         sql += " ORDER BY created_at DESC"
+        # When there are no Python-side filters, push LIMIT into SQL. With
+        # tag filtering we must filter first, then truncate.
+        if not tags and limit and limit > 0:
+            sql += f" LIMIT {int(limit)}"
         rows = self.conn.execute(sql, params).fetchall()
         entries = [_row_to_entry(r) for r in rows]
 
@@ -204,9 +209,16 @@ class Store:
                 e for e in entries
                 if tag_set & {t.lower() for t in e.tags}
             ]
+            if limit and limit > 0:
+                entries = entries[:limit]
         return entries
 
-    def list_recent(self, days: int, types: list[str] | None) -> list[Entry]:
+    def list_recent(
+        self,
+        days: int,
+        types: list[str] | None,
+        limit: int = 50,
+    ) -> list[Entry]:
         cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat(
             timespec="seconds"
         )
@@ -216,6 +228,8 @@ class Store:
             sql += f" AND type IN ({','.join('?' * len(types))})"
             params.extend(types)
         sql += " ORDER BY created_at DESC"
+        if limit and limit > 0:
+            sql += f" LIMIT {int(limit)}"
         return [_row_to_entry(r) for r in self.conn.execute(sql, params).fetchall()]
 
     def supersession_chain(self, entry_id: str) -> list[Entry]:
