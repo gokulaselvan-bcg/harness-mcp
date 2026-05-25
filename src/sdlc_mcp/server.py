@@ -57,7 +57,18 @@ def build_server(cfg: Config | None = None) -> FastMCP:
             "Single-project SDLC discipline server. Holds decisions, failure "
             "patterns, structural patterns, codebase context notes, scoped "
             "exceptions, and agent personas. Query before designing; submit "
-            "only after explicit human approval in chat."
+            "only after explicit human approval in chat.\n\n"
+            "Tool selection:\n"
+            "  - Searching by topic or keywords?            -> query\n"
+            "  - Already have an ID (from a prior query, a cross-reference\n"
+            "    like `overrides_id` / `supersedes` / `superseded_by`, an\n"
+            "    `evidence_links` entry, or the user)?      -> get\n"
+            "  - Tracing an entry's full history?           -> get_supersession_chain\n"
+            "  - Catching up on what was added lately?      -> list_recent\n\n"
+            "Prefer `get` over re-querying for a known ID: it is cheaper, "
+            "is a point lookup, and returns the entry regardless of status. "
+            "When an entry's body references another entry by ID (notably "
+            "`exception.overrides_id`), follow the link with `get`."
         ),
     )
 
@@ -73,7 +84,10 @@ def build_server(cfg: Config | None = None) -> FastMCP:
     @mcp.tool(description=(
         "Full-text search over title + body. Filter by entry types and tags. "
         "By default only `accepted` entries are returned. Each returned entry "
-        "has its reference count and last-referenced timestamp updated."
+        "has its reference count and last-referenced timestamp updated. "
+        "For revisiting an entry whose ID you already have, prefer `get(id)` "
+        "-- it is cheaper and returns superseded/deprecated entries that "
+        "`query` filters out."
     ))
     def query(
         search_string: str = "",
@@ -87,7 +101,14 @@ def build_server(cfg: Config | None = None) -> FastMCP:
         store.mark_referenced([e.id for e in results])
         return [_entry_to_dict(e) for e in results]
 
-    @mcp.tool(description="Fetch a single entry by ID, regardless of status.")
+    @mcp.tool(description=(
+        "Fetch a single entry by its ID. Use this when you already have an "
+        "ID in hand -- from a prior query result, from an entry's "
+        "`supersedes` / `superseded_by` / `overrides_id` field, from an "
+        "`evidence_links` entry, or from the user. Cheaper than re-running "
+        "query and returns the entry even if it has been superseded or "
+        "deprecated."
+    ))
     def get(id: str) -> dict[str, Any] | None:
         _log_call("get", id=id)
         e = store.get(id)
