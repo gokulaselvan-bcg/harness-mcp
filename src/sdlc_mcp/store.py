@@ -44,20 +44,17 @@ class Store:
     # -- ID generation ------------------------------------------------------
 
     def _next_id(self, entry_type: str) -> str:
+        # Compute MAX numerically in SQL. A pure ORDER BY id uses lexical
+        # ordering, which gets `DEC-999` > `DEC-1000` and would produce a
+        # colliding "next" ID once any type passes 1000 entries.
         prefix = ID_PREFIX[entry_type]
         row = self.conn.execute(
-            "SELECT id FROM entries WHERE type = ? ORDER BY id DESC LIMIT 1",
+            "SELECT MAX(CAST(SUBSTR(id, INSTR(id, '-') + 1) AS INTEGER)) AS max_num "
+            "FROM entries WHERE type = ?",
             (entry_type,),
         ).fetchone()
-        next_num = 1
-        if row is not None:
-            try:
-                next_num = int(row["id"].split("-", 1)[1]) + 1
-            except (IndexError, ValueError):
-                next_num = self.conn.execute(
-                    "SELECT COUNT(*) FROM entries WHERE type = ?", (entry_type,)
-                ).fetchone()[0] + 1
-        return f"{prefix}-{next_num:03d}"
+        max_num = (row["max_num"] if row and row["max_num"] is not None else 0) or 0
+        return f"{prefix}-{max_num + 1:04d}"
 
     # -- Drafts -------------------------------------------------------------
 
@@ -100,37 +97,39 @@ class Store:
         status: str = "accepted",
         entry_id: str | None = None,
     ) -> Entry:
-        entry_id = entry_id or self._next_id(entry_type)
         created_at = utcnow_iso()
         evidence_links = evidence_links or []
-        self.conn.execute(
-            """INSERT INTO entries (
-                id, type, title, tags, author, created_at, status,
-                supersedes, superseded_by, last_referenced_at, reference_count,
-                evidence_links, body
-            ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
-            (
-                entry_id,
-                entry_type,
-                title,
-                json.dumps(tags),
-                author,
-                created_at,
-                status,
-                supersedes,
-                None,
-                None,
-                0,
-                json.dumps(evidence_links),
-                json.dumps(body),
-            ),
-        )
-        # FTS row mirrors title/body/tags.
-        self.conn.execute(
-            "INSERT INTO entries_fts(id, title, body, tags) VALUES (?, ?, ?, ?)",
-            (entry_id, title, json.dumps(body), " ".join(tags)),
-        )
-        return self.get(entry_id)  # type: ignore[return-value]
+        explicit_id = entry_id is not None
+        # _next_id + INSERT is a read-then-write race: two concurrent submits
+        # can compute the same next ID. Retry with a fresh ID on UNIQUE
+        # collision unless the caller pinned the ID explicitly.
+        attempts = 1 if explicit_id else 5
+        last_err: sqlite3.IntegrityError | None = None
+        for _ in range(attempts):
+            this_id = entry_id if explicit_id else self._next_id(entry_type)
+            try:
+                self.conn.execute(
+                    """INSERT INTO entries (
+                        id, type, title, tags, author, created_at, status,
+                        supersedes, superseded_by, last_referenced_at,
+                        reference_count, evidence_links, body
+                    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                    (
+                        this_id, entry_type, title, json.dumps(tags), author,
+                        created_at, status, supersedes, None, None, 0,
+                        json.dumps(evidence_links), json.dumps(body),
+                    ),
+                )
+                self.conn.execute(
+                    "INSERT INTO entries_fts(id, title, body, tags) "
+                    "VALUES (?, ?, ?, ?)",
+                    (this_id, title, json.dumps(body), " ".join(tags)),
+                )
+                return self.get(this_id)  # type: ignore[return-value]
+            except sqlite3.IntegrityError as e:
+                last_err = e
+                continue
+        raise last_err  # type: ignore[misc]
 
     def get(self, entry_id: str) -> Entry | None:
         row = self.conn.execute(
