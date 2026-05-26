@@ -1,0 +1,16 @@
+{
+    "mcpServers": {
+      "SDLC Harness": {
+        "command": "python3",
+        "args": ["-m", "sdlc_mcp"],
+        "cwd": "${HARNESS_MCP_HOME}",
+        "env": {
+          "PYTHONPATH": "${HARNESS_MCP_HOME}/src",
+          "SDLC_MCP_DB": "${HARNESS_MCP_HOME}/harness-mcp/data/harness.db",
+          "SDLC_MCP_BACKUP_DIR": "${HARNESS_MCP_HOME}/backups",
+          "SDLC_MCP_LOG": "${HARNESS_MCP_HOME}/sdlc_mcp.log"
+        }
+      }
+    }
+  }
+  
