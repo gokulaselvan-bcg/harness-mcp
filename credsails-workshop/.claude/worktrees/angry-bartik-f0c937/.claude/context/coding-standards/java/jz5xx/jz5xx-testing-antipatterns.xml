@@ -1,0 +1,47 @@
+<rules id="CTX-CODING-STANDARDS-JAVA-JZ5XX-JZ5XX-TESTING-ANTIPATTERNS" title="Testing Anti-patterns" kind="ruleset" version="2" updated="2026-02-20" status="active" source="jz5xx-testing-antipatterns.md">
+  <rule id="JZ500-TEST-INTERDEPENDENCE">
+    <desc>Tests rely on execution order or shared mutable state.</desc>
+    <better>
+      <ref id="JY610-TEST-FIXTURES"/>
+      <ref id="JY611-TEST-ISOLATION"/>
+    </better>
+    <why_bad>Produces flaky failures in CI.</why_bad>
+  </rule>
+  <rule id="JZ501-OVER-MOCKING">
+    <desc>Mocking internals, value objects, or too many collaborators.</desc>
+    <better>
+      <ref id="JY612-MOCK-BOUNDARIES"/>
+    </better>
+    <why_bad>Tests become brittle and mirror implementation.</why_bad>
+  </rule>
+  <rule id="JZ502-ASSERTION-ROULETTE">
+    <desc>Multiple unrelated assertions without clear intent.</desc>
+    <better>
+      <ref id="JY601-TEST-NAMING"/>
+      <ref id="JY602-AAA-STRUCTURE"/>
+    </better>
+    <why_bad>Failures are hard to diagnose.</why_bad>
+  </rule>
+  <rule id="JZ503-EXCEPTION-SWALLOW">
+    <desc>Catching exceptions in tests without failing.</desc>
+    <better>Use `assertThrows` (JY605-EXCEPTION-ASSERTS)</better>
+    <why_bad>Hides regressions.</why_bad>
+  </rule>
+  <rule id="JZ504-UNSTABLE-TIME">
+    <desc>Tests depend on real timezones or `System.currentTimeMillis()`.</desc>
+    <better>
+      <ref id="JY613-DETERMINISM"/>
+    </better>
+    <why_bad>Time-based flakiness.</why_bad>
+  </rule>
+  <rule id="JZ505-SLEEP-TESTS">
+    <desc>Using `Thread.sleep` for synchronization.</desc>
+    <better>Use latches, `awaitility`, or fakes.</better>
+    <why_bad>Slow and flaky.</why_bad>
+  </rule>
+  <rule id="JZ506-FLAKY-RANDOM">
+    <desc>Non-seeded randomness or data from external services.</desc>
+    <better>Seed randomness or use fixed fixtures.</better>
+    <why_bad>Non-reproducible failures.</why_bad>
+  </rule>
+</rules>

@@ -1,0 +1,54 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY11X-GENERICS-PY116-CLASS-VAR" title="py116 class var" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py116-class-var.md">
+  <rule id="PY116-CLASS-VAR">
+    <desc>Use ClassVar to annotate class variables (not instance variables).</desc>
+    <rationale>Distinguishes class-level from instance-level attributes, prevents mypy confusion.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - clear distinction
+class Transaction:
+    """Transaction with class-level config."""
+
+    # Class variable - shared across all instances
+    date_format: ClassVar[str] = "%Y-%m-%d"
+    max_amount: ClassVar[Decimal] = Decimal("10000")
+
+    # Instance variables
+    id: int
+    amount: Decimal
+
+    def __init__(self, id: int, amount: Decimal):
+        self.id = id
+        self.amount = amount
+
+    def format_date(self, date: date) -> str:
+        # Access class variable
+        return date.strftime(self.date_format)
+
+# Usage
+t1 = Transaction(1, Decimal("100"))
+t2 = Transaction(2, Decimal("200"))
+
+Transaction.date_format = "%m/%d/%Y"  # Changes for all instances
+print(t1.format_date(today))  # Uses updated format
+print(t2.format_date(today))  # Uses updated format
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - ambiguous
+class Transaction:
+    date_format: str = "%Y-%m-%d"  # Is this class or instance var?
+
+    def __init__(self, id: int, amount: Decimal):
+        self.id = id
+        self.amount = amount
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY100-USE-TYPE-HINTS"/>
+      <ref id="PY112-DATACLASS-TYPES"/>
+    </related>
+    <tool_support>ClassVar from `typing`. mypy enforces correct usage.</tool_support>
+  </rule>
+</rules>

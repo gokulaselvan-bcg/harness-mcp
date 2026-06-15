@@ -1,0 +1,7 @@
+<index id="CTX-CODING-STANDARDS-TYPESCRIPT-TY5XX-INDEX" title="index" kind="manifest" version="2" updated="2026-03-12" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="TY50x" kind="tens" desc="Async/await, Promise patterns, concurrency, cancellation." label="Async &amp; Promises">
+      <doc_ref path="./ty5xx-async.xml"/>
+    </entry>
+  </section>
+</index>

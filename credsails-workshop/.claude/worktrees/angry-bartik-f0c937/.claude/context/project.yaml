@@ -1,0 +1,30 @@
+jira:
+  project_key: "WS"
+  issue_types:
+    epic: 13328
+    task: 13327
+    subtask: 13329
+  transitions:
+    in_progress: 21
+
+git:
+  default_branch: "workshop/2026-06-12-bs-extractor"
+  protected_branches: []
+
+paths:
+  sensitive:
+    - ".claude/settings.json"
+    - ".claude/settings.local.json"
+
+risk_thresholds:
+  epic_max_tickets: 8
+  implement_max_steps: 10
+  implement_max_files_per_step: 5
+
+copilot_review:
+  poll_started_secs: 300
+  poll_complete_secs: 900
+  poll_interval_secs: 5
+  max_rounds: 5
+
+agentic_runtime: "claude-code"

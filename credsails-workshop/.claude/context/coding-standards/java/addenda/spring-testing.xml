@@ -1,0 +1,22 @@
+<rules id="CTX-CODING-STANDARDS-JAVA-ADDENDA-SPRING-TESTING" title="Spring Testing" kind="ruleset" version="2" updated="2026-02-20" status="active" source="spring-testing.md">
+  <rule id="JY700-TEST-SLICES-FIRST">
+    <desc>Prefer test slices (`@WebMvcTest`, `@DataJpaTest`) over full context tests.</desc>
+    <rationale>Faster and more focused tests.</rationale>
+  </rule>
+  <rule id="JY701-SPRINGBOOTTEST-LIMIT">
+    <desc>Use `@SpringBootTest` only for true integration tests.</desc>
+    <rationale>Full context startup is slow and hides unit boundaries.</rationale>
+  </rule>
+  <rule id="JY702-MOCK-BEANS-AT-BOUNDARY">
+    <desc>Use `@MockBean` for external collaborators, not for simple value objects.</desc>
+    <rationale>Keeps tests resilient to refactors.</rationale>
+  </rule>
+  <rule id="JY703-TESTCONFIGURATION">
+    <desc>Use `@TestConfiguration` or `@Import` to provide test-only beans.</desc>
+    <rationale>Avoids production code changes for tests.</rationale>
+  </rule>
+  <rule id="JY704-CONTEXT-CACHING">
+    <desc>Avoid dynamic properties that bust Spring context caching.</desc>
+    <rationale>Prevents unnecessary reboots of the app context.</rationale>
+  </rule>
+</rules>

@@ -1,0 +1,44 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY10X-BASICS-PY107-LITERAL-TYPES" title="py107 literal types" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py107-literal-types.md">
+  <rule id="PY107-LITERAL-TYPES">
+    <desc>Use `Literal` for values that must be specific constants.</desc>
+    <rationale>Literal types provide compile-time checking for magic strings/numbers, preventing typos.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - only specific values allowed
+OutputFormat = Literal["csv", "json", "html"]
+
+def export_data(data: list[Transaction], format: OutputFormat) -> str:
+    if format == "csv":
+        return to_csv(data)
+    elif format == "json":
+        return to_json(data)
+    elif format == "html":
+        return to_html(data)
+    # mypy knows all cases are covered
+
+# Usage
+export_data(txns, "csv")    # OK
+export_data(txns, "xml")    # mypy error: "xml" not in Literal["csv", "json", "html"]
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - any string accepted
+def export_data(data: list[Transaction], format: str) -> str:
+    if format == "csv":
+        return to_csv(data)
+    elif format == "json":
+        return to_json(data)
+    # Typo not caught!
+    elif format == "htlm":  # Oops, typo - no error!
+        return to_html(data)
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY101-PRECISE-TYPES"/>
+      <ref id="PY108-FINAL"/>
+    </related>
+    <tool_support>`Literal` from `typing`. mypy checks exhaustiveness.</tool_support>
+  </rule>
+</rules>

@@ -1,0 +1,260 @@
+<rules id="CTX-CODING-STANDARDS-TYPESCRIPT-TY1XX-TY1XX-TYPE-SYSTEM" title="Type System &amp; Type Safety" kind="ruleset" version="2" updated="2026-03-12" status="active" source="ty1xx-type-system.md">
+  <rule id="TY100-STRICT-MODE">
+    <desc>Enable `strict: true` in `tsconfig.json` for all projects.</desc>
+    <rationale>Strict mode enables `strictNullChecks`, `noImplicitAny`, `strictFunctionTypes`, and other flags that catch entire classes of bugs at compile time.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="jsonc"><![CDATA[// tsconfig.json
+{
+  "compilerOptions": {
+    "strict": true
+  }
+}
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="jsonc"><![CDATA[// tsconfig.json - missing strict
+{
+  "compilerOptions": {
+    "target": "ES2022"
+  }
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TZ100-OVERUSE-ANY"/>
+      <ref id="TZ101-TS-IGNORE"/>
+    </related>
+    <tool_support>tsc --strict. ESLint @typescript-eslint/strict-type-checked preset.</tool_support>
+  </rule>
+  <rule id="TY101-EXPLICIT-RETURN-TYPES">
+    <desc>Annotate return types on exported functions and public methods.</desc>
+    <rationale>Explicit return types prevent accidental API changes, improve documentation, and speed up type checking in large codebases.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - explicit return type on exported function
+export function parseConfig(raw: string): Config {
+  return ConfigSchema.parse(JSON.parse(raw)); // see TY405 for boundary validation
+}
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - inferred return type can change unexpectedly
+export function parseConfig(raw: string) {
+  return JSON.parse(raw);
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TZ100-OVERUSE-ANY"/>
+    </related>
+    <tool_support>ESLint @typescript-eslint/explicit-function-return-type, @typescript-eslint/explicit-module-boundary-types.</tool_support>
+  </rule>
+  <rule id="TY102-INTERFACES-VS-TYPES">
+    <desc>Prefer `interface` for object shapes that may be extended; use `type` for unions, intersections, mapped types, and primitives.</desc>
+    <rationale>Interfaces support declaration merging and are more performant for object type checking. Types are required for unions and complex type algebra.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - interface for object shape
+interface User {
+  readonly id: string;
+  name: string;
+}
+
+// Good - type for union
+type Result<T> = { ok: true; value: T } | { ok: false; error: Error };
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY103-GENERICS"/>
+    </related>
+  </rule>
+  <rule id="TY103-GENERICS">
+    <desc>Use generics for reusable components that work with multiple types. Constrain type parameters with `extends` when possible.</desc>
+    <rationale>Generics provide type safety without sacrificing reusability. Constraints communicate intent and catch misuse.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - constrained generic
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+
+// Good - generic interface
+interface Repository<T extends { id: string }> {
+  findById(id: string): Promise<T | undefined>;
+  save(entity: T): Promise<void>;
+}
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - unconstrained, unclear intent
+function getProperty(obj: any, key: string): any {
+  return obj[key];
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY104-UTILITY-TYPES"/>
+      <ref id="TZ100-OVERUSE-ANY"/>
+    </related>
+  </rule>
+  <rule id="TY104-UTILITY-TYPES">
+    <desc>Use built-in utility types (`Partial`, `Required`, `Pick`, `Omit`, `Record`, `Readonly`) instead of manual type construction.</desc>
+    <rationale>Utility types are well-tested, readable, and keep types DRY. They automatically track changes to the source type.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good
+type UserUpdate = Partial<Pick<User, "name" | "email">>;
+type UserIndex = Record<string, User>;
+type ImmutableUser = Readonly<User>;
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - manual reconstruction
+type UserUpdate = {
+  name?: string;
+  email?: string;
+};
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY102-INTERFACES-VS-TYPES"/>
+    </related>
+  </rule>
+  <rule id="TY105-LITERAL-AND-CONST">
+    <desc>Use literal types and `as const` assertions for values that must be specific constants.</desc>
+    <rationale>Literal types and const assertions narrow types at compile time, enabling exhaustive checking and preventing invalid values.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - literal type
+type Direction = "north" | "south" | "east" | "west";
+
+// Good - const assertion
+const ROUTES = {
+  home: "/",
+  about: "/about",
+  users: "/users",
+} as const;
+
+type Route = (typeof ROUTES)[keyof typeof ROUTES];
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY106-DISCRIMINATED-UNIONS"/>
+      <ref id="TY300-READONLY-BY-DEFAULT"/>
+    </related>
+  </rule>
+  <rule id="TY106-DISCRIMINATED-UNIONS">
+    <desc>Use discriminated unions with a shared literal property for type-safe variants.</desc>
+    <rationale>Discriminated unions enable exhaustive pattern matching, clear control flow, and compiler-enforced completeness.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - discriminated union
+type Shape =
+  | { kind: "circle"; radius: number }
+  | { kind: "rectangle"; width: number; height: number };
+
+function area(shape: Shape): number {
+  switch (shape.kind) {
+    case "circle":
+      return Math.PI * shape.radius ** 2;
+    case "rectangle":
+      return shape.width * shape.height;
+  }
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY105-LITERAL-AND-CONST"/>
+      <ref id="TY400-EXHAUSTIVE-CHECKS"/>
+    </related>
+  </rule>
+  <rule id="TY107-BRANDED-TYPES">
+    <desc>Use branded types to distinguish semantically different values that share a primitive representation.</desc>
+    <rationale>Branded types prevent mixing up IDs, currencies, units, and other domain values that are all strings or numbers at runtime.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - branded types with distinct symbols
+declare const userIdBrand: unique symbol;
+type UserId = string & { readonly [userIdBrand]: true };
+
+declare const orderIdBrand: unique symbol;
+type OrderId = string & { readonly [orderIdBrand]: true };
+
+function createUserId(id: string): UserId {
+  return id as UserId;
+}
+
+function getUser(id: UserId): User | undefined {
+  // implementation
+  return undefined;
+}
+
+// Compiler error: OrderId is not assignable to UserId
+// getUser(orderId);
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY103-GENERICS"/>
+    </related>
+  </rule>
+  <rule id="TY108-TEMPLATE-LITERAL-TYPES">
+    <desc>Use template literal types for string patterns that follow a known format.</desc>
+    <rationale>Template literal types encode string structure in the type system, catching malformed strings at compile time.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - template literal type
+type EventName = `on${Capitalize<string>}`;
+type CSSUnit = `${number}${"px" | "em" | "rem" | "%"}`;
+type APIRoute = `/api/v${number}/${string}`;
+
+function setStyle(prop: string, value: CSSUnit): void { ... }
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY105-LITERAL-AND-CONST"/>
+    </related>
+  </rule>
+  <rule id="TY109-AVOID-ENUMS">
+    <desc>Prefer union types or `as const` objects over TypeScript enums. Use enums only when numeric reverse mapping is required.</desc>
+    <rationale>Enums generate runtime code, have surprising behaviors (numeric enums are not type-safe, const enums are fragile across module boundaries), and union types are simpler and more predictable.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - union type
+type Status = "active" | "inactive" | "pending";
+
+// Good - const object when values differ from keys
+const HttpStatus = {
+  Ok: 200,
+  NotFound: 404,
+  ServerError: 500,
+} as const;
+type HttpStatus = (typeof HttpStatus)[keyof typeof HttpStatus];
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Avoid - TypeScript enum
+enum Status {
+  Active = "active",
+  Inactive = "inactive",
+  Pending = "pending",
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY105-LITERAL-AND-CONST"/>
+      <ref id="TY106-DISCRIMINATED-UNIONS"/>
+    </related>
+    <tool_support>ESLint core no-restricted-syntax rule with TSEnumDeclaration selector can ban enum declarations.</tool_support>
+  </rule>
+</rules>

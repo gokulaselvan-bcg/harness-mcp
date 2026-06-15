@@ -1,0 +1,60 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY11X-GENERICS-PY114-NAMEDTUPLE-TYPES" title="py114 namedtuple types" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py114-namedtuple-types.md">
+  <rule id="PY114-NAMEDTUPLE-TYPES">
+    <desc>Use NamedTuple with type hints for simple immutable data structures.</desc>
+    <when_to_use>- NamedTuple: Simple, immutable data with few fields
+- dataclass: More complex data, needs methods, optional mutability
+- Plain tuple: Only for very short-lived, obvious positional data
+</when_to_use>
+    <rationale>NamedTuples are immutable, lightweight, and have good performance. Better than plain tuples.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - typed NamedTuple
+class RecordData(NamedTuple):
+    """Raw data record from input file."""
+    booking_date: date
+    receipt_date: date
+    amount: Decimal
+    merchant: str
+    location: str
+
+# Usage
+booking = RecordData(
+    booking_date=date(2025, 1, 15),
+    receipt_date=date(2025, 1, 14),
+    amount=Decimal("99.99"),
+    merchant="Amazon",
+    location="Online"
+)
+
+# Immutable
+# booking.amount = Decimal("100.00")  # AttributeError
+
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good indexing and attributes
+print(booking[0])     # date(2025, 1, 15)
+print(booking.amount) # Decimal('99.99')
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - plain tuple
+booking = (
+    date(2025, 1, 15),
+    date(2025, 1, 14),
+    Decimal("99.99"),
+    "Amazon",
+    "Online"
+)
+# No attribute access, no type hints, unclear meaning
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY112-DATACLASS-TYPES"/>
+      <ref id="PY300-IMMUTABILITY"/>
+    </related>
+    <tool_support>NamedTuple from `typing`. mypy checks field types.</tool_support>
+  </rule>
+</rules>

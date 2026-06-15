@@ -1,0 +1,34 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY11X-GENERICS-PY118-STRICT-MODE" title="py118 strict mode" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py118-strict-mode.md">
+  <rule id="PY118-STRICT-MODE">
+    <desc>Enable mypy strict mode in your project configuration.</desc>
+    <rationale>Strict mode catches more errors, enforces best practices, ensures consistency.</rationale>
+    <related>
+      <ref id="PY100-USE-TYPE-HINTS"/>
+      <ref id="PY109-AVOID-ANY"/>
+    </related>
+    <tool_support>mypy `--strict` flag or `strict = true` in config.</tool_support>
+    <notes>
+      <note title="Benefits">- Forces comprehensive type coverage
+- Catches bugs early
+- Improves code documentation
+- Enables confident refactoring
+</note>
+      <note title="Configuration">```toml
+# pyproject.toml
+[tool.mypy]
+python_version = "3.13"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+```
+</note>
+      <note title="What strict mode enables">- `--disallow-untyped-defs`: All functions must have type hints
+- `--disallow-any-unimported`: Can't use Any from untyped imports
+- `--warn-return-any`: Warns when returning Any
+- `--warn-redundant-casts`: Catches unnecessary casts
+- `--no-implicit-optional`: x: int = None is an error
+- And more...
+</note>
+    </notes>
+  </rule>
+</rules>

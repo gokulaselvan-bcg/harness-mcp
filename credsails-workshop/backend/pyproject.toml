@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "credsails-demo"
+version = "0.1.0"
+description = "CredSails end-to-end demo — slimmed agentic credit-underwriting workflow proving the six agentic primitives."
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi>=0.110",
+  "uvicorn[standard]>=0.27",
+  "sqlalchemy>=2.0",
+  "alembic>=1.13",
+  "anthropic>=0.39",
+  "pydantic>=2.6",
+  "pydantic-settings>=2.2",
+  "pypdf>=4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "httpx>=0.27",
+]
+
+# The reference project relies on pytest pythonpath only and is not editable-installable;
+# we add [build-system] + packages.find so `pip install -e` discovers app/ and `uvicorn app.main:app` resolves.
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

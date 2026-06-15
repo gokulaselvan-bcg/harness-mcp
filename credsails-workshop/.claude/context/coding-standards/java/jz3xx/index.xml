@@ -1,0 +1,8 @@
+<index id="CTX-CODING-STANDARDS-JAVA-JZ3XX-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Source" kind="other" desc=""/>
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="JZ30x" kind="tens" desc="Threading hazards." label="Concurrency Hazards">
+      <doc_ref path="./jz3xx-concurrency-hazards.xml"/>
+    </entry>
+  </section>
+</index>

@@ -1,0 +1,10 @@
+<index id="CTX-CODING-STANDARDS-PYTHON-PY5XX-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="PY50x" kind="tens" desc="Specific exceptions, hierarchy, context." label="Exception Types and Boundaries">
+      <doc_ref path="./py50x-exception-types.xml"/>
+    </entry>
+    <entry id="PY51x" kind="tens" desc="Logging, assertions, validation, messages." label="Control Flow and Messages">
+      <doc_ref path="./py51x-control-flow-and-messages.xml"/>
+    </entry>
+  </section>
+</index>

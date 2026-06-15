@@ -1,0 +1,172 @@
+<catalog id="CTX-CODING-STANDARDS-JAVA-INDEX-CATALOG" title="index catalog" kind="manifest" version="2" updated="2026-02-20" status="active" entrypoint="../../coding-standards.md" language="java" sourceRoot=".claude/context/coding-standards/java">
+  <section kind="guidelines" desc="Normative rules to follow." label="Guidelines">
+    <hundreds id="JY1xx" desc="Nullness, equality, and records." label="Language &amp; Type Safety">
+      <file>
+        <doc_ref path="jy1xx/jy1xx-language-and-types.xml"/>
+        <tens id="JY10x" desc="Nullness, Optional, equality, records." label="Language &amp; Type Safety">
+          <rule id="JY100-NULLNESS-CONTRACTS" desc="Define and honor nullness contracts for public APIs."/>
+          <rule id="JY101-OPTIONAL-RETURNS" desc="Use `Optional&lt;T&gt;` for return values that may be absent."/>
+          <rule id="JY102-PREFER-PRIMITIVES" desc="Prefer primitives over boxed types unless nullability or collections require boxing."/>
+          <rule id="JY103-EQUALS-HASHCODE-PAIR" desc="Override `equals` and `hashCode` together."/>
+          <rule id="JY104-COMPARE-TO-CONSISTENT" desc="Ensure `compareTo` is consistent with `equals`."/>
+          <rule id="JY105-RECORDS-FOR-DATA" desc="Use records for simple, immutable data carriers (Java 16+)."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="JY2xx" desc="Packaging, visibility, and builders." label="Code Organization &amp; Design">
+      <file>
+        <doc_ref path="jy2xx/jy2xx-organization-and-design.xml"/>
+        <tens id="JY20x" desc="Packaging, visibility, builders." label="Code Organization &amp; Design">
+          <rule id="JY200-PACKAGE-BY-FEATURE" desc="Organize packages by feature, not by technical layer."/>
+          <rule id="JY201-BOUNDARY-INTERFACES" desc="Define interfaces at system boundaries; keep implementations package-private."/>
+          <rule id="JY202-MINIMUM-VISIBILITY" desc="Use the smallest visibility that works; avoid public fields."/>
+          <rule id="JY203-BUILDER-FOR-MANY-PARAMS" desc="Use builders when a constructor has more than 4 parameters."/>
+          <rule id="JY204-STATIC-FACTORY-NAMES" desc="Prefer named static factories over overloaded constructors."/>
+          <rule id="JY205-UTILITY-CLASS-DISCIPLINE" desc="Utility classes must be `final` with a private constructor."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="JY3xx" desc="Exception strategy and logging." label="Error Handling &amp; Logging">
+      <file>
+        <doc_ref path="jy3xx/jy3xx-error-handling.xml"/>
+        <tens id="JY30x" desc="Exception strategy and logging." label="Error Handling &amp; Logging">
+          <rule id="JY300-EXCEPTION-STRATEGY" desc="Use unchecked exceptions for programmer errors; use checked exceptions only when callers can realistically recover."/>
+          <rule id="JY301-TRY-WITH-RESOURCES" desc="Use try-with-resources for `AutoCloseable` types."/>
+          <rule id="JY302-PRESERVE-CAUSE" desc="Wrap exceptions with a meaningful message and original cause."/>
+          <rule id="JY303-DO-NOT-CATCH-TOO-BROAD" desc="Catch the most specific exception type possible."/>
+          <rule id="JY304-LOG-ONCE-AT-BOUNDARY" desc="Log errors at boundaries (API, job runner) and avoid re-logging the same exception."/>
+          <rule id="JY305-VALIDATE-BOUNDARIES" desc="Validate external inputs at the boundary and fail fast."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="JY4xx" desc="Thread safety and synchronization." label="Concurrency &amp; Immutability">
+      <file>
+        <doc_ref path="jy4xx/jy4xx-concurrency.xml"/>
+        <tens id="JY40x" desc="Thread safety and synchronization." label="Concurrency &amp; Immutability">
+          <rule id="JY400-PREFER-IMMUTABLE-DATA" desc="Prefer immutable objects and defensive copies across threads."/>
+          <rule id="JY401-USE-CONCURRENT-UTILS" desc="Use `java.util.concurrent` utilities instead of manual synchronization."/>
+          <rule id="JY402-LOCK-SCOPE-SMALL" desc="Keep synchronized sections minimal and lock on private objects."/>
+          <rule id="JY403-ATOMIC-OR-SYNC" desc="Use `Atomic*` for simple counters; use `synchronized` or locks for compound invariants."/>
+          <rule id="JY404-DOCUMENT-THREAD-SAFETY" desc="Document whether a class is thread-safe or not."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="JY5xx" desc="Collections and performance heuristics." label="Performance &amp; Collections">
+      <file>
+        <doc_ref path="jy5xx/jy5xx-performance.xml"/>
+        <tens id="JY50x" desc="Collections and performance heuristics." label="Performance &amp; Collections">
+          <rule id="JY500-CHOOSE-COLLECTIONS" desc="Pick collections based on access patterns and size."/>
+          <rule id="JY501-STRINGBUILDER-IN-LOOPS" desc="Use `StringBuilder` for repeated concatenation in loops."/>
+          <rule id="JY502-STREAMS-FOR-CLARITY" desc="Use streams for clear, side-effect-free pipelines. Prefer loops in hot paths."/>
+          <rule id="JY503-AVOID-BOXING-IN-HOT-PATHS" desc="Use primitive types and primitive streams in tight loops."/>
+          <rule id="JY504-MEASURE-BEFORE-OPTIMIZING" desc="Profile before making performance changes."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="JY6xx" desc="JUnit testing practices." label="Testing &amp; Tooling">
+      <file>
+        <doc_ref path="jy6xx/isolation.xml"/>
+        <tens id="JY61x" desc="Fixtures, isolation, mocking, time control." label="Isolation and Determinism">
+          <rule id="JY610-TEST-FIXTURES" desc="Prefer `@BeforeEach` for fixtures; avoid mutable shared state."/>
+          <rule id="JY611-TEST-ISOLATION" desc="Tests must not depend on execution order or shared state."/>
+          <rule id="JY612-MOCK-BOUNDARIES" desc="Mock external systems (DB/HTTP/clock). Do not mock value objects or simple DTOs."/>
+          <rule id="JY613-DETERMINISM" desc="Avoid wall-clock time, random, and sleep in tests."/>
+          <rule id="JY614-TEST-LAYERING" desc="Separate unit and integration tests with tags or naming."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="jy6xx/structure.xml"/>
+        <tens id="JY60x" desc="Naming, AAA, parameterized tests, assertions." label="Structure">
+          <rule id="JY600-JUNIT5-DEFAULT" desc="Use JUnit 5 (`org.junit.jupiter`) as the default test runtime."/>
+          <rule id="JY601-TEST-NAMING" desc="Use descriptive test names that state behavior and context."/>
+          <rule id="JY602-AAA-STRUCTURE" desc="Structure tests with Arrange/Act/Assert or Given/When/Then."/>
+          <rule id="JY603-PARAMETERIZED-TESTS" desc="Use `@ParameterizedTest` for behavior with multiple inputs."/>
+          <rule id="JY604-ASSERTION-STYLE" desc="Prefer fluent assertions (AssertJ). If not available, use JUnit assertions consistently."/>
+          <rule id="JY605-EXCEPTION-ASSERTS" desc="Use `assertThrows` and assert on message or fields."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="JY7xx" desc="Spring and Android testing guidance." label="Framework Addenda">
+      <file>
+        <doc_ref path="addenda/android-testing.xml"/>
+        <tens id="JY73x" desc="Robolectric and instrumentation guidance." label="Android Testing">
+          <rule id="JY730-ROBOLECTRIC-DEFAULT" desc="Prefer Robolectric for JVM tests; use instrumented tests only when device APIs are required."/>
+          <rule id="JY731-ANDROIDX-TEST-RUNNER" desc="Use AndroidX Test Runner for instrumented tests."/>
+          <rule id="JY732-ESPRESSO-FOR-UI" desc="Use Espresso for UI behavior, but keep UI tests minimal."/>
+          <rule id="JY733-IDLING-RESOURCES" desc="Use Idling Resources for async synchronization."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="addenda/spring-testing.xml"/>
+        <tens id="JY70x" desc="Spring test slices and context usage." label="Spring Testing">
+          <rule id="JY700-TEST-SLICES-FIRST" desc="Prefer test slices (`@WebMvcTest`, `@DataJpaTest`) over full context tests."/>
+          <rule id="JY701-SPRINGBOOTTEST-LIMIT" desc="Use `@SpringBootTest` only for true integration tests."/>
+          <rule id="JY702-MOCK-BEANS-AT-BOUNDARY" desc="Use `@MockBean` for external collaborators, not for simple value objects."/>
+          <rule id="JY703-TESTCONFIGURATION" desc="Use `@TestConfiguration` or `@Import` to provide test-only beans."/>
+          <rule id="JY704-CONTEXT-CACHING" desc="Avoid dynamic properties that bust Spring context caching."/>
+        </tens>
+      </file>
+    </hundreds>
+  </section>
+  <section kind="antipatterns" desc="Patterns to avoid." label="Anti-Patterns">
+    <hundreds id="JZ1xx" desc="Null/Optional pitfalls." label="Null &amp; Optional Misuse">
+      <file>
+        <doc_ref path="jz1xx/jz1xx-null-optional.xml"/>
+        <tens id="JZ10x" desc="Null/Optional pitfalls." label="Null &amp; Optional Misuse">
+          <rule id="JZ100-NULL-RETURNS" desc="Returning `null` for missing values."/>
+          <rule id="JZ101-OPTIONAL-PARAMETERS" desc="Using `Optional` as a method parameter or field."/>
+          <rule id="JZ102-NULL-COLLECTIONS" desc="Returning `null` instead of empty collections."/>
+          <rule id="JZ103-BOOLEAN-NULL" desc="Using boxed `Boolean` where `boolean` suffices."/>
+          <rule id="JZ104-UNSAFE-OPTIONAL-GET" desc="Calling `Optional.get()` without checking presence."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="JZ2xx" desc="Bad exception handling." label="Exception Misuse">
+      <file>
+        <doc_ref path="jz2xx/jz2xx-exception-misuse.xml"/>
+        <tens id="JZ20x" desc="Bad exception handling." label="Exception Misuse">
+          <rule id="JZ200-CATCH-EXCEPTION" desc="Catching `Exception` or `Throwable` broadly."/>
+          <rule id="JZ201-SWALLOW-EXCEPTIONS" desc="Empty catch blocks or ignoring errors."/>
+          <rule id="JZ202-LOSE-CAUSE" desc="Throwing a new exception without the original cause."/>
+          <rule id="JZ203-EXCEPTION-CONTROL-FLOW" desc="Using exceptions for normal control flow."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="JZ3xx" desc="Threading hazards." label="Concurrency Hazards">
+      <file>
+        <doc_ref path="jz3xx/jz3xx-concurrency-hazards.xml"/>
+        <tens id="JZ30x" desc="Threading hazards." label="Concurrency Hazards">
+          <rule id="JZ300-SHARED-MUTABLE-STATE" desc="Sharing mutable state across threads without coordination."/>
+          <rule id="JZ301-LOCK-ON-PUBLIC" desc="Synchronizing on `this`, strings, or other public objects."/>
+          <rule id="JZ302-DOUBLE-CHECK-LOCKING" desc="Double-checked locking without `volatile`."/>
+          <rule id="JZ303-THREAD-LEAKS" desc="Creating threads directly and forgetting to shut them down."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="JZ4xx" desc="Inefficient patterns." label="Performance Anti-patterns">
+      <file>
+        <doc_ref path="jz4xx/jz4xx-performance-antipatterns.xml"/>
+        <tens id="JZ40x" desc="Inefficient patterns." label="Performance Anti-patterns">
+          <rule id="JZ400-PREMATURE-OPTIMIZATION" desc="Optimizing without evidence of a bottleneck."/>
+          <rule id="JZ401-STREAMS-SIDE-EFFECTS" desc="Using streams with side effects or shared mutable state."/>
+          <rule id="JZ402-INEFFICIENT-CONTAINS" desc="Using `List.contains` in hot paths with large lists."/>
+          <rule id="JZ403-RECOMPILING-REGEX" desc="Compiling regex patterns repeatedly in loops."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="JZ5xx" desc="Testing pitfalls." label="Testing Anti-patterns">
+      <file>
+        <doc_ref path="jz5xx/jz5xx-testing-antipatterns.xml"/>
+        <tens id="JZ50x" desc="Testing pitfalls." label="Testing Anti-patterns">
+          <rule id="JZ500-TEST-INTERDEPENDENCE" desc="Tests rely on execution order or shared mutable state."/>
+          <rule id="JZ501-OVER-MOCKING" desc="Mocking internals, value objects, or too many collaborators."/>
+          <rule id="JZ502-ASSERTION-ROULETTE" desc="Multiple unrelated assertions without clear intent."/>
+          <rule id="JZ503-EXCEPTION-SWALLOW" desc="Catching exceptions in tests without failing."/>
+          <rule id="JZ504-UNSTABLE-TIME" desc="Tests depend on real timezones or `System.currentTimeMillis()`."/>
+          <rule id="JZ505-SLEEP-TESTS" desc="Using `Thread.sleep` for synchronization."/>
+          <rule id="JZ506-FLAKY-RANDOM" desc="Non-seeded randomness or data from external services."/>
+        </tens>
+      </file>
+    </hundreds>
+  </section>
+</catalog>

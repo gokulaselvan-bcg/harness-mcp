@@ -1,0 +1,13 @@
+<index id="CTX-CODING-STANDARDS-PYTHON-PY1XX-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="PY10x" kind="tens" desc="Core annotation usage and type specificity." label="Basics">
+      <doc_ref path="./py10x-basics/index.xml"/>
+    </entry>
+    <entry id="PY11x" kind="tens" desc="Unions, narrowing, generics, strictness." label="Type System Patterns">
+      <doc_ref path="./py11x-generics/index.xml"/>
+    </entry>
+    <entry id="PY12x" kind="tens" desc="Contracts, overloads, advanced typing." label="Typing Constructs">
+      <doc_ref path="./py12x-typing-constructs/index.xml"/>
+    </entry>
+  </section>
+</index>

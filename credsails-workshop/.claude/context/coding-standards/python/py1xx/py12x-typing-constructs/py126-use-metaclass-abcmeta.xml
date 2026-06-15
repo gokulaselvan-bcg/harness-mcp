@@ -1,0 +1,74 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY12X-TYPING-CONSTRUCTS-PY126-USE-METACLASS-ABCMETA" title="py126 use metaclass abcmeta" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py126-use-metaclass-abcmeta.md">
+  <rule id="PY126-USE-METACLASS-ABCMETA">
+    <desc>When using abstract base classes, use `metaclass=ABCMeta` with `@abstractmethod` decorator and ellipsis body.</desc>
+    <when_to_use>- Defining abstract base classes with methods subclasses must implement
+- Creating interfaces with semantic inheritance (use Protocol for structural typing)
+- Combining with `@property`, `@classmethod`, `@staticmethod` for various abstract members
+</when_to_use>
+    <rationale>- `metaclass=ABCMeta` keeps MRO simpler than inheriting from `ABC`
+- `@abstractmethod` decorator provides compile-time checking that subclasses implement methods
+- Ellipsis (`...`) is the modern, clean way to indicate "no implementation"
+- `raise NotImplementedError` is runtime checking; `@abstractmethod` is compile-time
+</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - metaclass pattern with abstractmethod and ellipsis
+class Asset(metaclass=ABCMeta):
+    @abstractmethod
+    def create_performance(self, context: MarketContext) -> AssetPerformance:
+        """Create performance data for this asset."""
+        ...
+
+    @property
+    @abstractmethod
+    def asset_id(self) -> str:
+        """Unique identifier for this asset."""
+        ...
+
+    @classmethod
+    @abstractmethod
+    def from_config(cls, config: dict[str, Any]) -> Self:
+        """Create asset from configuration."""
+        ...
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - using NotImplementedError instead of @abstractmethod
+class Asset:
+    def create_performance(self, context: MarketContext) -> AssetPerformance:
+        raise NotImplementedError("Subclasses must implement")
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - inheriting from ABC
+from abc import ABC, abstractmethod
+
+class Asset(ABC):  # ABC now in MRO
+    @abstractmethod
+    def create_performance(self, context: MarketContext) -> AssetPerformance:
+        ...
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - using pass instead of ellipsis
+class Asset(metaclass=ABCMeta):
+    @abstractmethod
+    def create_performance(self, context: MarketContext) -> AssetPerformance:
+        pass  # Use ... instead
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY102-USE-PROTOCOLS"/>
+      <ref id="PY117-SELF-TYPE"/>
+      <ref id="PY127-DEFINE-CONTRACTS-IN-CODE"/>
+    </related>
+    <tool_support>- mypy enforces `@abstractmethod` at type-check time
+- Python raises `TypeError` if abstract class is instantiated
+- `@abstractmethod` works with `@property`, `@classmethod`, `@staticmethod`
+</tool_support>
+  </rule>
+</rules>

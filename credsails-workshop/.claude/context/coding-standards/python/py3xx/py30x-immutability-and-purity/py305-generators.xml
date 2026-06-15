@@ -1,0 +1,44 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY3XX-PY30X-IMMUTABILITY-AND-PURITY-PY305-GENERATORS" title="py305 generators" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py305-generators.md">
+  <rule id="PY305-GENERATORS">
+    <desc>Use generators with `yield` for lazy evaluation and memory efficiency. Generators compute values on-demand rather than creating entire sequences in memory.</desc>
+    <when_to_use>- Processing large datasets or files line-by-line
+- Transforming sequences where not all values may be consumed
+- Creating infinite sequences
+- Chaining operations that don't need materialization
+</when_to_use>
+    <examples>
+      <example kind="bad">Building lists unnecessarily:
+<code lang="python"><![CDATA[# DON'T: Eager evaluation uses more memory
+def enumerate_months(...) -> tuple[date, ...]:
+    months = []
+    while ...:
+        months.append(current)
+    return tuple(months)
+]]></code></example>
+      <example kind="good">
+        <code lang="python"><![CDATA[from collections.abc import Iterator
+from datetime import date
+
+def enumerate_months(start: date, end: date) -> Iterator[date]:
+    """Generate month boundaries lazily."""
+    current = start.replace(day=1)
+    end_month = end.replace(day=1)
+    while current <= end_month:
+        yield current
+        current = current + relativedelta(months=1)
+
+# Caller decides when to materialize
+months_list = list(enumerate_months(start, end))  # Only if needed
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY306-LAZY-EVALUATION"/>
+      <ref id="PY602-GENERATOR-VS-LIST"/>
+      <ref id="Y224-ITERATOR-PATTERN"/>
+    </related>
+    <notes>
+      <note title="Return Type">Annotate with `Iterator[T]` from `collections.abc`, not `tuple` or `list`.</note>
+    </notes>
+  </rule>
+</rules>

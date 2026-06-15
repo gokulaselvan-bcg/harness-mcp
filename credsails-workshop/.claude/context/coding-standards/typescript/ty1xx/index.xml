@@ -1,0 +1,7 @@
+<index id="CTX-CODING-STANDARDS-TYPESCRIPT-TY1XX-INDEX" title="index" kind="manifest" version="2" updated="2026-03-12" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="TY10x" kind="tens" desc="Strict mode, annotations, interfaces, generics, utility types." label="Type System &amp; Type Safety">
+      <doc_ref path="./ty1xx-type-system.xml"/>
+    </entry>
+  </section>
+</index>

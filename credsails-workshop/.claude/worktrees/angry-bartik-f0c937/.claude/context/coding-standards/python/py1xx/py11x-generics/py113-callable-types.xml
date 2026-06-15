@@ -1,0 +1,42 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY11X-GENERICS-PY113-CALLABLE-TYPES" title="py113 callable types" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py113-callable-types.md">
+  <rule id="PY113-CALLABLE-TYPES">
+    <desc>Use Callable type hint for functions passed as parameters.</desc>
+    <rationale>Documents expected function signature, enables type checking of callbacks.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - precise Callable type
+def apply_to_transactions(
+    transactions: list[Transaction],
+    transform: Callable[[Transaction], Transaction]
+) -> list[Transaction]:
+    """Apply transform to each transaction."""
+    return [transform(txn) for txn in transactions]
+
+def uppercase_merchant(txn: Transaction) -> Transaction:
+    return replace(txn, merchant=txn.merchant.upper())
+
+# Usage - type checked
+result = apply_to_transactions(txns, uppercase_merchant)  # OK
+
+# Error caught
+def bad_transform(txn: Transaction) -> str:  # Wrong return type!
+    return txn.merchant
+
+apply_to_transactions(txns, bad_transform)  # mypy error
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - no Callable type
+def apply_to_transactions(transactions, transform):
+    return [transform(txn) for txn in transactions]
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY100-USE-TYPE-HINTS"/>
+      <ref id="Y220-STRATEGY-PATTERN"/>
+    </related>
+    <tool_support>Callable from `collections.abc`. Syntax: `Callable[[ArgTypes...], ReturnType]`.</tool_support>
+  </rule>
+</rules>

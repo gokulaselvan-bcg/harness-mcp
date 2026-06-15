@@ -1,0 +1,48 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY11X-GENERICS-PY112-DATACLASS-TYPES" title="py112 dataclass types" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py112-dataclass-types.md">
+  <rule id="PY112-DATACLASS-TYPES">
+    <desc>Use dataclasses with full type hints for data containers.</desc>
+    <rationale>Dataclasses reduce boilerplate, integrate with type checking, and provide immutability options.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - typed dataclass
+@dataclass(frozen=True)  # Immutable
+class Transaction:
+    """Represents a data record."""
+    id: int
+    date: date
+    amount: Decimal
+    merchant: str
+    category: str | None = None
+
+# All attributes are typed, immutable, have __repr__, __eq__, etc.
+txn = Transaction(
+    id=1,
+    date=date(2025, 1, 15),
+    amount=Decimal("99.99"),
+    merchant="Amazon"
+)
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - manual class with no types
+class Transaction:
+    def __init__(self, id, date, amount, merchant, category=None):
+        self.id = id
+        self.date = date
+        self.amount = amount
+        self.merchant = merchant
+        self.category = category
+
+    # Missing: __repr__, __eq__, type hints, immutability
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY100-USE-TYPE-HINTS"/>
+      <ref id="PY300-IMMUTABILITY"/>
+      <ref id="PY301-FROZEN-DATACLASSES"/>
+    </related>
+    <tool_support>Dataclasses from `dataclasses` module (Python 3.7+). mypy checks field types.</tool_support>
+  </rule>
+</rules>

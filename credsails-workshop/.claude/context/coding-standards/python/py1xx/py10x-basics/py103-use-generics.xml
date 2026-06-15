@@ -1,0 +1,79 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY10X-BASICS-PY103-USE-GENERICS" title="py103 use generics" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py103-use-generics.md">
+  <rule id="PY103-USE-GENERICS">
+    <desc>Use generic types for reusable components that work with multiple types. Prefer Python 3.12+ native syntax with automatic variance inference.</desc>
+    <rationale>Generics enable type-safe reuse without duplication. They preserve type information through transformations. Python 3.12+ syntax is cleaner and automatically infers variance from usage, eliminating manual TypeVar declarations.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - Python 3.12+ native syntax (PREFERRED)
+class DataTool[T]:
+    """Generic I/O tool for any item type."""
+    def __init__(self, parser: Parser[T], producer: Producer[T]) -> None:
+        self.parser = parser
+        self.producer = producer
+
+    def process(self, input_text: str) -> T:
+        items: T = self.parser.parse(input_text)  # Type preserved
+        return items
+
+class Stack[T]:
+    """Generic stack with automatic variance inference."""
+    def __init__(self) -> None:
+        self._items: list[T] = []
+
+    def push(self, item: T) -> None:
+        self._items.append(item)
+
+    def pop(self) -> T:
+        return self._items.pop()
+
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - generic function
+def first[T](items: list[T]) -> T | None:
+    """Get first item, preserving type."""
+    return items[0] if items else None
+
+# Usage - types are checked
+data_tool: DataTool[list[Transaction]] = DataTool(
+    parser=CsvParser(),
+    producer=TransactionProducer()
+)
+
+# Legacy - TypeVar + Generic (pre-3.12)
+from typing import TypeVar, Generic
+
+T = TypeVar("T")
+
+class DataTool(Generic[T]):
+    """Old syntax - requires separate TypeVar and Generic."""
+    def __init__(self, parser: Parser[T], producer: Producer[T]):
+        self.parser = parser
+        self.producer = producer
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - loses type information
+class DataTool:
+    def __init__(self, parser, producer):
+        self.parser = parser
+        self.producer = producer
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY100-USE-TYPE-HINTS"/>
+      <ref id="PY101-PRECISE-TYPES"/>
+      <ref id="PY128-NO-EXPORT-TYPEVARS"/>
+    </related>
+    <tool_support>Python 3.12+ required. mypy 1.7+ supports this syntax. For older Python versions, use TypeVar + Generic.</tool_support>
+    <notes>
+      <note title="Benefits of Python 3.12+ syntax">- **Cleaner code**: No separate TypeVar declarations
+- **Automatic variance**: Python infers covariance/contravariance from usage
+- **Better readability**: Generic parameters visible in class/function signature
+- **Fewer imports**: No need to import TypeVar, Generic
+</note>
+    </notes>
+  </rule>
+</rules>

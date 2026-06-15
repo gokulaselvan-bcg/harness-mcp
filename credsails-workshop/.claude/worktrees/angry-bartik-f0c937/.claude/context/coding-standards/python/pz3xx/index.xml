@@ -1,0 +1,8 @@
+<index id="CTX-CODING-STANDARDS-PYTHON-PZ3XX-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Source" kind="other" desc=""/>
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="PZ30x" kind="tens" desc="Other Python-specific issues." label="Miscellaneous">
+      <doc_ref path="./pz3xx-miscellaneous.xml"/>
+    </entry>
+  </section>
+</index>

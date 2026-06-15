@@ -1,0 +1,43 @@
+<rules id="CTX-CODING-STANDARDS-TYPESCRIPT-TZ2XX-TZ2XX-MODULE-ANTIPATTERNS" title="Module &amp; Import Problems" kind="ruleset" version="2" updated="2026-03-12" status="active" source="tz2xx-module-antipatterns.md">
+  <rule id="TZ200-CIRCULAR-DEPS">
+    <desc>Circular module dependencies that cause runtime initialization errors or `undefined` imports.</desc>
+    <better>
+      <ref id="TY204-DEPENDENCY-DIRECTION"/>. Extract shared types into a separate module. Use `import type` for type-only cycles. Restructure to break the loop.
+    </better>
+    <why_bad>Circular dependencies can produce `undefined` at runtime depending on module resolution order. They indicate poor separation of concerns.</why_bad>
+  </rule>
+  <rule id="TZ201-BARREL-BLOAT">
+    <desc>Barrel files (`index.ts`) that re-export everything from every module, causing bundle bloat and slow IDE performance.</desc>
+    <better>
+      <ref id="TY202-BARREL-FILES"/>. Use barrels only at package boundaries. Import directly from specific modules for internal code.
+    </better>
+    <why_bad>Deep barrels force bundlers to load entire dependency trees. They slow down IDE auto-completion and type checking.</why_bad>
+  </rule>
+  <rule id="TZ202-SIDE-EFFECT-IMPORTS">
+    <desc>Modules that execute side effects on import (register globals, modify prototypes, start servers).</desc>
+    <better>Export initialization functions that consumers call explicitly. Keep module top-level code pure.</better>
+    <why_bad>Side-effect imports create hidden coupling, break tree-shaking, make testing difficult, and cause order-dependent bugs.</why_bad>
+    <examples>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - side effect on import
+import "./register-polyfills.js"; // modifies globals
+import "./setup-monitoring.js";   // starts background process
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="TZ203-WILDCARD-REEXPORTS">
+    <desc>Using `export * from` which leaks implementation details and creates name collisions.</desc>
+    <better>
+      <ref id="TY201-EXPLICIT-EXPORTS"/>. Use explicit named re-exports to control the public API.
+    </better>
+    <why_bad>Wildcard re-exports expose internal types, cause ambiguous exports when names collide, and make API surface unpredictable.</why_bad>
+  </rule>
+  <rule id="TZ204-DEFAULT-EXPORT-MISMATCH">
+    <desc>Default exports that lose their name binding, causing inconsistent names across imports.</desc>
+    <better>
+      <ref id="TY201-EXPLICIT-EXPORTS"/>. Use named exports so the name is consistent everywhere.
+    </better>
+    <why_bad>Default exports can be imported under any name, leading to inconsistent naming across the codebase and harder searching/refactoring.</why_bad>
+  </rule>
+</rules>

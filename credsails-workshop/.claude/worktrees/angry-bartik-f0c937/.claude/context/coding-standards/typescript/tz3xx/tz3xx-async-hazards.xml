@@ -1,0 +1,95 @@
+<rules id="CTX-CODING-STANDARDS-TYPESCRIPT-TZ3XX-TZ3XX-ASYNC-HAZARDS" title="Async &amp; Runtime Hazards" kind="ruleset" version="2" updated="2026-03-12" status="active" source="tz3xx-async-hazards.md">
+  <rule id="TZ300-UNHANDLED-PROMISES">
+    <desc>Calling an async function without `await` or an attached rejection handler, leaving the Promise to reject unobserved.</desc>
+    <better>
+      <ref id="TY500-ASYNC-AWAIT"/>. Always `await` promises or attach a `.catch()` (or equivalent) handler. Use the `void` operator only for intentional fire-and-forget calls where the Promise implementation handles errors internally or you rely on separate/global error handling.
+    </better>
+    <why_bad>Unhandled promise rejections can terminate or crash Node.js processes (depending on runtime version and configuration) and are typically only logged and then ignored in browsers.</why_bad>
+    <examples>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - floating promise
+fetchData();
+
+// Bad - missing await in async function
+async function process() {
+  saveToDb(data); // forgot await
+}
+]]></code>
+      </example>
+    </examples>
+    <tool_support>ESLint @typescript-eslint/no-floating-promises, @typescript-eslint/no-misused-promises.</tool_support>
+  </rule>
+  <rule id="TZ301-CALLBACK-PROMISE-MIX">
+    <desc>Mixing callback-style and Promise-style APIs in the same flow.</desc>
+    <better>Wrap callback APIs with `util.promisify` or `new Promise()` at the boundary, then use async/await throughout.</better>
+    <why_bad>Mixed styles produce confusing error handling, nested callbacks inside async functions, and easy-to-miss unhandled errors.</why_bad>
+  </rule>
+  <rule id="TZ302-ASYNC-VOID-EVENTS">
+    <desc>Passing `async` functions to event handlers or callbacks that expect synchronous `void` return.</desc>
+    <better>Wrap async logic in a non-async handler that catches and handles errors explicitly.</better>
+    <why_bad>The caller ignores the returned Promise, so rejections go unhandled. DOM event handlers (for example, `addEventListener`) and some framework callbacks ignore returned Promises, depending on version.</why_bad>
+    <examples>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - async event handler, rejection silently lost
+button.addEventListener("click", async () => {
+  await saveData(); // rejection unhandled
+});
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - explicit error handling
+button.addEventListener("click", () => {
+  saveData().catch((err) => showError(err));
+});
+]]></code>
+      </example>
+    </examples>
+    <tool_support>ESLint @typescript-eslint/no-misused-promises.</tool_support>
+  </rule>
+  <rule id="TZ303-SHARED-MUTABLE-STATE">
+    <desc>Sharing mutable state between async operations without coordination.</desc>
+    <better>
+      <ref id="TY300-READONLY-BY-DEFAULT"/>. Use immutable data, message passing, or explicit synchronization (mutex/semaphore).
+    </better>
+    <why_bad>Concurrent async operations can interleave, producing race conditions even in single-threaded JavaScript when they share mutable variables.</why_bad>
+    <examples>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - race condition
+let cache: Data | null = null;
+async function getData(): Promise<Data> {
+  if (!cache) {
+    cache = await fetchData(); // two callers can both fetch
+  }
+  return cache;
+}
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="TZ304-PROMISE-CONSTRUCTOR-ANTIPATTERN">
+    <desc>Wrapping an existing Promise in `new Promise()` unnecessarily.</desc>
+    <better>Return the existing Promise directly or use async/await.</better>
+    <why_bad>The extra wrapper adds complexity and can swallow errors if `reject` is not called properly.</why_bad>
+    <examples>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - unnecessary wrapper
+function fetchUser(id: string): Promise<User> {
+  return new Promise((resolve, reject) => {
+    fetch(`/api/users/${id}`)
+      .then((res) => res.json())
+      .then(resolve)
+      .catch(reject);
+  });
+}
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="TZ305-SEQUENTIAL-INDEPENDENT-AWAITS">
+    <desc>Sequentially awaiting independent Promises instead of running them concurrently.</desc>
+    <better>
+      <ref id="TY501-PROMISE-CONCURRENCY"/>. Use `Promise.all` for independent operations.
+    </better>
+    <why_bad>Sequential awaits add up latency linearly. Independent fetches that take 200ms each take 400ms sequentially vs 200ms concurrently.</why_bad>
+  </rule>
+</rules>

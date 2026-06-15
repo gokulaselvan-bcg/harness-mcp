@@ -1,0 +1,28 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY10X-BASICS-PY100-USE-TYPE-HINTS" title="py100 use type hints" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py100-use-type-hints.md">
+  <rule id="PY100-USE-TYPE-HINTS">
+    <desc>Always use type hints for function parameters, return values, and class attributes.</desc>
+    <rationale>Type hints improve code clarity, enable static analysis, catch bugs early, and serve as documentation.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good
+def parse_transaction(line: str, date_format: str = "%Y-%m-%d") -> Transaction:
+    """Parse a transaction line into a Transaction object."""
+    ...
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad
+def parse_transaction(line, date_format="%Y-%m-%d"):
+    """Parse a transaction line into a Transaction object."""
+    ...
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY101-PRECISE-TYPES"/>
+      <ref id="PZ107-MISSING-PARAMETER-TYPES"/>
+    </related>
+    <tool_support>mypy strict mode requires type hints. ruff rule ANN enforces annotations.</tool_support>
+  </rule>
+</rules>

@@ -1,0 +1,7 @@
+<index id="CTX-CODING-STANDARDS-TYPESCRIPT-TY4XX-INDEX" title="index" kind="manifest" version="2" updated="2026-03-12" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="TY40x" kind="tens" desc="Custom errors, exhaustive checks, Result types, type guards." label="Error Handling">
+      <doc_ref path="./ty4xx-error-handling.xml"/>
+    </entry>
+  </section>
+</index>

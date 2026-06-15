@@ -1,0 +1,92 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY12X-TYPING-CONSTRUCTS-PY125-ENFORCE-IMMUTABILITY-VIA-TYPES" title="py125 enforce immutability via types" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py125-enforce-immutability-via-types.md">
+  <rule id="PY125-ENFORCE-IMMUTABILITY-VIA-TYPES">
+    <desc>Enforce immutability through type hints (e.g., `Sequence`, `Mapping`, `AbstractSet`) rather than creating immutable copies of collections.</desc>
+    <when_to_use>- Return types: Use `Sequence[T]` instead of `list[T]` when callers shouldn't modify
+- Return types: Use `Mapping[K, V]` instead of `dict[K, V]` when callers shouldn't modify
+- Return types: Use `AbstractSet[T]` instead of `set[T]` when callers shouldn't modify
+- Parameters: Use `Sequence[T]` for flexible input (accepts list, tuple, etc.)
+- Parameters: Use `Mapping[K, V]` for flexible input (accepts dict, etc.)
+- Parameters: Use `AbstractSet[T]` for flexible input (accepts set, frozenset, etc.)
+</when_to_use>
+    <rationale>Type hints provide compile-time immutability guarantees without runtime overhead. Creating immutable copies (e.g., `tuple(my_list)`, `frozenset(my_set)`) adds unnecessary performance costs. Static type checking via mypy enforces immutability contracts.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - immutability enforced via type hint
+def get_categories() -> Sequence[str]:
+    """Returns immutable view of categories."""
+    categories = ["Food", "Transport", "Entertainment"]
+    return categories  # Returns mutable list, but type says immutable
+
+# Callers cannot modify (enforced by mypy)
+cats = get_categories()
+# cats.append("New")  # mypy error: Sequence has no append method
+
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - immutable mapping
+def get_config() -> Mapping[str, int]:
+    """Returns immutable config."""
+    config = {"timeout": 30, "retries": 3}
+    return config  # Returns mutable dict, typed as immutable
+
+# Callers cannot modify
+cfg = get_config()
+# cfg["timeout"] = 60  # mypy error: Mapping doesn't support item assignment
+
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - immutable set
+def get_valid_currencies() -> AbstractSet[str]:
+    """Returns immutable set of valid currencies."""
+    currencies = {"USD", "EUR", "GBP", "JPY"}
+    return currencies  # Returns mutable set, typed as immutable
+
+# Callers cannot modify
+valid = get_valid_currencies()
+# valid.add("CHF")  # mypy error: AbstractSet has no add method
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - unnecessary runtime overhead
+def get_categories() -> tuple[str, ...]:
+    """Returns immutable tuple."""
+    categories = ["Food", "Transport", "Entertainment"]
+    return tuple(categories)  # Runtime cost of creating tuple!
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - unnecessary frozenset conversion
+def get_valid_currencies() -> frozenset[str]:
+    """Returns immutable set."""
+    currencies = {"USD", "EUR", "GBP", "JPY"}
+    return frozenset(currencies)  # Runtime cost of creating frozenset!
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - promises mutability but shouldn't
+def get_categories() -> list[str]:
+    """Returns categories."""
+    return ["Food", "Transport", "Entertainment"]
+
+# Callers can modify (probably unintended)
+cats = get_categories()
+cats.append("New")  # Works but might break assumptions!
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY101-PRECISE-TYPES"/>
+      <ref id="PY106-COLLECTION-TYPES"/>
+      <ref id="PY300-IMMUTABILITY"/>
+    </related>
+    <tool_support>mypy enforces method availability based on type. `Sequence`, `Mapping`, and `AbstractSet` don't have mutation methods.</tool_support>
+    <notes>
+      <note title="Import Note">Use `from collections.abc import Set as AbstractSet` to avoid conflicts with the built-in `set` type.</note>
+    </notes>
+  </rule>
+</rules>

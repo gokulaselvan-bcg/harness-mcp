@@ -1,0 +1,39 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY12X-TYPING-CONSTRUCTS-PY124-CONCATENATE" title="py124 concatenate" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py124-concatenate.md">
+  <rule id="PY124-CONCATENATE">
+    <desc>Use Concatenate to add parameters to callables (useful for method decorators).</desc>
+    <rationale>Concatenate allows prepending parameters to Callable types, enabling precise typing of method decorators.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[from typing import TypeVar, ParamSpec, Callable, Concatenate
+
+P = ParamSpec("P")
+R = TypeVar("R")
+T = TypeVar("T")
+
+# Good - method decorator with Concatenate
+def log_method(func: Callable[Concatenate[T, P], R]) -> Callable[Concatenate[T, P], R]:
+    """Decorator for methods that logs self."""
+    def wrapper(self: T, *args: P.args, **kwargs: P.kwargs) -> R:
+        print(f"Method called on {self}")
+        return func(self, *args, **kwargs)
+    return wrapper
+
+class Processor:
+    @log_method
+    def process(self, txn: Transaction, validate: bool = True) -> bool:
+        """Process transaction."""
+        ...
+
+# Type checking preserved
+proc = Processor()
+proc.process(txn, validate=False)  # OK
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY123-PARAMSPEC"/>
+      <ref id="Y212-DECORATOR-PATTERN"/>
+    </related>
+    <tool_support>Concatenate from `typing` (Python 3.10+) or `typing_extensions`.</tool_support>
+  </rule>
+</rules>

@@ -1,0 +1,67 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PZ2XX-PZ20X-SHARED-STATE" title="Shared State Issues" kind="ruleset" version="2" updated="2026-02-20" status="active" source="pz20x-shared-state.md">
+  <rule id="PZ200-MUTATING-ARGUMENTS">
+    <desc>Function modifies its arguments.</desc>
+    <better>
+      <ref id="PY303-AVOID-SIDE-EFFECTS"/>
+      <ref id="PY304-RETURN-NEW-VALUES"/>
+    </better>
+    <why_bad>Unexpected side effects, hard to reason about.</why_bad>
+  </rule>
+  <rule id="PZ201-GLOBAL-STATE">
+    <desc>Functions read/write global variables.</desc>
+    <better>
+      <ref id="PY320-AVOID-GLOBALS"/>
+      <ref id="Y103-DEPENDENCY-INJECTION"/>
+    </better>
+    <why_bad>Hard to test, order-dependent, not thread-safe.</why_bad>
+  </rule>
+  <rule id="PZ202-MUTABLE-CLASS-ATTRIBUTES">
+    <desc>Mutable class variable shared across instances.</desc>
+    <better>Initialize in `__init__`.</better>
+    <why_bad>Instances unexpectedly share state.</why_bad>
+    <examples>
+      <example kind="bad">`class Foo: items = []`  # shared!</example>
+    </examples>
+  </rule>
+  <rule id="PZ203-SHARED-MUTABLE-REFS">
+    <desc>Multiple references to same mutable object.</desc>
+    <better>PY300-IMMUTABILITY, copy when needed.</better>
+    <why_bad>Modifications affect all references, hard to track.</why_bad>
+  </rule>
+  <rule id="PZ204-MUTATING-DURING-ITERATION">
+    <desc>Modifying collection while iterating.</desc>
+    <better>Iterate over copy or collect items to remove.</better>
+    <why_bad>Runtime error or undefined behavior.</why_bad>
+    <examples>
+      <example kind="bad">`for x in items: items.remove(x)`</example>
+    </examples>
+  </rule>
+  <rule id="PZ205-PROPERTY-WITH-SIDE-EFFECTS">
+    <desc>Property getter that modifies state or does I/O.</desc>
+    <better>Use method, not property.</better>
+    <why_bad>Violates expectations (properties should be cheap, pure).</why_bad>
+  </rule>
+  <rule id="PZ206-MUTABLE-RETURN-INTERNAL">
+    <desc>Returning mutable internal state.</desc>
+    <better>Return copy or immutable view.</better>
+    <why_bad>Caller can modify your internal state.</why_bad>
+    <examples>
+      <example kind="bad">`return self._items` (list)</example>
+    </examples>
+  </rule>
+  <rule id="PZ207-MODIFYING-CONSTANTS">
+    <desc>Changing values marked as constants.</desc>
+    <better>PY108-FINAL enforces immutability.</better>
+    <why_bad>Breaks expectations, hard to debug.</why_bad>
+  </rule>
+  <rule id="PZ208-SINGLETON-MUTABLE-STATE">
+    <desc>Singleton with mutable state.</desc>
+    <better>Y203-SINGLETON-PATTERN used carefully or avoid.</better>
+    <why_bad>Global mutable state, testing nightmare.</why_bad>
+  </rule>
+  <rule id="PZ209-CACHING-MUTABLE">
+    <desc>Caching mutable objects.</desc>
+    <better>Cache immutable data or deep copy.</better>
+    <why_bad>Cached object modified, stale cache.</why_bad>
+  </rule>
+</rules>

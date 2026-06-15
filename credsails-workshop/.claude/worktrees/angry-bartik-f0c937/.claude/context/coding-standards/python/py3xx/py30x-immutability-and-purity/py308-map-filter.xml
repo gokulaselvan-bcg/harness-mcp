@@ -1,0 +1,9 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY3XX-PY30X-IMMUTABILITY-AND-PURITY-PY308-MAP-FILTER" title="py308 map filter" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py308-map-filter.md">
+  <rule id="PY308-MAP-FILTER">
+    <desc>Prefer comprehensions over `map()`/`filter()` for clarity.</desc>
+    <exceptions>Use `map`/`filter` when you already have a named function.</exceptions>
+    <examples>
+      <example kind="good">`[x*2 for x in nums]` clearer than `list(map(lambda x: x*2, nums))`.</example>
+    </examples>
+  </rule>
+</rules>

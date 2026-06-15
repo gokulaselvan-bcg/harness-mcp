@@ -1,0 +1,7 @@
+<index id="CTX-CODING-STANDARDS-TYPESCRIPT-TY6XX-INDEX" title="index" kind="manifest" version="2" updated="2026-03-12" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="TY60x" kind="tens" desc="Type testing, mocking, assertions, test structure." label="Testing &amp; Tooling">
+      <doc_ref path="./ty6xx-testing.xml"/>
+    </entry>
+  </section>
+</index>

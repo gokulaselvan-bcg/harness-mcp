@@ -1,0 +1,132 @@
+<rules id="CTX-CODING-STANDARDS-JAVA-JY1XX-JY1XX-LANGUAGE-AND-TYPES" title="Language &amp; Type Safety" kind="ruleset" version="2" updated="2026-02-20" status="active" source="jy1xx-language-and-types.md">
+  <rule id="JY100-NULLNESS-CONTRACTS">
+    <desc>Define and honor nullness contracts for public APIs.</desc>
+    <rationale>Clear nullness avoids NPEs and makes call sites safer.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[// Good - explicit contract
+@Nullable
+public User findUser(String id) {
+    return cache.get(id);
+}
+
+// Good - non-null by default
+public User requireUser(String id) {
+    return Objects.requireNonNull(cache.get(id));
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JZ100-NULL-RETURNS"/>
+      <ref id="JZ102-NULL-COLLECTIONS"/>
+    </related>
+  </rule>
+  <rule id="JY101-OPTIONAL-RETURNS">
+    <desc>Use `Optional&lt;T&gt;` for return values that may be absent.</desc>
+    <rationale>Optional makes absence explicit and avoids `null` checks.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[// Good
+public Optional<User> findUser(String id) {
+    return Optional.ofNullable(cache.get(id));
+}
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="java"><![CDATA[// Bad
+public User findUser(String id) {
+    return cache.get(id); // may be null
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JZ101-OPTIONAL-PARAMETERS"/>
+      <ref id="JZ104-UNSAFE-OPTIONAL-GET"/>
+    </related>
+  </rule>
+  <rule id="JY102-PREFER-PRIMITIVES">
+    <desc>Prefer primitives over boxed types unless nullability or collections require boxing.</desc>
+    <rationale>Primitives avoid allocation and unexpected `null`.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[// Good
+int retries = 3;
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="java"><![CDATA[// Bad - can be null and slower
+Integer retries = 3;
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JZ103-BOOLEAN-NULL"/>
+    </related>
+  </rule>
+  <rule id="JY103-EQUALS-HASHCODE-PAIR">
+    <desc>Override `equals` and `hashCode` together.</desc>
+    <rationale>Inconsistent equality breaks collections and caching.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[@Override
+public boolean equals(Object other) {
+    if (this == other) return true;
+    if (!(other instanceof User)) return false;
+    User that = (User) other;
+    return Objects.equals(id, that.id);
+}
+
+@Override
+public int hashCode() {
+    return Objects.hash(id);
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="Y300-EXPRESSIVE-NAMES"/>
+      <ref id="Z403-INCONSISTENT-NAMING"/>
+    </related>
+  </rule>
+  <rule id="JY104-COMPARE-TO-CONSISTENT">
+    <desc>Ensure `compareTo` is consistent with `equals`.</desc>
+    <rationale>Inconsistency causes undefined behavior in sorted collections.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[@Override
+public int compareTo(User other) {
+    return this.id.compareTo(other.id);
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JY103-EQUALS-HASHCODE-PAIR"/>
+    </related>
+  </rule>
+  <rule id="JY105-RECORDS-FOR-DATA">
+    <desc>Use records for simple, immutable data carriers (Java 16+).</desc>
+    <exceptions>Use classes when you need inheritance or custom
+serialization behavior.
+</exceptions>
+    <rationale>Records provide concise, correct value semantics.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[// Good
+public record Money(String currency, long cents) {}
+
+// Avoid verbose boilerplate
+public final class Money {
+    private final String currency;
+    private final long cents;
+    // constructors, equals, hashCode, toString...
+}
+]]></code>
+      </example>
+    </examples>
+  </rule>
+</rules>

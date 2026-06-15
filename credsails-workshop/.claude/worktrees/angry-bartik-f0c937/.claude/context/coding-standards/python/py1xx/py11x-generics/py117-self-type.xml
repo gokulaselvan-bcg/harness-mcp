@@ -1,0 +1,60 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY11X-GENERICS-PY117-SELF-TYPE" title="py117 self type" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py117-self-type.md">
+  <rule id="PY117-SELF-TYPE">
+    <desc>Use `Self` type for methods returning the instance (method chaining, factory methods).</desc>
+    <rationale>Self correctly handles inheritance, unlike hardcoded class names.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - Self type
+class Transaction:
+    """Transaction with fluent interface."""
+
+    def __init__(self, amount: Decimal):
+        self.amount = amount
+        self.category: str | None = None
+
+    def with_category(self, category: str) -> Self:
+        """Set category (fluent)."""
+        self.category = category
+        return self
+
+    @classmethod
+    def from_string(cls, text: str) -> Self:
+        """Factory method returning Self."""
+        amount = Decimal(text)
+        return cls(amount)
+
+# Works with inheritance
+class DetailedTransaction(Transaction):
+    def __init__(self, amount: Decimal, details: str):
+        super().__init__(amount)
+        self.details = details
+
+# Correct return type preserved
+dtxn: DetailedTransaction = (
+    DetailedTransaction
+    .from_string("100.50")  # Returns DetailedTransaction, not Transaction
+    .with_category("Food")   # Still DetailedTransaction
+)
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - hardcoded class name
+class Transaction:
+    def with_category(self, category: str) -> Transaction:
+        self.category = category
+        return self
+
+    @classmethod
+    def from_string(cls, text: str) -> Transaction:  # Wrong for subclasses!
+        return cls(Decimal(text))
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY103-USE-GENERICS"/>
+      <ref id="Y202-BUILDER-PATTERN"/>
+    </related>
+    <tool_support>Self from `typing` (Python 3.11+) or `typing_extensions`.</tool_support>
+  </rule>
+</rules>

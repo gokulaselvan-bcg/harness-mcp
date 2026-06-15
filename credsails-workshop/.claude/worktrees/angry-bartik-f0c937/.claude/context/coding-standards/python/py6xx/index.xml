@@ -1,0 +1,10 @@
+<index id="CTX-CODING-STANDARDS-PYTHON-PY6XX-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="PY60x" kind="tens" desc="Measure first, generators, caching, layout." label="Profiling and Structure">
+      <doc_ref path="./py60x-profiling-and-structure/index.xml"/>
+    </entry>
+    <entry id="PY61x" kind="tens" desc="Built-ins, regex, sets, lazy imports." label="Micro-optimizations">
+      <doc_ref path="./py61x-micro-optimizations.xml"/>
+    </entry>
+  </section>
+</index>

@@ -26,6 +26,9 @@ backups/
 # Claude Code — local-only settings (skills/ stays tracked)
 .claude/settings.local.json
 
+# Nested credsails-workshop keeps its own git history locally
+credsails-workshop/.git/
+
 # OS
 .DS_Store
 Thumbs.db

@@ -1,0 +1,511 @@
+<catalog id="CTX-CODING-STANDARDS-PYTHON-INDEX-CATALOG" title="index catalog" kind="manifest" version="2" updated="2026-02-20" status="active" entrypoint="../../coding-standards.md" language="python" sourceRoot=".claude/context/coding-standards/python">
+  <section kind="guidelines" desc="Normative rules to follow." label="Guidelines">
+    <hundreds id="PY1xx" desc="Typing rules and contracts." label="Type Hints &amp; Type Safety">
+      <file>
+        <doc_ref path="py1xx/py10x-basics/py100-use-type-hints.xml"/>
+        <tens id="PY10x" desc="Core annotation usage and type specificity." label="Basics">
+          <rule id="PY100-USE-TYPE-HINTS" desc="Always use type hints for function parameters, return values, and class attributes."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py10x-basics/py101-precise-types.xml"/>
+        <tens id="PY10x" desc="Core annotation usage and type specificity." label="Basics">
+          <rule id="PY101-PRECISE-TYPES" desc="Use the most specific type possible. Prefer `Sequence[str]` over `list`, `Mapping[str, int]` over `dict`."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py10x-basics/py102-use-protocols.xml"/>
+        <tens id="PY10x" desc="Core annotation usage and type specificity." label="Basics">
+          <rule id="PY102-USE-PROTOCOLS" desc="Prefer Protocol over ABC for structural subtyping. Use ABC only when inheritance is semantically important."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py10x-basics/py103-use-generics.xml"/>
+        <tens id="PY10x" desc="Core annotation usage and type specificity." label="Basics">
+          <rule id="PY103-USE-GENERICS" desc="Use generic types for reusable components that work with multiple types. Prefer Python 3.12+ native syntax with automatic variance inference."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py10x-basics/py104-type-aliases.xml"/>
+        <tens id="PY10x" desc="Core annotation usage and type specificity." label="Basics">
+          <rule id="PY104-TYPE-ALIASES" desc="Use type aliases for complex types. Use `TypeAlias` annotation for clarity."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py10x-basics/py105-newtype.xml"/>
+        <tens id="PY10x" desc="Core annotation usage and type specificity." label="Basics">
+          <rule id="PY105-NEWTYPE" desc="Use `NewType` to create distinct types from primitives when semantic distinction is important."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py10x-basics/py106-collection-types.xml"/>
+        <tens id="PY10x" desc="Core annotation usage and type specificity." label="Basics">
+          <rule id="PY106-COLLECTION-TYPES" desc="Use appropriate collection types from `collections.abc`: Sequence, Mapping, Iterable, Iterator, Collection."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py10x-basics/py107-literal-types.xml"/>
+        <tens id="PY10x" desc="Core annotation usage and type specificity." label="Basics">
+          <rule id="PY107-LITERAL-TYPES" desc="Use `Literal` for values that must be specific constants."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py10x-basics/py108-final.xml"/>
+        <tens id="PY10x" desc="Core annotation usage and type specificity." label="Basics">
+          <rule id="PY108-FINAL" desc="Use `Final` for constants that should never be reassigned."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py10x-basics/py109-avoid-any.xml"/>
+        <tens id="PY10x" desc="Core annotation usage and type specificity." label="Basics">
+          <rule id="PY109-AVOID-ANY" desc="Avoid `Any` type unless absolutely necessary. Use generics, unions, or protocols instead."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py11x-generics/py110-union-types.xml"/>
+        <tens id="PY11x" desc="Unions, narrowing, generics, strictness." label="Type System Patterns">
+          <rule id="PY110-UNION-TYPES" desc="Use modern union syntax `X | Y` (Python 3.10+) instead of `Union[X, Y]` or `Optional[X]`."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py11x-generics/py111-type-narrowing.xml"/>
+        <tens id="PY11x" desc="Unions, narrowing, generics, strictness." label="Type System Patterns">
+          <rule id="PY111-TYPE-NARROWING" desc="Use type narrowing with isinstance(), is None checks, and TypeGuard for complex narrowing."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py11x-generics/py112-dataclass-types.xml"/>
+        <tens id="PY11x" desc="Unions, narrowing, generics, strictness." label="Type System Patterns">
+          <rule id="PY112-DATACLASS-TYPES" desc="Use dataclasses with full type hints for data containers."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py11x-generics/py113-callable-types.xml"/>
+        <tens id="PY11x" desc="Unions, narrowing, generics, strictness." label="Type System Patterns">
+          <rule id="PY113-CALLABLE-TYPES" desc="Use Callable type hint for functions passed as parameters."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py11x-generics/py114-namedtuple-types.xml"/>
+        <tens id="PY11x" desc="Unions, narrowing, generics, strictness." label="Type System Patterns">
+          <rule id="PY114-NAMEDTUPLE-TYPES" desc="Use NamedTuple with type hints for simple immutable data structures."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py11x-generics/py115-return-type-hints.xml"/>
+        <tens id="PY11x" desc="Unions, narrowing, generics, strictness." label="Type System Patterns">
+          <rule id="PY115-RETURN-TYPE-HINTS" desc="Always specify return types, even for functions returning None."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py11x-generics/py116-class-var.xml"/>
+        <tens id="PY11x" desc="Unions, narrowing, generics, strictness." label="Type System Patterns">
+          <rule id="PY116-CLASS-VAR" desc="Use ClassVar to annotate class variables (not instance variables)."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py11x-generics/py117-self-type.xml"/>
+        <tens id="PY11x" desc="Unions, narrowing, generics, strictness." label="Type System Patterns">
+          <rule id="PY117-SELF-TYPE" desc="Use `Self` type for methods returning the instance (method chaining, factory methods)."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py11x-generics/py118-strict-mode.xml"/>
+        <tens id="PY11x" desc="Unions, narrowing, generics, strictness." label="Type System Patterns">
+          <rule id="PY118-STRICT-MODE" desc="Enable mypy strict mode in your project configuration."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py11x-generics/py119-type-comments.xml"/>
+        <tens id="PY11x" desc="Unions, narrowing, generics, strictness." label="Type System Patterns">
+          <rule id="PY119-TYPE-COMMENTS" desc="Avoid type comments. Use modern annotation syntax instead."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py12x-typing-constructs/py120-type-checking.xml"/>
+        <tens id="PY12x" desc="Contracts, overloads, advanced typing." label="Typing Constructs">
+          <rule id="PY120-TYPE-CHECKING" desc="Use `if TYPE_CHECKING:` for import-only type hints to avoid circular imports."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py12x-typing-constructs/py121-forward-refs.xml"/>
+        <tens id="PY12x" desc="Contracts, overloads, advanced typing." label="Typing Constructs">
+          <rule id="PY121-FORWARD-REFS" desc="Use forward references (string literals) for types not yet defined or circular dependencies."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py12x-typing-constructs/py122-overload.xml"/>
+        <tens id="PY12x" desc="Contracts, overloads, advanced typing." label="Typing Constructs">
+          <rule id="PY122-OVERLOAD" desc="Use `@overload` for functions with different signatures based on argument types."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py12x-typing-constructs/py123-paramspec.xml"/>
+        <tens id="PY12x" desc="Contracts, overloads, advanced typing." label="Typing Constructs">
+          <rule id="PY123-PARAMSPEC" desc="Use ParamSpec to preserve function signatures in decorators."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py12x-typing-constructs/py124-concatenate.xml"/>
+        <tens id="PY12x" desc="Contracts, overloads, advanced typing." label="Typing Constructs">
+          <rule id="PY124-CONCATENATE" desc="Use Concatenate to add parameters to callables (useful for method decorators)."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py12x-typing-constructs/py125-enforce-immutability-via-types.xml"/>
+        <tens id="PY12x" desc="Contracts, overloads, advanced typing." label="Typing Constructs">
+          <rule id="PY125-ENFORCE-IMMUTABILITY-VIA-TYPES" desc="Enforce immutability through type hints (e.g., `Sequence`, `Mapping`, `AbstractSet`) rather than creating immutable copies of collections."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py12x-typing-constructs/py126-use-metaclass-abcmeta.xml"/>
+        <tens id="PY12x" desc="Contracts, overloads, advanced typing." label="Typing Constructs">
+          <rule id="PY126-USE-METACLASS-ABCMETA" desc="When using abstract base classes, use `metaclass=ABCMeta` with `@abstractmethod` decorator and ellipsis body."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py12x-typing-constructs/py127-define-contracts-in-code.xml"/>
+        <tens id="PY12x" desc="Contracts, overloads, advanced typing." label="Typing Constructs">
+          <rule id="PY127-DEFINE-CONTRACTS-IN-CODE" desc="Define contracts explicitly in code (class attributes with `__init__` methods, abstract properties) instead of documenting them in docstrings."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py12x-typing-constructs/py128-no-export-typevars.xml"/>
+        <tens id="PY12x" desc="Contracts, overloads, advanced typing." label="Typing Constructs">
+          <rule id="PY128-NO-EXPORT-TYPEVARS" desc="Never export TypeVar definitions in module __all__; TypeVars are implementation details, not public API."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py1xx/py12x-typing-constructs/py129-prefer-public-attributes.xml"/>
+        <tens id="PY12x" desc="Contracts, overloads, advanced typing." label="Typing Constructs">
+          <rule id="PY129-PREFER-PUBLIC-ATTRIBUTES" desc="Prefer public attributes for simple stored values over private attributes with `@property` decorators."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="PY2xx" desc="Packaging, imports, and public API." label="Code Organization &amp; Modularity">
+      <file>
+        <doc_ref path="py2xx/py20x-public-api.xml"/>
+        <tens id="PY20x" desc="Exports, privacy, package contracts." label="Public API and Interfaces">
+          <rule id="PY200-PACKAGE-INIT" desc="Use `__init__.py` to expose public API using `from ... import *`."/>
+          <rule id="PY201-PUBLIC-API" desc="Define `__all__` in each module (not in `__init__.py`) to control the public API."/>
+          <rule id="PY202-EXPLICIT-EXPORTS" desc="Be explicit when importing from other modules. Avoid `import *` in application code."/>
+          <rule id="PY203-PRIVATE-MODULES" desc="Use `_module.py` prefix for internal/private modules."/>
+          <rule id="PY204-INIT-DEFINES-BEHAVIOR" desc="Constructor parameters define instance behavior and configuration; method parameters are call-specific data that varies per invocation."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py2xx/py21x-imports-and-packaging.xml"/>
+        <tens id="PY21x" desc="Import style, ordering, packaging rules." label="Imports and Packaging">
+          <rule id="PY210-IMPORT-STYLE" desc="Prefer absolute imports for public modules; use relative imports for private (underscore-prefixed) modules within packages."/>
+          <rule id="PY211-IMPORT-ORDER" desc="Standard library, third-party, local. Alphabetical within groups."/>
+          <rule id="PY212-CIRCULAR-IMPORTS" desc="Avoid circular dependencies. Use protocols or TYPE_CHECKING."/>
+          <rule id="PY213-LAZY-IMPORTS" desc="Import at module level by default. Use local imports only for optional dependencies or circular imports."/>
+          <rule id="PY214-TYPE-STUBS" desc="For untyped third-party libs, use stub files or `py.typed`."/>
+          <rule id="PY215-NAMESPACE-PACKAGES" desc="Avoid namespace packages unless distributing plugins."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="PY3xx" desc="Immutability and functional techniques." label="Functional Programming">
+      <file>
+        <doc_ref path="py3xx/py30x-immutability-and-purity/py300-immutability.xml"/>
+        <tens id="PY30x" desc="Immutable data, pure functions, generators." label="Immutability and Purity">
+          <rule id="PY300-IMMUTABILITY" desc="Prefer immutable data structures. Use `frozen=True` for dataclasses."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py3xx/py30x-immutability-and-purity/py301-frozen-dataclasses.xml"/>
+        <tens id="PY30x" desc="Immutable data, pure functions, generators." label="Immutability and Purity">
+          <rule id="PY301-FROZEN-DATACLASSES" desc="Use `frozen=True` for dataclasses that shouldn't change."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py3xx/py30x-immutability-and-purity/py302-pure-functions.xml"/>
+        <tens id="PY30x" desc="Immutable data, pure functions, generators." label="Immutability and Purity">
+          <rule id="PY302-PURE-FUNCTIONS" desc="Functions without side effects, same input → same output."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py3xx/py30x-immutability-and-purity/py303-avoid-side-effects.xml"/>
+        <tens id="PY30x" desc="Immutable data, pure functions, generators." label="Immutability and Purity">
+          <rule id="PY303-AVOID-SIDE-EFFECTS" desc="Don't modify arguments or global state. Return new values."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py3xx/py30x-immutability-and-purity/py304-return-new-values.xml"/>
+        <tens id="PY30x" desc="Immutable data, pure functions, generators." label="Immutability and Purity">
+          <rule id="PY304-RETURN-NEW-VALUES" desc="Return new objects instead of modifying existing ones."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py3xx/py30x-immutability-and-purity/py305-generators.xml"/>
+        <tens id="PY30x" desc="Immutable data, pure functions, generators." label="Immutability and Purity">
+          <rule id="PY305-GENERATORS" desc="Use generators with `yield` for lazy evaluation and memory efficiency. Generators compute values on-demand rather than creating entire sequences in memory."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py3xx/py30x-immutability-and-purity/py306-lazy-evaluation.xml"/>
+        <tens id="PY30x" desc="Immutable data, pure functions, generators." label="Immutability and Purity">
+          <rule id="PY306-LAZY-EVALUATION" desc="Prefer lazy evaluation over eager computation. Compute values only when actually needed. This reduces memory usage, enables working with infinite sequences, and can improve performance by avoiding unnecessary computation."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py3xx/py30x-immutability-and-purity/py307-comprehensions.xml"/>
+        <tens id="PY30x" desc="Immutable data, pure functions, generators." label="Immutability and Purity">
+          <rule id="PY307-COMPREHENSIONS" desc="Use list/dict/set comprehensions for transformations."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py3xx/py30x-immutability-and-purity/py308-map-filter.xml"/>
+        <tens id="PY30x" desc="Immutable data, pure functions, generators." label="Immutability and Purity">
+          <rule id="PY308-MAP-FILTER" desc="Prefer comprehensions over `map()`/`filter()` for clarity."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py3xx/py30x-immutability-and-purity/py309-functools.xml"/>
+        <tens id="PY30x" desc="Immutable data, pure functions, generators." label="Immutability and Purity">
+          <rule id="PY309-FUNCTOOLS" desc="Use functools for functional patterns: `reduce`, `partial`, `lru_cache`."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py3xx/py31x-functional-tooling.xml"/>
+        <tens id="PY31x" desc="Itertools, operator, dataclass replace, HOFs." label="Functional Tooling">
+          <rule id="PY310-ITERTOOLS" desc="Use itertools for efficient iteration patterns."/>
+          <rule id="PY311-OPERATOR-MODULE" desc="Use `operator` module instead of lambdas for common operations."/>
+          <rule id="PY312-DATACLASS-REPLACE" desc="Use `dataclasses.replace()` for immutable updates."/>
+          <rule id="PY313-AVOID-MUTABLE-DEFAULTS" desc="Never use mutable default arguments."/>
+          <rule id="PY314-CLOSURES" desc="Use closures for encapsulation and factory functions."/>
+          <rule id="PY315-FIRST-CLASS-FUNCTIONS" desc="Pass functions as arguments, return from functions."/>
+          <rule id="PY316-HIGHER-ORDER-FUNCTIONS" desc="Functions that take or return functions."/>
+          <rule id="PY317-RECURSION" desc="Use recursion for naturally recursive problems (trees, etc.)."/>
+          <rule id="PY318-TAIL-RECURSION" desc="Python doesn't optimize tail recursion. Use iteration instead."/>
+          <rule id="PY319-IMMUTABLE-COLLECTIONS" desc="Use `tuple`, `frozenset` for immutable collections."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py3xx/py32x-advanced.xml"/>
+        <tens id="PY32x" desc="Referential transparency, pipelines, monads." label="Advanced Techniques">
+          <rule id="PY320-AVOID-GLOBALS" desc="Minimize global mutable state. Use parameters/returns."/>
+          <rule id="PY321-REFERENTIAL-TRANSPARENCY" desc="Function calls can be replaced with their return values."/>
+          <rule id="PY322-PIPELINE-PATTERN" desc="Chain transformations using function composition."/>
+          <rule id="PY323-MONADS" desc="Consider Result/Option types for error handling (via libraries)."/>
+          <rule id="PY324-PARTIAL-APPLICATION" desc="Use `functools.partial` to pre-fill function arguments."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="PY4xx" desc="Docstrings and formatting." label="Documentation &amp; Readability">
+      <file>
+        <doc_ref path="py4xx/py40x-docstrings.xml"/>
+        <tens id="PY40x" desc="Docstring format, coverage, layout." label="Docstrings and Documentation">
+          <rule id="PY400-RST-DOCSTRINGS" desc="Use reStructuredText format for docstrings."/>
+          <rule id="PY401-DOCSTRING-COVERAGE" desc="Document all public functions, classes, and modules."/>
+          <rule id="PY402-MODULE-DOCSTRINGS" desc="Every module has a docstring explaining its purpose."/>
+          <rule id="PY403-ONE-LINE-SUMMARY" desc="First line of docstring is a brief summary, then a blank line, then details."/>
+          <rule id="PY404-TYPE-HINTS-AS-DOCS" desc="Type hints document expected types; don't repeat in docstrings."/>
+          <rule id="PY405-EXAMPLES-IN-DOCSTRINGS" desc="Include usage examples in docstrings for complex functions."/>
+          <rule id="PY406-LINE-LENGTH" desc="Max 88 characters per line (Black standard)."/>
+          <rule id="PY407-BLANK-LINES" desc="Two blank lines between top-level definitions, one within classes."/>
+          <rule id="PY408-INDENTATION" desc="4 spaces per indentation level."/>
+          <rule id="PY409-CONTRACT-BASED-PRIVACY" desc="Use underscore prefix only for internal implementation details. Attributes that represent observable state or configuration should be public with a read-only contract."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py4xx/py41x-formatting-and-strings.xml"/>
+        <tens id="PY41x" desc="Quotes, f-strings, concatenation." label="Formatting and Strings">
+          <rule id="PY410-DOUBLE-UNDERSCORE" desc="Avoid `__name__` (dunder) unless implementing protocols."/>
+          <rule id="PY411-STRING-QUOTES" desc="Consistent quote style. Double quotes `&quot;` preferred."/>
+          <rule id="PY412-F-STRINGS" desc="Use f-strings for formatting, not `%` or `.format()`."/>
+          <rule id="PY413-STRING-CONCATENATION" desc="Use f-strings or `str.join()`, not `+` in loops."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="PY5xx" desc="Exception strategy and messages." label="Error Handling">
+      <file>
+        <doc_ref path="py5xx/py50x-exception-types.xml"/>
+        <tens id="PY50x" desc="Specific exceptions, hierarchy, context." label="Exception Types and Boundaries">
+          <rule id="PY500-SPECIFIC-EXCEPTIONS" desc="Catch specific exceptions, not bare `except:`."/>
+          <rule id="PY501-EXCEPTION-HIERARCHY" desc="Create exception hierarchy for your domain."/>
+          <rule id="PY502-RAISE-FROM" desc="Use `raise ... from ...` to preserve exception chain."/>
+          <rule id="PY503-CONTEXT-MANAGERS" desc="Use context managers (`with`) for resource management."/>
+          <rule id="PY504-SUPPRESS-EXCEPTIONS" desc="Use `contextlib.suppress()` for expected exceptions to ignore."/>
+          <rule id="PY505-FINALLY-CLEANUP" desc="Use `finally` for cleanup that must happen regardless of exceptions."/>
+          <rule id="PY506-ELSE-CLAUSE" desc="Use `else` in try/except for code that runs only if no exception."/>
+          <rule id="PY507-CUSTOM-EXCEPTIONS" desc="Define custom exceptions for your domain errors."/>
+          <rule id="PY508-EXCEPTION-ARGS" desc="Pass useful information to exceptions."/>
+          <rule id="PY509-DONT-CATCH-ALL" desc="Don't catch `BaseException` or `Exception` at top level unless re-raising."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py5xx/py51x-control-flow-and-messages.xml"/>
+        <tens id="PY51x" desc="Logging, assertions, validation, messages." label="Control Flow and Messages">
+          <rule id="PY510-LOGGING-EXCEPTIONS" desc="Log exceptions with context before re-raising or handling."/>
+          <rule id="PY511-ASSERT-FOR-BUGS" desc="Use assertions for impossible conditions (bugs), exceptions for expected errors."/>
+          <rule id="PY512-VALIDATION-EXCEPTIONS" desc="Validate inputs and raise exceptions early."/>
+          <rule id="PY513-ERROR-MESSAGES" desc="Error messages should be clear, actionable, include context."/>
+          <rule id="PY514-EXITSTACK" desc="Use `ExitStack` for dynamic number of context managers."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="PY6xx" desc="Profiling and optimization guidance." label="Performance &amp; Best Practices">
+      <file>
+        <doc_ref path="py6xx/py60x-profiling-and-structure/py600-premature-optimization.xml"/>
+        <tens id="PY60x" desc="Measure first, generators, caching, layout." label="Profiling and Structure">
+          <rule id="PY600-PREMATURE-OPTIMIZATION" desc="Don't optimize until you measure. Clarity first."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py6xx/py60x-profiling-and-structure/py601-profile-first.xml"/>
+        <tens id="PY60x" desc="Measure first, generators, caching, layout." label="Profiling and Structure">
+          <rule id="PY601-PROFILE-FIRST" desc="Use profiler (cProfile, line_profiler) to find actual bottlenecks."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py6xx/py60x-profiling-and-structure/py602-generator-vs-list.xml"/>
+        <tens id="PY60x" desc="Measure first, generators, caching, layout." label="Profiling and Structure">
+          <rule id="PY602-GENERATOR-VS-LIST" desc="**Favor generators over lists by default.** Use generator expressions for large datasets to save memory and enable lazy evaluation. Only materialize to lists when you need random access, length, or multiple iterations."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py6xx/py60x-profiling-and-structure/py603-dict-lookups.xml"/>
+        <tens id="PY60x" desc="Measure first, generators, caching, layout." label="Profiling and Structure">
+          <rule id="PY603-DICT-LOOKUPS" desc="Use dict lookups instead of long if/elif chains."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py6xx/py60x-profiling-and-structure/py604-caching.xml"/>
+        <tens id="PY60x" desc="Measure first, generators, caching, layout." label="Profiling and Structure">
+          <rule id="PY604-CACHING" desc="Cache expensive computations with `@lru_cache` or `@cache`."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py6xx/py60x-profiling-and-structure/py605-string-performance.xml"/>
+        <tens id="PY60x" desc="Measure first, generators, caching, layout." label="Profiling and Structure">
+          <rule id="PY605-STRING-PERFORMANCE" desc="Use `str.join()` for concatenating many strings."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py6xx/py60x-profiling-and-structure/py606-slots.xml"/>
+        <tens id="PY60x" desc="Measure first, generators, caching, layout." label="Profiling and Structure">
+          <rule id="PY606-SLOTS" desc="Use `__slots__` for memory optimization in classes with many instances."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py6xx/py60x-profiling-and-structure/py607-local-lookups.xml"/>
+        <tens id="PY60x" desc="Measure first, generators, caching, layout." label="Profiling and Structure">
+          <rule id="PY607-LOCAL-LOOKUPS" desc="Local variables faster than global/attribute lookups."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py6xx/py60x-profiling-and-structure/py608-early-return.xml"/>
+        <tens id="PY60x" desc="Measure first, generators, caching, layout." label="Profiling and Structure">
+          <rule id="PY608-EARLY-RETURN" desc="Return early from functions to reduce nesting."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py6xx/py60x-profiling-and-structure/py609-avoid-dots.xml"/>
+        <tens id="PY60x" desc="Measure first, generators, caching, layout." label="Profiling and Structure">
+          <rule id="PY609-AVOID-DOTS" desc="In hot loops, minimize attribute access."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="py6xx/py61x-micro-optimizations.xml"/>
+        <tens id="PY61x" desc="Built-ins, regex, sets, lazy imports." label="Micro-optimizations">
+          <rule id="PY610-BUILT-INS" desc="Use built-in functions (C-optimized) when possible."/>
+          <rule id="PY611-NUMPY-PANDAS" desc="For numerical data, use numpy/pandas (vectorized operations)."/>
+          <rule id="PY612-COMPILE-REGEX" desc="Compile regexes used repeatedly."/>
+          <rule id="PY613-SET-MEMBERSHIP" desc="Use sets for membership testing (`in`), not lists."/>
+          <rule id="PY614-LAZY-IMPORTS" desc="Import expensive modules only when needed."/>
+        </tens>
+      </file>
+    </hundreds>
+  </section>
+  <section kind="antipatterns" desc="Patterns to avoid." label="Anti-Patterns">
+    <hundreds id="PZ1xx" desc="Type misuse and variance issues." label="Type Safety Violations">
+      <file>
+        <doc_ref path="pz1xx/pz10x-missing-or-weak-types.xml"/>
+        <tens id="PZ10x" desc="Any overuse, missing hints, weak contracts." label="Missing or Weak Types">
+          <rule id="PZ100-OVERUSE-ANY" desc="Using `Any` everywhere instead of proper types."/>
+          <rule id="PZ101-MISSING-RETURN-TYPE" desc="Functions without return type annotations."/>
+          <rule id="PZ102-IGNORING-TYPE-ERRORS" desc="Using `# type: ignore` comments instead of fixing root causes."/>
+          <rule id="PZ103-TYPE-CASTING-WITHOUT-VALIDATION" desc="`cast(Type, value)` without runtime check."/>
+          <rule id="PZ104-IMPLICIT-OPTIONAL" desc="`def func(x: int = None)` without `| None`."/>
+          <rule id="PZ105-MIXED-TYPES-COLLECTIONS" desc="`List[Union[int, str, dict]]` grab bag."/>
+          <rule id="PZ106-UNTYPED-DICTS" desc="`Dict[str, Any]` for structured data."/>
+          <rule id="PZ107-MISSING-PARAMETER-TYPES" desc="Function parameters without type hints."/>
+          <rule id="PZ108-RETURN-MULTIPLE-TYPES" desc="Returning different types without union."/>
+          <rule id="PZ109-MUTABLE-DEFAULTS" desc="`def func(items=[])`  or `def func(config={})`."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="pz1xx/pz11x-type-violations/pz110-missing-protocol-methods.xml"/>
+        <tens id="PZ11x" desc="Variance, runtime misuse, dataclass misuse." label="Type Violations">
+          <rule id="PZ110-MISSING-PROTOCOL-METHODS" desc="Class claims to implement protocol but missing methods."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="pz1xx/pz11x-type-violations/pz111-wrong-variance.xml"/>
+        <tens id="PZ11x" desc="Variance, runtime misuse, dataclass misuse." label="Type Violations">
+          <rule id="PZ111-WRONG-VARIANCE" desc="Covariant/contravariant used incorrectly."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="pz1xx/pz11x-type-violations/pz112-isinstance-on-typing.xml"/>
+        <tens id="PZ11x" desc="Variance, runtime misuse, dataclass misuse." label="Type Violations">
+          <rule id="PZ112-ISINSTANCE-ON-TYPING" desc="`isinstance(x, List[int])` doesn't work."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="pz1xx/pz11x-type-violations/pz113-mixed-sync-async.xml"/>
+        <tens id="PZ11x" desc="Variance, runtime misuse, dataclass misuse." label="Type Violations">
+          <rule id="PZ113-MIXED-SYNC-ASYNC" desc="Confusing sync/async in type hints."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="pz1xx/pz11x-type-violations/pz114-union-none-last.xml"/>
+        <tens id="PZ11x" desc="Variance, runtime misuse, dataclass misuse." label="Type Violations">
+          <rule id="PZ114-UNION-NONE-LAST" desc="`None | int` instead of `int | None`."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="pz1xx/pz11x-type-violations/pz115-dataclass-with-behavior.xml"/>
+        <tens id="PZ11x" desc="Variance, runtime misuse, dataclass misuse." label="Type Violations">
+          <rule id="PZ115-DATACLASS-WITH-BEHAVIOR" desc="Using `@dataclass` decorator for classes with complex behavior, business logic, or methods beyond simple accessors."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="PZ2xx" desc="Shared state and mutation pitfalls." label="Mutability Problems">
+      <file>
+        <doc_ref path="pz2xx/pz20x-shared-state.xml"/>
+        <tens id="PZ20x" desc="Globals, shared mutable state, caching." label="Shared State Issues">
+          <rule id="PZ200-MUTATING-ARGUMENTS" desc="Function modifies its arguments."/>
+          <rule id="PZ201-GLOBAL-STATE" desc="Functions read/write global variables."/>
+          <rule id="PZ202-MUTABLE-CLASS-ATTRIBUTES" desc="Mutable class variable shared across instances."/>
+          <rule id="PZ203-SHARED-MUTABLE-REFS" desc="Multiple references to same mutable object."/>
+          <rule id="PZ204-MUTATING-DURING-ITERATION" desc="Modifying collection while iterating."/>
+          <rule id="PZ205-PROPERTY-WITH-SIDE-EFFECTS" desc="Property getter that modifies state or does I/O."/>
+          <rule id="PZ206-MUTABLE-RETURN-INTERNAL" desc="Returning mutable internal state."/>
+          <rule id="PZ207-MODIFYING-CONSTANTS" desc="Changing values marked as constants."/>
+          <rule id="PZ208-SINGLETON-MUTABLE-STATE" desc="Singleton with mutable state."/>
+          <rule id="PZ209-CACHING-MUTABLE" desc="Caching mutable objects."/>
+        </tens>
+      </file>
+      <file>
+        <doc_ref path="pz2xx/pz21x-mutation-hazards.xml"/>
+        <tens id="PZ21x" desc="In-place ops, loop mutation, frozen violations." label="Mutation Hazards">
+          <rule id="PZ210-MUTATING-LOOP-VARIABLE" desc="Modifying loop variable inside loop."/>
+          <rule id="PZ211-DEFAULT-DICT-MUTATION" desc="Mutating default dict values."/>
+          <rule id="PZ212-IN-PLACE-OPERATIONS" desc="`list.sort()` instead of `sorted(list)`."/>
+          <rule id="PZ213-FROZEN-VIOLATION" desc="Working around frozen dataclass."/>
+          <rule id="PZ214-MUTABLE-DATACLASS" desc="Dataclass without `frozen=True` when should be immutable."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="PZ3xx" desc="Other Python-specific issues." label="Miscellaneous">
+      <file>
+        <doc_ref path="pz3xx/pz3xx-miscellaneous.xml"/>
+        <tens id="PZ30x" desc="Other Python-specific issues." label="Miscellaneous">
+          <rule id="PZ300-FILE-LEVEL-NOQA" desc="Using file-level `# noqa` comments to suppress linter warnings across entire modules."/>
+        </tens>
+      </file>
+    </hundreds>
+  </section>
+</catalog>

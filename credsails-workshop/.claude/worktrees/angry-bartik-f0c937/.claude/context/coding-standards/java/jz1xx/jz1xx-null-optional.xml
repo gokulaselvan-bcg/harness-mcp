@@ -1,0 +1,30 @@
+<rules id="CTX-CODING-STANDARDS-JAVA-JZ1XX-JZ1XX-NULL-OPTIONAL" title="Null &amp; Optional Misuse" kind="ruleset" version="2" updated="2026-02-20" status="active" source="jz1xx-null-optional.md">
+  <rule id="JZ100-NULL-RETURNS">
+    <desc>Returning `null` for missing values.</desc>
+    <better>
+      <ref id="JY101-OPTIONAL-RETURNS"/>
+      <ref id="JZ102-NULL-COLLECTIONS"/>
+    </better>
+    <why_bad>Forces every caller to remember null checks.</why_bad>
+  </rule>
+  <rule id="JZ101-OPTIONAL-PARAMETERS">
+    <desc>Using `Optional` as a method parameter or field.</desc>
+    <better>Overload methods or use nullable annotations on params.</better>
+    <why_bad>Adds noise and encourages `null` anyway.</why_bad>
+  </rule>
+  <rule id="JZ102-NULL-COLLECTIONS">
+    <desc>Returning `null` instead of empty collections.</desc>
+    <better>Return `List.of()`, `Set.of()`, or `Collections.emptyList()`.</better>
+    <why_bad>Surprising and error-prone for callers.</why_bad>
+  </rule>
+  <rule id="JZ103-BOOLEAN-NULL">
+    <desc>Using boxed `Boolean` where `boolean` suffices.</desc>
+    <better>Use primitive `boolean` or `Optional&lt;Boolean&gt;` for tri-state.</better>
+    <why_bad>Introduces null tri-state and NPEs.</why_bad>
+  </rule>
+  <rule id="JZ104-UNSAFE-OPTIONAL-GET">
+    <desc>Calling `Optional.get()` without checking presence.</desc>
+    <better>Use `orElse`, `orElseGet`, or `orElseThrow` with a message.</better>
+    <why_bad>Throws `NoSuchElementException` at runtime.</why_bad>
+  </rule>
+</rules>

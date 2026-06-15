@@ -1,0 +1,44 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY11X-GENERICS-PY111-TYPE-NARROWING" title="py111 type narrowing" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py111-type-narrowing.md">
+  <rule id="PY111-TYPE-NARROWING">
+    <desc>Use type narrowing with isinstance(), is None checks, and TypeGuard for complex narrowing.</desc>
+    <rationale>Type narrowing helps mypy understand conditional type refinement, reducing false positives.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[from typing import TypeGuard
+
+# Good - isinstance narrows type
+def process_value(value: int | str) -> str:
+    if isinstance(value, int):
+        # mypy knows value is int here
+        return str(value * 2)
+    else:
+        # mypy knows value is str here
+        return value.upper()
+
+# Good - is None narrows Optional
+def get_name(user: User | None) -> str:
+    if user is None:
+        return "Unknown"
+    # mypy knows user is not None here
+    return user.name
+
+# Good - TypeGuard for custom narrowing
+def is_non_empty_list(val: Sequence[T] | None) -> TypeGuard[Sequence[T]]:
+    """Type guard that ensures non-empty sequence."""
+    return val is not None and len(val) > 0
+
+def process_items(items: Sequence[Transaction] | None) -> None:
+    if is_non_empty_list(items):
+        # mypy knows items is Sequence[Transaction] (not None)
+        first_item = items[0]  # No error
+        ...
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY100-USE-TYPE-HINTS"/>
+      <ref id="PY110-UNION-TYPES"/>
+    </related>
+    <tool_support>mypy performs automatic narrowing for isinstance, is None. TypeGuard from `typing` for custom guards.</tool_support>
+  </rule>
+</rules>

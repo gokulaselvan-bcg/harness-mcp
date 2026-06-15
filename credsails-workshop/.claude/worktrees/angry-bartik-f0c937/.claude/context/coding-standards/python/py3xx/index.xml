@@ -1,0 +1,13 @@
+<index id="CTX-CODING-STANDARDS-PYTHON-PY3XX-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="PY30x" kind="tens" desc="Immutable data, pure functions, generators." label="Immutability and Purity">
+      <doc_ref path="./py30x-immutability-and-purity/index.xml"/>
+    </entry>
+    <entry id="PY31x" kind="tens" desc="Itertools, operator, dataclass replace, HOFs." label="Functional Tooling">
+      <doc_ref path="./py31x-functional-tooling.xml"/>
+    </entry>
+    <entry id="PY32x" kind="tens" desc="Referential transparency, pipelines, monads." label="Advanced Techniques">
+      <doc_ref path="./py32x-advanced.xml"/>
+    </entry>
+  </section>
+</index>

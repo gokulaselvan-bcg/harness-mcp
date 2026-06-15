@@ -1,0 +1,177 @@
+<rules id="CTX-CODING-STANDARDS-TYPESCRIPT-TY4XX-TY4XX-ERROR-HANDLING" title="Error Handling" kind="ruleset" version="2" updated="2026-03-12" status="active" source="ty4xx-error-handling.md">
+  <rule id="TY400-EXHAUSTIVE-CHECKS">
+    <desc>Use exhaustive checks with `never` to ensure all union members are handled.</desc>
+    <rationale>The `never` type causes a compile error when a union variant is unhandled, preventing forgotten cases when the union grows.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - exhaustive check
+function assertNever(x: never): never {
+  throw new Error(`Unexpected value: ${x}`);
+}
+
+function handleShape(shape: Shape): number {
+  switch (shape.kind) {
+    case "circle":
+      return Math.PI * shape.radius ** 2;
+    case "rectangle":
+      return shape.width * shape.height;
+    default:
+      return assertNever(shape); // compile error if case is missing
+  }
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY106-DISCRIMINATED-UNIONS"/>
+    </related>
+    <tool_support>ESLint @typescript-eslint/switch-exhaustiveness-check. Use a final `never`/`assertNever` default branch so that TypeScript's control-flow analysis can surface unhandled union members as type errors.</tool_support>
+  </rule>
+  <rule id="TY401-CUSTOM-ERROR-CLASSES">
+    <desc>Extend `Error` for domain-specific errors. Include structured context, not just message strings.</desc>
+    <rationale>Custom error classes enable `instanceof` checks, carry typed context, and produce meaningful stack traces.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good
+export class NotFoundError extends Error {
+  readonly code = "NOT_FOUND" as const;
+  constructor(
+    readonly entityType: string,
+    readonly entityId: string,
+  ) {
+    super(`${entityType} not found: ${entityId}`);
+    this.name = "NotFoundError";
+  }
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY402-TYPE-SAFE-CATCH"/>
+    </related>
+  </rule>
+  <rule id="TY402-TYPE-SAFE-CATCH">
+    <desc>Narrow caught errors with `instanceof` or type guards. Never assume `catch (e)` is an `Error`.</desc>
+    <rationale>TypeScript types `catch` parameter as `unknown`. Anything can be thrown, so narrowing is required for safe access.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good
+try {
+  await fetchData();
+} catch (error) {
+  if (error instanceof NotFoundError) {
+    return handleNotFound(error.entityId);
+  }
+  if (error instanceof Error) {
+    logger.error(error.message, { stack: error.stack });
+  }
+  throw error;
+}
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - assumes error is Error
+try {
+  await fetchData();
+} catch (error) {
+  console.log(error.message); // error is unknown
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY401-CUSTOM-ERROR-CLASSES"/>
+      <ref id="TZ102-NON-NULL-ASSERTION"/>
+    </related>
+    <tool_support>TSConfig `useUnknownInCatchVariables: true` (included in strict).</tool_support>
+  </rule>
+  <rule id="TY403-RESULT-TYPE">
+    <desc>Consider Result/Either types for operations where failure is expected and should be handled by callers.</desc>
+    <rationale>Result types make failure explicit in the type signature, forcing callers to handle both paths. Use exceptions for truly unexpected errors.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good
+type Result<T, E = Error> =
+  | { ok: true; value: T }
+  | { ok: false; error: E };
+
+function parseEmail(input: string): Result<Email, ValidationError> {
+  if (!EMAIL_RE.test(input)) {
+    return { ok: false, error: new ValidationError("Invalid email") };
+  }
+  return { ok: true, value: input as Email };
+}
+
+// Caller must handle both cases
+const result = parseEmail(input);
+if (!result.ok) {
+  showError(result.error);
+  return;
+}
+sendEmail(result.value);
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY106-DISCRIMINATED-UNIONS"/>
+      <ref id="TY400-EXHAUSTIVE-CHECKS"/>
+    </related>
+  </rule>
+  <rule id="TY404-TYPE-GUARDS">
+    <desc>Use type guard functions (`is` return type) and assertion functions (`asserts` return type) for complex type narrowing.</desc>
+    <rationale>Type guards encapsulate narrowing logic, making it reusable and testable. Assertion functions narrow types after a throw.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - type guard
+function isUser(value: unknown): value is User {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "id" in value &&
+    "name" in value
+  );
+}
+
+// Good - assertion function
+function assertDefined<T>(value: T | undefined, msg: string): asserts value is T {
+  if (value === undefined) throw new Error(msg);
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY402-TYPE-SAFE-CATCH"/>
+      <ref id="TZ102-NON-NULL-ASSERTION"/>
+    </related>
+  </rule>
+  <rule id="TY405-VALIDATE-BOUNDARIES">
+    <desc>Validate and parse external data at system boundaries using runtime validation (e.g., Zod, io-ts, Valibot).</desc>
+    <rationale>TypeScript types are erased at runtime. Data from APIs, files, environment variables, and user input must be validated before trusting the type.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - validate at boundary
+import { z } from "zod";
+
+const UserSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string().min(1),
+  email: z.string().email(),
+});
+type User = z.infer<typeof UserSchema>;
+
+// API handler
+const user = UserSchema.parse(req.body);
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - trust external data
+const user = req.body as User; // no runtime validation
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY402-TYPE-SAFE-CATCH"/>
+      <ref id="TZ103-UNSAFE-TYPE-ASSERTION"/>
+    </related>
+  </rule>
+</rules>

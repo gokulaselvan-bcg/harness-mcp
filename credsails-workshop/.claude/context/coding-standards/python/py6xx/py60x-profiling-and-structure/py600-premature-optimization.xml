@@ -1,0 +1,8 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY6XX-PY60X-PROFILING-AND-STRUCTURE-PY600-PREMATURE-OPTIMIZATION" title="py600 premature optimization" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py600-premature-optimization.md">
+  <rule id="PY600-PREMATURE-OPTIMIZATION">
+    <desc>Don't optimize until you measure. Clarity first.</desc>
+    <examples>
+      <example kind="good">Write clear code, profile to find bottlenecks, then optimize.</example>
+    </examples>
+  </rule>
+</rules>

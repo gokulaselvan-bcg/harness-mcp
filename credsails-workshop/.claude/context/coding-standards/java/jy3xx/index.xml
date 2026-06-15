@@ -1,0 +1,8 @@
+<index id="CTX-CODING-STANDARDS-JAVA-JY3XX-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Source" kind="other" desc=""/>
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="JY30x" kind="tens" desc="Exception strategy and logging." label="Error Handling &amp; Logging">
+      <doc_ref path="./jy3xx-error-handling.xml"/>
+    </entry>
+  </section>
+</index>

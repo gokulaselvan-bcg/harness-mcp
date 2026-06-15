@@ -1,0 +1,24 @@
+<rules id="CTX-CODING-STANDARDS-JAVA-JZ2XX-JZ2XX-EXCEPTION-MISUSE" title="Exception Misuse" kind="ruleset" version="2" updated="2026-02-20" status="active" source="jz2xx-exception-misuse.md">
+  <rule id="JZ200-CATCH-EXCEPTION">
+    <desc>Catching `Exception` or `Throwable` broadly.</desc>
+    <better>Catch specific exception types (JY303-DO-NOT-CATCH-TOO-BROAD).</better>
+    <why_bad>Masks unexpected failures and makes recovery unsafe.</why_bad>
+  </rule>
+  <rule id="JZ201-SWALLOW-EXCEPTIONS">
+    <desc>Empty catch blocks or ignoring errors.</desc>
+    <better>Log at boundary and rethrow or handle explicitly.</better>
+    <why_bad>Hides failures and complicates debugging.</why_bad>
+  </rule>
+  <rule id="JZ202-LOSE-CAUSE">
+    <desc>Throwing a new exception without the original cause.</desc>
+    <better>
+      <ref id="JY302-PRESERVE-CAUSE"/>
+    </better>
+    <why_bad>Loses stack trace and root-cause context.</why_bad>
+  </rule>
+  <rule id="JZ203-EXCEPTION-CONTROL-FLOW">
+    <desc>Using exceptions for normal control flow.</desc>
+    <better>Use conditionals or return types to model absence.</better>
+    <why_bad>Slower, noisy, and obscures intent.</why_bad>
+  </rule>
+</rules>

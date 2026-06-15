@@ -1,0 +1,11 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY3XX-PY30X-IMMUTABILITY-AND-PURITY-PY309-FUNCTOOLS" title="py309 functools" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py309-functools.md">
+  <rule id="PY309-FUNCTOOLS">
+    <desc>Use functools for functional patterns: `reduce`, `partial`, `lru_cache`.</desc>
+    <examples>
+      <example kind="good">`from functools import lru_cache; @lru_cache; def expensive(...): ...`</example>
+    </examples>
+    <related>
+      <ref id="PY604-CACHING"/>
+    </related>
+  </rule>
+</rules>

@@ -1,0 +1,74 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY12X-TYPING-CONSTRUCTS-PY127-DEFINE-CONTRACTS-IN-CODE" title="py127 define contracts in code" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py127-define-contracts-in-code.md">
+  <rule id="PY127-DEFINE-CONTRACTS-IN-CODE">
+    <desc>Define contracts explicitly in code (class attributes with `__init__` methods, abstract properties) instead of documenting them in docstrings.</desc>
+    <when_to_use>- Base classes expecting subclasses to define attributes
+- Protocols that require specific attributes
+- Classes with mandatory initialization parameters
+- Any case where you'd write `# type: ignore[attr-defined]`
+</when_to_use>
+    <rationale>Code-based contracts are enforced by type checkers and provide better IDE support. Documentation-only contracts require `# type: ignore` comments and can drift from actual usage. Defining both attributes AND initialization ensures proper contract enforcement.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - attributes declared AND initialized
+class Asset(metaclass=ABCMeta):
+    """Abstract base class for domain objects."""
+
+    # Required attributes declared for type checking
+    id: str
+    name: str
+
+    def __init__(self, id: str, name: str) -> None:
+        """Initialize required attributes."""
+        self.id = id
+        self.name = name
+
+    @classmethod
+    @abstractmethod
+    def get_performance_type(cls) -> type[AssetPerformance]:
+        ...
+
+# Usage - no type: ignore needed
+def process_assets(assets: list[Asset]) -> None:
+    for asset in assets:
+        print(asset.id, asset.name)  # Type checker knows these exist
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - only documented, not defined
+class Asset(metaclass=ABCMeta):
+    """
+    Abstract base class for domain objects.
+
+    Subclass Contract:
+    - Must define `id: str` attribute
+    - Must define `name: str` attribute
+    """
+
+    @classmethod
+    @abstractmethod
+    def get_performance_type(cls) -> type[AssetPerformance]:
+        ...
+
+# Usage - requires type: ignore
+def process_assets(assets: list[Asset]) -> None:
+    for asset in assets:
+        print(asset.id, asset.name)  # type: ignore[attr-defined] - BAD!
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY100-USE-TYPE-HINTS"/>
+      <ref id="PY102-USE-PROTOCOLS"/>
+      <ref id="PZ102-IGNORING-TYPE-ERRORS"/>
+    </related>
+    <tool_support>mypy catches missing attributes in subclasses. Dataclasses work seamlessly (fields override class attributes).</tool_support>
+    <notes>
+      <note title="Good patterns">- Declare attributes at class level: `id: str`
+- Provide `__init__` method that initializes them: `self.id = id`
+- Abstract properties with `@property @abstractmethod` for computed values
+- Type stubs (`.pyi` files) for third-party libraries
+</note>
+    </notes>
+  </rule>
+</rules>

@@ -1,0 +1,22 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+	precomposeunicode = true
+[remote "origin"]
+	url = git@github.com:bcgx-pi-data-engineering-apac/crisil-credsails.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "workshop/2026-06-12-bs-extractor"]
+	remote = origin
+	merge = refs/heads/workshop/2026-06-12-bs-extractor
+	vscode-merge-base = origin/workshop/2026-06-12-bs-extractor
+[branch "claude/angry-bartik-f0c937"]
+	remote = origin
+	merge = refs/heads/workshop/2026-06-12-bs-extractor
+[extensions]
+	worktreeConfig = true
+[remote "harness"]
+	url = git@github.com:gokulaselvan-bcg/harness-mcp.git
+	fetch = +refs/heads/*:refs/remotes/harness/*

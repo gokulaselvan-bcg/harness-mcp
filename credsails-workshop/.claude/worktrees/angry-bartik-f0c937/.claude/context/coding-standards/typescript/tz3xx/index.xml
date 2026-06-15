@@ -1,0 +1,7 @@
+<index id="CTX-CODING-STANDARDS-TYPESCRIPT-TZ3XX-INDEX" title="index" kind="manifest" version="2" updated="2026-03-12" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="TZ30x" kind="tens" desc="Unhandled promises, callback mixing, shared mutable state." label="Async &amp; Runtime Hazards">
+      <doc_ref path="./tz3xx-async-hazards.xml"/>
+    </entry>
+  </section>
+</index>

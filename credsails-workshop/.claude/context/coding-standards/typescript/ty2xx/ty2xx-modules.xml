@@ -1,0 +1,124 @@
+<rules id="CTX-CODING-STANDARDS-TYPESCRIPT-TY2XX-TY2XX-MODULES" title="Code Organization &amp; Modules" kind="ruleset" version="2" updated="2026-03-12" status="active" source="ty2xx-modules.md">
+  <rule id="TY200-ES-MODULES">
+    <desc>Use ES modules (`import`/`export`) exclusively. Avoid CommonJS `require`/`module.exports`.</desc>
+    <rationale>ES modules are the standard, enable tree-shaking, provide static analysis, and are supported everywhere TypeScript targets.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good
+import { UserService } from "./services/user-service.js";
+export class OrderService { ... }
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad
+const { UserService } = require("./services/user-service");
+module.exports = { OrderService };
+]]></code>
+      </example>
+    </examples>
+    <tool_support>ESLint @typescript-eslint/no-require-imports.</tool_support>
+  </rule>
+  <rule id="TY201-EXPLICIT-EXPORTS">
+    <desc>Export only what consumers need. Use named exports over default exports.</desc>
+    <rationale>Named exports enable better IDE auto-imports, refactoring support, and tree-shaking. Default exports lose the name binding and complicate re-exports.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - named export
+export interface Config { ... }
+export function loadConfig(): Config { ... }
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Avoid - default export
+export default function loadConfig() { ... }
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY202-BARREL-FILES"/>
+      <ref id="TZ200-CIRCULAR-DEPS"/>
+    </related>
+    <tool_support>ESLint import/no-default-export.</tool_support>
+  </rule>
+  <rule id="TY202-BARREL-FILES">
+    <desc>Use barrel files (`index.ts`) sparingly for package boundaries. Avoid deep barrel nesting.</desc>
+    <rationale>Barrel files define clean public APIs at package boundaries but cause bundle bloat and circular dependency risk when overused internally.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - barrel at package boundary
+// src/auth/index.ts
+export { AuthService } from "./auth-service.js";
+export type { AuthConfig } from "./types.js";
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - barrel re-exporting another barrel
+// src/index.ts
+export * from "./auth/index.js";
+export * from "./users/index.js";
+export * from "./orders/index.js";
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TZ200-CIRCULAR-DEPS"/>
+      <ref id="TZ201-BARREL-BLOAT"/>
+    </related>
+  </rule>
+  <rule id="TY203-TYPE-ONLY-IMPORTS">
+    <desc>Use `import type` for imports used only in type positions.</desc>
+    <rationale>Type-only imports are erased at compile time, reducing bundle size and preventing circular dependency issues at runtime.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good
+import type { User } from "./models.js";
+import { UserService } from "./services.js";
+
+function greet(user: User): string { ... }
+]]></code>
+      </example>
+    </examples>
+    <tool_support>TSConfig `verbatimModuleSyntax: true`. ESLint @typescript-eslint/consistent-type-imports.</tool_support>
+  </rule>
+  <rule id="TY204-DEPENDENCY-DIRECTION">
+    <desc>Dependencies flow inward: infrastructure depends on domain, never the reverse.</desc>
+    <rationale>Inward-pointing dependencies keep domain logic portable and testable, independent of frameworks and I/O.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - domain defines interface, infrastructure implements
+// domain/ports.ts
+export interface UserRepository {
+  findById(id: string): Promise<User | undefined>;
+}
+
+// infrastructure/pg-user-repository.ts
+import type { UserRepository } from "../domain/ports.js";
+export class PgUserRepository implements UserRepository { ... }
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="Y100-SINGLE-RESPONSIBILITY"/>
+      <ref id="Y104-DEPENDENCY-INVERSION"/>
+    </related>
+  </rule>
+  <rule id="TY205-PATH-ALIASES">
+    <desc>Use path aliases in `tsconfig.json` for cross-cutting imports instead of deep relative paths.</desc>
+    <rationale>Path aliases improve readability and make refactoring (moving files) safer. Deep relative paths (`../../../`) are fragile and hard to read.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - path alias
+import { logger } from "@app/shared/logger.js";
+
+// tsconfig.json
+// "paths": { "@app/*": ["./src/*"] }
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - deep relative path
+import { logger } from "../../../shared/logger.js";
+]]></code>
+      </example>
+    </examples>
+  </rule>
+</rules>

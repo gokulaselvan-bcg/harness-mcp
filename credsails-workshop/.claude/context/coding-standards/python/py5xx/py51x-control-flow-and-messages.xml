@@ -1,0 +1,33 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY5XX-PY51X-CONTROL-FLOW-AND-MESSAGES" title="Control Flow and Messages" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py51x-control-flow-and-messages.md">
+  <rule id="PY510-LOGGING-EXCEPTIONS">
+    <desc>Log exceptions with context before re-raising or handling.</desc>
+    <examples>
+      <example kind="good">`logger.exception("Failed to parse transaction %s", txn_id)`.</example>
+    </examples>
+  </rule>
+  <rule id="PY511-ASSERT-FOR-BUGS">
+    <desc>Use assertions for impossible conditions (bugs), exceptions for expected errors.</desc>
+    <exceptions>S101 ignored in tests.</exceptions>
+    <examples>
+      <example kind="good">`assert parser is not None, "Parser must be set"` for internal invariants.</example>
+    </examples>
+  </rule>
+  <rule id="PY512-VALIDATION-EXCEPTIONS">
+    <desc>Validate inputs and raise exceptions early.</desc>
+    <examples>
+      <example kind="good">`if amount &lt; 0: raise ValueError("Amount must be non-negative")`.</example>
+    </examples>
+  </rule>
+  <rule id="PY513-ERROR-MESSAGES">
+    <desc>Error messages should be clear, actionable, include context.</desc>
+    <examples>
+      <example kind="good">`f"Failed to parse date '{date_str}' with format '{fmt}'"` not `"Parse error"`.</example>
+    </examples>
+  </rule>
+  <rule id="PY514-EXITSTACK">
+    <desc>Use `ExitStack` for dynamic number of context managers.</desc>
+    <examples>
+      <example kind="good">`with ExitStack() as stack: files = [stack.enter_context(open(f)) for f in paths]`.</example>
+    </examples>
+  </rule>
+</rules>

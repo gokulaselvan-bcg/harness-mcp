@@ -1,0 +1,25 @@
+<rules id="CTX-CODING-STANDARDS-JAVA-JZ3XX-JZ3XX-CONCURRENCY-HAZARDS" title="Concurrency Hazards" kind="ruleset" version="2" updated="2026-02-20" status="active" source="jz3xx-concurrency-hazards.md">
+  <rule id="JZ300-SHARED-MUTABLE-STATE">
+    <desc>Sharing mutable state across threads without coordination.</desc>
+    <better>
+      <ref id="JY400-PREFER-IMMUTABLE-DATA"/>
+      <ref id="JY401-USE-CONCURRENT-UTILS"/>
+    </better>
+    <why_bad>Data races and inconsistent reads.</why_bad>
+  </rule>
+  <rule id="JZ301-LOCK-ON-PUBLIC">
+    <desc>Synchronizing on `this`, strings, or other public objects.</desc>
+    <better>Use a private lock object (JY402-LOCK-SCOPE-SMALL).</better>
+    <why_bad>External code can acquire the same lock and cause deadlocks.</why_bad>
+  </rule>
+  <rule id="JZ302-DOUBLE-CHECK-LOCKING">
+    <desc>Double-checked locking without `volatile`.</desc>
+    <better>Use `volatile`, `static final`, or `Initialization-on-demand`.</better>
+    <why_bad>May publish partially constructed objects.</why_bad>
+  </rule>
+  <rule id="JZ303-THREAD-LEAKS">
+    <desc>Creating threads directly and forgetting to shut them down.</desc>
+    <better>Use `ExecutorService` and call `shutdown()`.</better>
+    <why_bad>Leaks resources and prevents clean shutdown.</why_bad>
+  </rule>
+</rules>

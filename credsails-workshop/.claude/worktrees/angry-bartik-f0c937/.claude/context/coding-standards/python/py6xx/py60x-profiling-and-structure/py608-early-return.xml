@@ -1,0 +1,8 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY6XX-PY60X-PROFILING-AND-STRUCTURE-PY608-EARLY-RETURN" title="py608 early return" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py608-early-return.md">
+  <rule id="PY608-EARLY-RETURN">
+    <desc>Return early from functions to reduce nesting.</desc>
+    <examples>
+      <example kind="good">`if error: return None; # rest of logic` not `if not error: # all logic`.</example>
+    </examples>
+  </rule>
+</rules>

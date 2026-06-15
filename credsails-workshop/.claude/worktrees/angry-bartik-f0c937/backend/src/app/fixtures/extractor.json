@@ -1,0 +1,18 @@
+{
+  "fields": [
+    {"key": "borrower_name", "value": "Cleveland-Cliffs Inc.", "source_page": 1, "confidence": 0.99, "reliability_tier": "audited"},
+    {"key": "state_of_incorporation", "value": "Ohio", "source_page": 1, "confidence": 0.98, "reliability_tier": "audited"},
+    {"key": "naics_code", "value": "331110", "source_page": 1, "confidence": 0.95, "reliability_tier": "reviewed"},
+    {"key": "fiscal_year", "value": "2024", "source_page": 1, "confidence": 0.99, "reliability_tier": "audited"},
+    {"key": "total_revenue", "value": "19185", "source_page": 3, "confidence": 0.97, "reliability_tier": "audited"},
+    {"key": "adjusted_ebitda", "value": "1200", "source_page": 3, "confidence": 0.90, "reliability_tier": "management_prepared"},
+    {"key": "interest_expense", "value": "300", "source_page": 3, "confidence": 0.93, "reliability_tier": "audited"},
+    {"key": "total_debt", "value": "3777", "source_page": 2, "confidence": 0.96, "reliability_tier": "audited"},
+    {"key": "cash_and_equivalents", "value": "50", "source_page": 2, "confidence": 0.97, "reliability_tier": "audited"},
+    {"key": "total_assets", "value": "17000", "source_page": 2, "confidence": 0.95, "reliability_tier": "audited"},
+    {"key": "total_equity", "value": "6500", "source_page": 2, "confidence": 0.94, "reliability_tier": "audited"},
+    {"key": "current_assets", "value": "7100", "source_page": 2, "confidence": 0.92, "reliability_tier": "audited"},
+    {"key": "current_liabilities", "value": "3550", "source_page": 2, "confidence": 0.88, "reliability_tier": "reviewed"},
+    {"key": "collateral_note", "value": "Inventory and receivables pledged under ABL facility", "source_page": 4, "confidence": 0.55, "reliability_tier": "reviewed"}
+  ]
+}

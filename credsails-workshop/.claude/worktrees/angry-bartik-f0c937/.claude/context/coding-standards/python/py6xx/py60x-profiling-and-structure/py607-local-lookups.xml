@@ -1,0 +1,9 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY6XX-PY60X-PROFILING-AND-STRUCTURE-PY607-LOCAL-LOOKUPS" title="py607 local lookups" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py607-local-lookups.md">
+  <rule id="PY607-LOCAL-LOOKUPS">
+    <desc>Local variables faster than global/attribute lookups.</desc>
+    <exceptions>Only optimize hot loops after profiling.</exceptions>
+    <examples>
+      <example kind="good">`local_func = obj.method; for x in items: local_func(x)`.</example>
+    </examples>
+  </rule>
+</rules>

@@ -1,0 +1,7 @@
+<index id="CTX-CODING-STANDARDS-TYPESCRIPT-TZ2XX-INDEX" title="index" kind="manifest" version="2" updated="2026-03-12" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="TZ20x" kind="tens" desc="Circular deps, barrel file pitfalls, re-export problems." label="Module &amp; Import Problems">
+      <doc_ref path="./tz2xx-module-antipatterns.xml"/>
+    </entry>
+  </section>
+</index>

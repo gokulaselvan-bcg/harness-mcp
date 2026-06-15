@@ -1,0 +1,31 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY12X-TYPING-CONSTRUCTS-PY121-FORWARD-REFS" title="py121 forward refs" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py121-forward-refs.md">
+  <rule id="PY121-FORWARD-REFS">
+    <desc>Use forward references (string literals) for types not yet defined or circular dependencies.</desc>
+    <rationale>Forward refs allow referencing types before they're defined.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - forward reference
+class Node:
+    def __init__(self, value: int, parent: "Node | None" = None):
+        self.value = value
+        self.parent = parent
+        self.children: list[Node] = []  # OK after definition
+
+# Good - PEP 563 deferred evaluation (Python 3.7+)
+from __future__ import annotations
+
+class Node:
+    def __init__(self, value: int, parent: Node | None = None):
+        self.value = value
+        self.parent = parent
+        self.children: list[Node] = []
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY100-USE-TYPE-HINTS"/>
+      <ref id="PY120-TYPE-CHECKING"/>
+    </related>
+    <tool_support>String literals or `from __future__ import annotations`.</tool_support>
+  </rule>
+</rules>

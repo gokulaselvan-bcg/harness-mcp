@@ -1,0 +1,134 @@
+<rules id="CTX-CODING-STANDARDS-TYPESCRIPT-TY6XX-TY6XX-TESTING" title="Testing &amp; Tooling" kind="ruleset" version="2" updated="2026-03-12" status="active" source="ty6xx-testing.md">
+  <rule id="TY600-TYPE-LEVEL-TESTS">
+    <desc>Write type-level tests for complex generics and utility types using `Expect`/`Equal` helpers or `tsd`.</desc>
+    <rationale>Type-level tests verify that utility types, generics, and overloads produce the expected types, catching regressions that runtime tests cannot detect.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - type-level assertion
+type Expect<T extends true> = T;
+type Equal<A, B> = [A] extends [B] ? ([B] extends [A] ? true : false) : false;
+
+// Verify utility type produces correct output
+type _Test1 = Expect<Equal<Pick<User, "id">, { id: string }>>;
+type _Test2 = Expect<Equal<Result<number>, { ok: true; value: number } | { ok: false; error: Error }>>;
+]]></code>
+      </example>
+    </examples>
+    <tool_support>tsd, @type-challenges style assertions, vitest expectTypeOf.</tool_support>
+  </rule>
+  <rule id="TY601-TYPED-MOCKS">
+    <desc>Use typed mocking utilities that preserve interface contracts. Avoid `as any` in test doubles.</desc>
+    <rationale>Typed mocks catch interface changes at compile time. Untyped mocks silently diverge from the real implementation.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - typed mock
+import { vi } from "vitest";
+
+const mockRepo: UserRepository = {
+  findById: vi.fn<[string], Promise<User | undefined>>()
+    .mockResolvedValue({ id: "1", name: "Alice" }),
+  save: vi.fn<[User], Promise<void>>().mockResolvedValue(undefined),
+};
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - untyped mock
+const mockRepo = {
+  findById: vi.fn().mockResolvedValue({ id: "1" }),
+} as any;
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TZ100-OVERUSE-ANY"/>
+    </related>
+  </rule>
+  <rule id="TY602-AAA-STRUCTURE">
+    <desc>Structure tests with Arrange/Act/Assert (or Given/When/Then). One logical assertion group per test.</desc>
+    <rationale>Clear structure makes tests readable, debuggable, and maintainable. A single focus per test pinpoints failures.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good
+it("returns user when found", async () => {
+  // Arrange
+  const repo = createMockRepo({ users: [testUser] });
+  const service = new UserService(repo);
+
+  // Act
+  const result = await service.getUser("1");
+
+  // Assert
+  expect(result).toEqual(testUser);
+});
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="Y401-AAA-PATTERN"/>
+    </related>
+  </rule>
+  <rule id="TY603-DESCRIPTIVE-TEST-NAMES">
+    <desc>Use descriptive test names that state the behavior and context, not the implementation.</desc>
+    <rationale>Good test names serve as documentation. When a test fails, the name should explain what broke without reading the test body.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good
+describe("UserService", () => {
+  it("throws NotFoundError when user does not exist", async () => { ... });
+  it("returns cached user on repeated lookup within TTL", async () => { ... });
+});
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad
+describe("UserService", () => {
+  it("test1", async () => { ... });
+  it("should work", async () => { ... });
+});
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="TY604-MOCK-BOUNDARIES">
+    <desc>Mock external systems (HTTP, DB, clock, filesystem). Do not mock value objects, utility functions, or the module under test.</desc>
+    <rationale>Over-mocking couples tests to implementation and reduces confidence. Mock at I/O boundaries to keep tests fast and deterministic.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - mock the HTTP boundary
+const mockFetch = vi.fn().mockResolvedValue(
+  new Response(JSON.stringify(userData), { status: 200 }),
+);
+const service = new UserClient(mockFetch);
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - mocking internal helpers
+vi.mock("./utils", () => ({
+  formatName: vi.fn().mockReturnValue("Alice"),
+}));
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY601-TYPED-MOCKS"/>
+      <ref id="Y405-MOCKING"/>
+    </related>
+  </rule>
+  <rule id="TY605-PARAMETERIZED-TESTS">
+    <desc>Use `it.each` or `describe.each` for behavior with multiple inputs. Avoid copy-pasted test bodies.</desc>
+    <rationale>Parameterized tests reduce duplication and make it easy to add new cases. The table format documents the input/output contract.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good
+it.each([
+  { input: "hello", expected: "HELLO" },
+  { input: "world", expected: "WORLD" },
+  { input: "", expected: "" },
+])("toUpper($input) returns $expected", ({ input, expected }) => {
+  expect(toUpper(input)).toBe(expected);
+});
+]]></code>
+      </example>
+    </examples>
+  </rule>
+</rules>

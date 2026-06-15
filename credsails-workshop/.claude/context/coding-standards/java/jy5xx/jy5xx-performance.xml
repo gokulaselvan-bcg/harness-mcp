@@ -1,0 +1,74 @@
+<rules id="CTX-CODING-STANDARDS-JAVA-JY5XX-JY5XX-PERFORMANCE" title="Performance &amp; Collections" kind="ruleset" version="2" updated="2026-02-20" status="active" source="jy5xx-performance.md">
+  <rule id="JY500-CHOOSE-COLLECTIONS">
+    <desc>Pick collections based on access patterns and size.</desc>
+    <rationale>The wrong collection can cause hot-path bottlenecks.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[// Good - fast lookups
+Map<OrderId, Order> index = new HashMap<>();
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JZ402-INEFFICIENT-CONTAINS"/>
+    </related>
+  </rule>
+  <rule id="JY501-STRINGBUILDER-IN-LOOPS">
+    <desc>Use `StringBuilder` for repeated concatenation in loops.</desc>
+    <rationale>Avoids quadratic string allocations.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[StringBuilder sb = new StringBuilder();
+for (String token : tokens) {
+    sb.append(token).append(',');
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JZ400-PREMATURE-OPTIMIZATION"/>
+    </related>
+  </rule>
+  <rule id="JY502-STREAMS-FOR-CLARITY">
+    <desc>Use streams for clear, side-effect-free pipelines. Prefer loops in hot paths.</desc>
+    <rationale>Streams improve readability but can add overhead.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[List<String> ids = users.stream()
+    .map(User::id)
+    .filter(id -> id.startsWith("A"))
+    .toList();
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JZ401-STREAMS-SIDE-EFFECTS"/>
+    </related>
+  </rule>
+  <rule id="JY503-AVOID-BOXING-IN-HOT-PATHS">
+    <desc>Use primitive types and primitive streams in tight loops.</desc>
+    <rationale>Boxing creates allocation and GC pressure.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[int sum = IntStream.of(values).sum();
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JY102-PREFER-PRIMITIVES"/>
+    </related>
+  </rule>
+  <rule id="JY504-MEASURE-BEFORE-OPTIMIZING">
+    <desc>Profile before making performance changes.</desc>
+    <rationale>Most performance issues are not where you expect.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="text"><![CDATA[Use JFR or async-profiler to find hotspots before changing code.
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JZ400-PREMATURE-OPTIMIZATION"/>
+    </related>
+  </rule>
+</rules>

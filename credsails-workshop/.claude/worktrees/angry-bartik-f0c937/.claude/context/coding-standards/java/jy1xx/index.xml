@@ -1,0 +1,8 @@
+<index id="CTX-CODING-STANDARDS-JAVA-JY1XX-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Source" kind="other" desc=""/>
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="JY10x" kind="tens" desc="Nullness, Optional, equality, records." label="Language &amp; Type Safety">
+      <doc_ref path="./jy1xx-language-and-types.xml"/>
+    </entry>
+  </section>
+</index>

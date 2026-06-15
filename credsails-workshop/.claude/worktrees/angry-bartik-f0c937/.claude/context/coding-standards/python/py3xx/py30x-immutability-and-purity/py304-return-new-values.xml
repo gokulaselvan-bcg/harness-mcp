@@ -1,0 +1,11 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY3XX-PY30X-IMMUTABILITY-AND-PURITY-PY304-RETURN-NEW-VALUES" title="py304 return new values" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py304-return-new-values.md">
+  <rule id="PY304-RETURN-NEW-VALUES">
+    <desc>Return new objects instead of modifying existing ones.</desc>
+    <examples>
+      <example kind="good">Use `dataclasses.replace()` to create modified copy.</example>
+    </examples>
+    <related>
+      <ref id="PY300-IMMUTABILITY"/>
+    </related>
+  </rule>
+</rules>

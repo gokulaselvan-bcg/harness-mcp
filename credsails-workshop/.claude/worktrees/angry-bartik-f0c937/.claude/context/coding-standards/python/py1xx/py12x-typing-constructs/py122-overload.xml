@@ -1,0 +1,47 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY12X-TYPING-CONSTRUCTS-PY122-OVERLOAD" title="py122 overload" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py122-overload.md">
+  <rule id="PY122-OVERLOAD">
+    <desc>Use `@overload` for functions with different signatures based on argument types.</desc>
+    <rationale>Overloads provide precise type information for different call patterns.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - overloaded signatures
+@overload
+def parse(text: str) -> Transaction: ...
+
+@overload
+def parse(text: str, strict: Literal[True]) -> Transaction: ...
+
+@overload
+def parse(text: str, strict: Literal[False]) -> Transaction | None: ...
+
+def parse(text: str, strict: bool = True) -> Transaction | None:
+    """Parse text. If strict=False, returns None on error."""
+    try:
+        return Transaction.from_string(text)
+    except ValueError:
+        if strict:
+            raise
+        return None
+
+# Usage - types are precise
+t1: Transaction = parse("100.50")  # Never None (strict=True default)
+t2: Transaction | None = parse("invalid", strict=False)  # Might be None
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - imprecise return type
+def parse(text: str, strict: bool = True) -> Transaction | None:
+    ...
+
+# Callers must handle None even when strict=True
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY107-LITERAL-TYPES"/>
+      <ref id="PY110-UNION-TYPES"/>
+    </related>
+    <tool_support>@overload from `typing`. mypy checks signature compatibility.</tool_support>
+  </rule>
+</rules>

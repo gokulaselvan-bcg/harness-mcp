@@ -1,0 +1,7 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PZ1XX-PZ11X-TYPE-VIOLATIONS-PZ114-UNION-NONE-LAST" title="pz114 union none last" kind="ruleset" version="2" updated="2026-02-20" status="active" source="pz114-union-none-last.md">
+  <rule id="PZ114-UNION-NONE-LAST">
+    <desc>`None | int` instead of `int | None`.</desc>
+    <better>`int | None` for consistency.</better>
+    <why_bad>Convention is None last.</why_bad>
+  </rule>
+</rules>

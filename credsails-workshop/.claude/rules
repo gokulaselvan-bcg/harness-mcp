@@ -1,0 +1,183 @@
+# Cursor IDE Rules & Best Practices
+
+This file defines the rules and best practices for AI assistance in this project when using Cursor IDE.
+
+## Package Management
+
+**IMPORTANT**: This project uses `uv` as the package manager, not pip or poetry.
+
+- Use `uv pip install <package>` to install packages
+- Use `uv pip compile` for requirements management
+- Use `uv run` to execute scripts in the virtual environment
+- All dependency management should be done through `uv`
+
+## Task Runner (Makefile)
+
+**IMPORTANT**: This project uses `make` as the task runner. Use it instead of running commands directly.
+
+To see all available commands: `make help`
+
+### Common Commands
+
+**Setup & Installation:**
+- `make setup` - Setup complete dev environment (install deps + hooks)
+- `make install` - Install all dependencies including dev
+- `make install-hooks` - Install pre-commit hooks
+
+**Code Quality (via pre-commit):**
+- `make check` - Run all pre-commit hooks (comprehensive quality checks)
+- `make fix` - Fix all auto-fixable issues (lint + format)
+- `make lint` - Run ruff linter via pre-commit
+- `make format` - Format code with ruff via pre-commit
+
+**Testing:**
+- `make test` - Run tests with pytest
+- `make test-cov` - Run tests with coverage report
+- `make test-file FILE=<file>` - Run specific test file
+
+**Jupyter Notebooks:**
+- `make jupyter` - Start JupyterLab server
+- `make jupyter-install-kernel` - Register project kernel
+- `make lint-notebooks` - Lint notebook code cells via pre-commit (nbqa)
+- `make format-notebooks` - Format notebook code with ruff
+- `make strip-notebooks` - Strip outputs from notebooks via pre-commit
+
+**Application:**
+- `make run` - Run the application
+- `make dev` - Run with auto-reload (development mode)
+
+**Docker:**
+- `make docker-up-dev` - Start dev container with hot reloading
+- `make docker-test` - Run tests in container
+
+**Maintenance:**
+- `make clean` - Clean all generated files
+- `make update` - Update dependencies
+- `make pre-commit` - Run pre-commit hooks on all files
+
+### When to Use Make
+
+**Always use `make` commands instead of:**
+- ❌ `pytest` → ✅ `make test`
+- ❌ `ruff check .` → ✅ `make lint`
+- ❌ `pre-commit run --all-files` → ✅ `make check`
+- ❌ `jupyter lab` → ✅ `make jupyter`
+- ❌ `nbqa ruff notebooks/` → ✅ `make lint-notebooks`
+
+This ensures:
+- Consistent command execution via pre-commit
+- Proper virtual environment activation
+- Correct flags and configurations are applied
+- All quality checks run through pre-commit hooks
+
+## Python Standards
+
+### Style & Formatting
+- Follow PEP 8 style guidelines
+- Use `ruff` for linting and formatting
+- Maximum line length: 100 characters
+- Use 4 spaces for indentation (never tabs)
+
+### Type Hints
+- Add type hints to ALL function signatures
+- Use modern Python 3.13+ typing features
+- Type hint return values, including `None`
+
+### Documentation
+- Add docstrings to all public functions, classes, and modules
+- Use Google-style docstrings
+- Include: description, Args, Returns, Raises
+
+For canonical coding standards and anti-pattern IDs (Y/Z + PY/PZ), use:
+- `.claude/context/coding-standards.md` (entrypoint to full catalogs and topic pages)
+
+## Jupyter Notebooks
+
+### Notebook Organization
+- Keep notebooks in `notebooks/exploratory/` for ad-hoc analysis
+- Use `notebooks/experiments/` for structured experiments
+- Name notebooks with dates and descriptive titles: `YYYY-MM-DD_topic.ipynb`
+
+### Notebook Standards
+- Select "GenX Enablement (Python 3.13)" kernel for all notebooks
+- Follow same code quality standards as Python modules
+- Restart kernel and run all cells before committing
+
+### Version Control
+- Outputs are automatically stripped via nbstripout pre-commit hooks
+- Use `make strip-notebooks` to manually strip outputs
+- Consider using Jupytext for better version control
+
+### Code Quality
+- Run `make lint-notebooks` and `make format-notebooks`
+- Pre-commit hooks automatically check notebook quality
+
+## Testing Standards
+
+### Test-Driven Development
+- Write tests BEFORE implementation
+- Tests should be in `tests/` directory
+- Use `pytest` as the testing framework
+- Aim for >80% code coverage
+
+## Documentation-First Approach
+
+Before implementing features:
+1. Document the problem in `artifacts/tickets/[TICKET-ID]/spec.md`
+2. Create architecture decisions in `artifacts/architecture/`
+3. Plan implementation in `artifacts/tickets/[TICKET-ID]/plan.md`
+
+## AI-Friendly Patterns
+
+- Maintain clear `AGENTS.md` and `CLAUDE.md` files
+- Write code that clearly expresses intent
+- Use descriptive variable and function names
+- Follow patterns from `docs/prompt-playbook.md`
+
+## Code Review Standards
+
+Before committing code, verify:
+- [ ] All pre-commit hooks pass (`make check`)
+- [ ] All tests pass (`make test`)
+- [ ] Code coverage is maintained (`make test-cov`)
+- [ ] Documentation is updated
+
+**Quick pre-commit check:**
+```bash
+make check && make test
+```
+
+Note: `make check` runs all pre-commit hooks including:
+- Ruff linting and formatting
+- Notebook linting and formatting
+- File quality checks (trailing whitespace, EOF, YAML, TOML)
+- nbstripout (strips notebook outputs)
+
+## Project Structure
+
+Maintain this directory structure:
+```
+.
+├── .github/              # CI/CD and GitHub automation
+├── .claude/              # Claude Code commands and rules
+├── .cursor/              # Cursor IDE configuration
+├── artifacts/            # Design and planning artifacts
+├── docs/                 # Project documentation
+├── instructions/         # Best practice guidelines
+├── notebooks/            # Jupyter notebooks
+│   ├── exploratory/      # Ad-hoc data analysis
+│   └── experiments/      # Structured experiments
+├── genx_enablement/      # Main Python package
+├── tests/                # Test files
+├── AGENTS.md             # Agent-specific instructions
+├── CLAUDE.md             # Project context for Claude
+├── Makefile              # Task runner commands
+├── pyproject.toml        # Project config & dependencies
+└── README.md             # Main project documentation
+```
+
+---
+
+For more detailed guidelines, refer to:
+- `.claude/rules.md` for comprehensive rules
+- `instructions/best-practices-*.md` for specific topics

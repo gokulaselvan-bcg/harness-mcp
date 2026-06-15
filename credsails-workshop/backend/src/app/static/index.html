@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CredSails — agentic credit underwriting (demo)</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <h1>CredSails</h1>
+      <span class="tagline">agentic credit origination &rarr; underwriting &middot; demo</span>
+    </div>
+    <div class="badges">
+      <span id="borrower" class="badge borrower">—</span>
+      <span id="status" class="badge">—</span>
+      <span id="llm" class="badge">—</span>
+      <span id="verified" class="badge">—</span>
+      <button id="seed" class="btn">Seed / Reset deal</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="steps" class="steps"><!-- rendered --></section>
+
+    <aside class="side">
+      <div class="panel">
+        <h3>Six primitives</h3>
+        <ul id="legend" class="legend"></ul>
+      </div>
+      <div class="panel">
+        <h3>Audit log <span id="audit-count" class="muted"></span></h3>
+        <div class="audit-filter">
+          <label>filter: <select id="audit-filter">
+            <option value="">all</option><option value="agent">agent</option>
+            <option value="human">human</option><option value="system">system</option>
+          </select></label>
+        </div>
+        <ol id="audit" class="audit"></ol>
+      </div>
+    </aside>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="/api.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<rules id="CTX-CODING-STANDARDS-JAVA-ADDENDA-ANDROID-TESTING" title="Android Testing" kind="ruleset" version="2" updated="2026-02-20" status="active" source="android-testing.md">
+  <rule id="JY730-ROBOLECTRIC-DEFAULT">
+    <desc>Prefer Robolectric for JVM tests; use instrumented tests only when device APIs are required.</desc>
+    <rationale>Faster feedback and easier CI.</rationale>
+  </rule>
+  <rule id="JY731-ANDROIDX-TEST-RUNNER">
+    <desc>Use AndroidX Test Runner for instrumented tests.</desc>
+    <rationale>Standardizes test execution and reporting.</rationale>
+  </rule>
+  <rule id="JY732-ESPRESSO-FOR-UI">
+    <desc>Use Espresso for UI behavior, but keep UI tests minimal.</desc>
+    <rationale>UI tests are slow and brittle.</rationale>
+  </rule>
+  <rule id="JY733-IDLING-RESOURCES">
+    <desc>Use Idling Resources for async synchronization.</desc>
+    <rationale>Avoids flaky waits and `Thread.sleep`.</rationale>
+  </rule>
+</rules>

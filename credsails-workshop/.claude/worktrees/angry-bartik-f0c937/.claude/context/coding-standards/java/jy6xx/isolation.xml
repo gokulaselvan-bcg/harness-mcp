@@ -1,0 +1,53 @@
+<rules id="CTX-CODING-STANDARDS-JAVA-JY6XX-ISOLATION" title="Isolation and Determinism" kind="ruleset" version="2" updated="2026-02-20" status="active" source="isolation.md">
+  <rule id="JY610-TEST-FIXTURES">
+    <desc>Prefer `@BeforeEach` for fixtures; avoid mutable shared state.</desc>
+    <rationale>Isolated tests are deterministic and parallel-safe.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[@BeforeEach
+void setUp() {
+    repository = new InMemoryOrderRepository();
+}
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="JY611-TEST-ISOLATION">
+    <desc>Tests must not depend on execution order or shared state.</desc>
+    <rationale>Order dependence causes flaky CI behavior.</rationale>
+    <examples>
+      <example kind="good">Use fresh data builders per test.</example>
+    </examples>
+  </rule>
+  <rule id="JY612-MOCK-BOUNDARIES">
+    <desc>Mock external systems (DB/HTTP/clock). Do not mock value objects or simple DTOs.</desc>
+    <rationale>Over-mocking couples tests to implementation details.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[Clock clock = Clock.fixed(Instant.parse("2024-01-01T00:00:00Z"), ZoneOffset.UTC);
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="JY613-DETERMINISM">
+    <desc>Avoid wall-clock time, random, and sleep in tests.</desc>
+    <rationale>Nondeterminism causes flaky tests.</rationale>
+    <examples>
+      <example kind="good">Inject `Clock`, seed `Random`, or use fakes.</example>
+    </examples>
+  </rule>
+  <rule id="JY614-TEST-LAYERING">
+    <desc>Separate unit and integration tests with tags or naming.</desc>
+    <rationale>Keeps fast feedback loops while retaining coverage.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[@Tag("integration")
+@Test
+void loadsFromDatabase() {
+    ...
+}
+]]></code>
+      </example>
+    </examples>
+  </rule>
+</rules>

@@ -1,0 +1,53 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY10X-BASICS-PY109-AVOID-ANY" title="py109 avoid any" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py109-avoid-any.md">
+  <rule id="PY109-AVOID-ANY">
+    <desc>Avoid `Any` type unless absolutely necessary. Use generics, unions, or protocols instead.</desc>
+    <exceptions>Use Any when:
+1. Interfacing with truly dynamic code (e.g., JSON parsing before validation)
+2. Gradual typing migration (temporary, document plan to remove)
+3. Type is genuinely unknowable (rare)
+
+Always document why Any is needed.
+</exceptions>
+    <rationale>Any disables type checking, defeating the purpose of type hints. It's a type system escape hatch.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - generic preserves type
+def first(items: Sequence[T]) -> T | None:
+    """Get first item, preserving type."""
+    return items[0] if items else None
+
+result: int | None = first([1, 2, 3])  # Type is int | None
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - loses type information
+def first(items: Sequence[Any]) -> Any:
+    return items[0] if items else None
+
+result: Any = first([1, 2, 3])  # Type is Any, no checking!
+
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - union for mixed types
+def process_value(value: int | str | float) -> str:
+    return str(value)
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - Any for mixed types
+def process_value(value: Any) -> str:
+    return str(value)
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY101-PRECISE-TYPES"/>
+      <ref id="PY103-USE-GENERICS"/>
+      <ref id="PZ100-OVERUSE-ANY"/>
+    </related>
+    <tool_support>mypy --strict warns on implicit Any. ruff ANN401 warns on explicit Any (currently ignored in this project).</tool_support>
+  </rule>
+</rules>

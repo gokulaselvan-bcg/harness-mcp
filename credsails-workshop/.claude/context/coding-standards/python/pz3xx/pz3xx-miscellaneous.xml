@@ -1,0 +1,46 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PZ3XX-PZ3XX-MISCELLANEOUS" title="Miscellaneous" kind="ruleset" version="2" updated="2026-02-20" status="active" source="pz3xx-miscellaneous.md">
+  <rule id="PZ300-FILE-LEVEL-NOQA">
+    <desc>Using file-level `# noqa` comments to suppress linter warnings across entire modules.</desc>
+    <better>Fix underlying issues incrementally. Use targeted inline `# noqa`
+comments only when genuinely needed.
+</better>
+    <why_bad>File-level suppressions hide all issues in a file, prevent
+incremental fixes, and create technical debt.
+</why_bad>
+    <examples>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# noqa: ARG002, PLR0913, C901
+"""Module with many linter violations."""
+
+def process(a, b, c, d, e, f, g):
+    return a + b
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA["""Module with proper structure."""
+
+def process(values: list[int]) -> int:
+    """Process values and return sum."""
+    return sum(values)
+
+# Targeted inline suppression when truly needed
+
+def legacy_api_compat(unused_param: int) -> None:  # noqa: ARG001
+    """Legacy API that must maintain signature."""
+    pass
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY118-STRICT-MODE"/>
+      <ref id="PZ102-IGNORING-TYPE-ERRORS"/>
+      <ref id="Z404-COMMENTED-OUT-CODE"/>
+    </related>
+    <notes>
+      <note title="When suppressions are acceptable">- Inline only: specific line/function needs exception with justification
+- Temporary: during migration with TODO to remove
+- Third-party compat: use `# type: ignore` per-line
+</note>
+    </notes>
+  </rule>
+</rules>

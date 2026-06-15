@@ -1,0 +1,10 @@
+{
+  "sections": [
+    {"section": "Borrower Overview", "prose": "Cleveland-Cliffs Inc. (NYSE: CLF), incorporated in Ohio and classified under NAICS 331110 (iron & steel mills) (10-K p.1), is the largest flat-rolled steel producer in North America, serving automotive and infrastructure end markets."},
+    {"section": "Financial Profile", "prose": "FY2024 revenue was $19,185M with management-prepared Adjusted EBITDA of $1,200M (10-K p.3). Net debt / EBITDA leverage is ~3.11x and interest coverage (DSCR) ~4.00x; the current ratio is 2.00x, indicating adequate near-term liquidity. Total debt of $3,777M stands against $6,500M of equity (10-K p.2)."},
+    {"section": "Credit Rating", "prose": "The internal model assigns an indicative grade of BB- (conservative, through-the-cycle). The public agency issuer rating sits in the BB category; the one-notch gap reflects a methodology difference, not a data discrepancy."},
+    {"section": "Due Diligence", "prose": "OFAC/PEP screening returned no matches across the entity, directors, and UBOs. Adverse-media surfaced one low-severity, resolved environmental item. A senior ABL lien on inventory and receivables exists with no conflicting junior liens."},
+    {"section": "Risks & Mitigants", "prose": "The principal risk is steel-sector cyclicality and automotive-demand sensitivity (10-K p.4). Mitigants include scale as the largest North American flat-rolled producer, diversified end markets, and adequate liquidity. Collateral comprises inventory and receivables pledged under the ABL facility (10-K p.4)."},
+    {"section": "Recommendation", "prose": "Recommend approval of the facility subject to standard covenants, given adequate coverage (DSCR ~4.00x), moderate leverage (~3.11x), and clean diligence. Monitor cyclical exposure and any agency rating actions."}
+  ]
+}

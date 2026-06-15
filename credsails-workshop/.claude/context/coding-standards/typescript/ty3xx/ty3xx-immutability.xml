@@ -1,0 +1,154 @@
+<rules id="CTX-CODING-STANDARDS-TYPESCRIPT-TY3XX-TY3XX-IMMUTABILITY" title="Immutability &amp; Functional Patterns" kind="ruleset" version="2" updated="2026-03-12" status="active" source="ty3xx-immutability.md">
+  <rule id="TY300-READONLY-BY-DEFAULT">
+    <desc>Mark properties, parameters, and arrays as `readonly` by default. Remove `readonly` only when mutation is intentional.</desc>
+    <rationale>Readonly annotations catch accidental mutation at compile time and communicate intent clearly.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good
+interface Config {
+  readonly host: string;
+  readonly port: number;
+  readonly tags: readonly string[];
+}
+
+function process(items: readonly Item[]): Result[] {
+  return items.map(transform); // no mutation
+}
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - mutable by default
+interface Config {
+  host: string;
+  port: number;
+  tags: string[];
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY105-LITERAL-AND-CONST"/>
+      <ref id="TY301-CONST-ASSERTIONS"/>
+    </related>
+    <tool_support>ESLint @typescript-eslint/prefer-readonly, @typescript-eslint/prefer-readonly-parameter-types.</tool_support>
+  </rule>
+  <rule id="TY301-CONST-ASSERTIONS">
+    <desc>Use `as const` for literal objects and arrays that should not change.</desc>
+    <rationale>Const assertions make all properties `readonly` and narrow types to their literal values, enabling type-level computation.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good
+const PERMISSIONS = ["read", "write", "admin"] as const;
+type Permission = (typeof PERMISSIONS)[number]; // "read" | "write" | "admin"
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY105-LITERAL-AND-CONST"/>
+      <ref id="TY300-READONLY-BY-DEFAULT"/>
+    </related>
+  </rule>
+  <rule id="TY302-PURE-FUNCTIONS">
+    <desc>Prefer pure functions: same input produces same output, no side effects.</desc>
+    <rationale>Pure functions are easier to test, reason about, compose, and parallelize.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - pure transformation
+function applyDiscount(price: number, rate: number): number {
+  return price * (1 - rate);
+}
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - mutates external state
+let total = 0;
+function addToTotal(amount: number): void {
+  total += amount;
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY303-RETURN-NEW-VALUES"/>
+      <ref id="Y100-SINGLE-RESPONSIBILITY"/>
+    </related>
+  </rule>
+  <rule id="TY303-RETURN-NEW-VALUES">
+    <desc>Return new objects or arrays instead of mutating inputs. Use spread syntax or utility methods.</desc>
+    <rationale>Returning new values prevents shared-state bugs, makes data flow explicit, and works well with React, Redux, and other immutable-data architectures.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - return new object
+function updateName(user: User, name: string): User {
+  return { ...user, name };
+}
+
+// Good - return new array
+function addItem(items: readonly Item[], item: Item): Item[] {
+  return [...items, item];
+}
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - mutates input
+function updateName(user: User, name: string): void {
+  user.name = name;
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY300-READONLY-BY-DEFAULT"/>
+      <ref id="TZ303-SHARED-MUTABLE-STATE"/>
+    </related>
+  </rule>
+  <rule id="TY304-ARRAY-METHODS-OVER-LOOPS">
+    <desc>Prefer `map`, `filter`, `reduce`, and other array methods over imperative loops for data transformations.</desc>
+    <rationale>Array methods express intent clearly, chain naturally, and avoid off-by-one errors. Use `for...of` when performance matters in hot paths or when early termination is needed.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good
+const activeNames = users
+  .filter((u) => u.active)
+  .map((u) => u.name);
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - imperative mutation
+const activeNames: string[] = [];
+for (let i = 0; i < users.length; i++) {
+  if (users[i].active) {
+    activeNames.push(users[i].name);
+  }
+}
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="TY305-AVOID-MUTABLE-GLOBALS">
+    <desc>Avoid module-level mutable state. Use dependency injection or factory functions instead.</desc>
+    <rationale>Module-level mutable state creates hidden coupling, makes testing difficult, and causes surprising behavior in concurrent environments.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - inject dependencies
+export function createService(config: Config): Service {
+  return { ... };
+}
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - mutable module state
+let connectionPool: Pool | null = null;
+export function getPool(): Pool {
+  if (!connectionPool) connectionPool = createPool();
+  return connectionPool;
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TZ303-SHARED-MUTABLE-STATE"/>
+      <ref id="Y104-DEPENDENCY-INVERSION"/>
+    </related>
+  </rule>
+</rules>

@@ -1,0 +1,12 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY3XX-PY30X-IMMUTABILITY-AND-PURITY-PY300-IMMUTABILITY" title="py300 immutability" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py300-immutability.md">
+  <rule id="PY300-IMMUTABILITY">
+    <desc>Prefer immutable data structures. Use `frozen=True` for dataclasses.</desc>
+    <examples>
+      <example kind="good">`@dataclass(frozen=True)` prevents modification after creation.</example>
+    </examples>
+    <related>
+      <ref id="PY114-NAMEDTUPLE-TYPES"/>
+      <ref id="PY301-FROZEN-DATACLASSES"/>
+    </related>
+  </rule>
+</rules>

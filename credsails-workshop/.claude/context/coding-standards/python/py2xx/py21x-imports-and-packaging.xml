@@ -1,0 +1,91 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY2XX-PY21X-IMPORTS-AND-PACKAGING" title="Imports and Packaging" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py21x-imports-and-packaging.md">
+  <rule id="PY210-IMPORT-STYLE">
+    <desc>Prefer absolute imports for public modules; use relative imports for private (underscore-prefixed) modules within packages.</desc>
+    <when_to_use>- Relative imports: importing `_module.py` from another module in same package
+- Relative imports: private cross-imports within package implementation
+- Absolute imports: importing public modules from other packages
+- Avoid relative imports in top-level scripts outside packages
+</when_to_use>
+    <rationale>Relative imports for private modules emphasize package-internal
+structure and make refactoring easier. They signal that these imports are
+implementation details, not public dependencies. Absolute imports for public
+modules make code more portable and explicit.
+</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - relative import for private module within same package
+# In src/orders/_service.py
+from ._repository import OrderRepository
+from ._models import Order, OrderItem
+
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - absolute import for public module
+from src.util.database import Connection
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - absolute import for private module in same package
+from src.orders._repository import OrderRepository  # Use relative import instead
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - relative import for public module
+from ..util.database import Connection  # Use absolute import instead
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY201-PUBLIC-API"/>
+      <ref id="PY203-PRIVATE-MODULES"/>
+      <ref id="PY212-CIRCULAR-IMPORTS"/>
+    </related>
+    <tool_support>ruff I252 can enforce relative import rules. ruff I001-I005
+enforce general import style.
+</tool_support>
+  </rule>
+  <rule id="PY211-IMPORT-ORDER">
+    <desc>Standard library, third-party, local. Alphabetical within groups.</desc>
+    <exceptions>Pre-commit hooks auto-format this.</exceptions>
+    <tool_support>ruff I001 enforces isort-compatible ordering.</tool_support>
+  </rule>
+  <rule id="PY212-CIRCULAR-IMPORTS">
+    <desc>Avoid circular dependencies. Use protocols or TYPE_CHECKING.</desc>
+    <examples>
+      <example kind="good">See PY120-TYPE-CHECKING for avoiding circular imports.</example>
+    </examples>
+    <related>
+      <ref id="PY120-TYPE-CHECKING"/>
+      <ref id="Z101-CIRCULAR-DEPS"/>
+    </related>
+  </rule>
+  <rule id="PY213-LAZY-IMPORTS">
+    <desc>Import at module level by default. Use local imports only for optional dependencies or circular imports.</desc>
+    <examples>
+      <example kind="good">`if TYPE_CHECKING: from expensive_module import Heavy` to avoid
+runtime cost.
+</example>
+    </examples>
+    <related>
+      <ref id="PY120-TYPE-CHECKING"/>
+    </related>
+  </rule>
+  <rule id="PY214-TYPE-STUBS">
+    <desc>For untyped third-party libs, use stub files or `py.typed`.</desc>
+    <examples>
+      <example kind="good">`pandas-stubs` for pandas type hints.</example>
+    </examples>
+    <related>
+      <ref id="PY100-USE-TYPE-HINTS"/>
+    </related>
+  </rule>
+  <rule id="PY215-NAMESPACE-PACKAGES">
+    <desc>Avoid namespace packages unless distributing plugins.</desc>
+    <examples>
+      <example kind="good">Use regular packages with `__init__.py` for standard projects.</example>
+    </examples>
+  </rule>
+</rules>

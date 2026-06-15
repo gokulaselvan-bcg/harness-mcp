@@ -1,0 +1,7 @@
+<index id="CTX-CODING-STANDARDS-TYPESCRIPT-TY2XX-INDEX" title="index" kind="manifest" version="2" updated="2026-03-12" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="TY20x" kind="tens" desc="Module structure, exports, barrel files, dependency direction." label="Code Organization &amp; Modules">
+      <doc_ref path="./ty2xx-modules.xml"/>
+    </entry>
+  </section>
+</index>

@@ -1,0 +1,33 @@
+<index id="CTX-CODING-STANDARDS-TYPESCRIPT-INDEX" title="index" kind="manifest" version="2" updated="2026-03-12" status="active" source="index.md">
+  <section title="Guidelines" kind="guidelines" desc="Normative rules to follow.">
+    <entry id="TY1xx" kind="hundreds" desc="Strict mode, annotations, generics, utility types." label="Type System &amp; Type Safety">
+      <doc_ref path="./ty1xx/index.xml"/>
+    </entry>
+    <entry id="TY2xx" kind="hundreds" desc="Modules, exports, barrel files, dependency direction." label="Code Organization &amp; Modules">
+      <doc_ref path="./ty2xx/index.xml"/>
+    </entry>
+    <entry id="TY3xx" kind="hundreds" desc="Readonly, const assertions, pure functions." label="Immutability &amp; Functional Patterns">
+      <doc_ref path="./ty3xx/index.xml"/>
+    </entry>
+    <entry id="TY4xx" kind="hundreds" desc="Custom errors, exhaustive checks, Result types." label="Error Handling">
+      <doc_ref path="./ty4xx/index.xml"/>
+    </entry>
+    <entry id="TY5xx" kind="hundreds" desc="Async/await, Promises, concurrency patterns." label="Async &amp; Promises">
+      <doc_ref path="./ty5xx/index.xml"/>
+    </entry>
+    <entry id="TY6xx" kind="hundreds" desc="Type testing, mocking, assertion patterns." label="Testing &amp; Tooling">
+      <doc_ref path="./ty6xx/index.xml"/>
+    </entry>
+  </section>
+  <section title="Anti-Patterns" kind="antipatterns" desc="Patterns to avoid.">
+    <entry id="TZ1xx" kind="hundreds" desc="Any abuse, unsafe assertions, weak types." label="Type Safety Violations">
+      <doc_ref path="./tz1xx/index.xml"/>
+    </entry>
+    <entry id="TZ2xx" kind="hundreds" desc="Circular deps, barrel file pitfalls, re-export issues." label="Module &amp; Import Problems">
+      <doc_ref path="./tz2xx/index.xml"/>
+    </entry>
+    <entry id="TZ3xx" kind="hundreds" desc="Unhandled promises, callback mixing, shared mutable state." label="Async &amp; Runtime Hazards">
+      <doc_ref path="./tz3xx/index.xml"/>
+    </entry>
+  </section>
+</index>

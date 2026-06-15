@@ -1,0 +1,75 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY2XX-PY20X-PUBLIC-API" title="Public API and Interfaces" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py20x-public-api.md">
+  <rule id="PY200-PACKAGE-INIT">
+    <desc>Use `__init__.py` to expose public API using `from ... import *`.</desc>
+    <examples>
+      <example kind="bad">Don't explicitly import and list names in `__init__.py` - use
+wildcard imports instead.
+</example>
+      <example kind="good">Each private module defines its own `__all__` to control what gets exported.
+<code lang="python"><![CDATA[# In __init__.py
+from ._parser import *
+from ._producer import *
+]]></code></example>
+    </examples>
+    <related>
+      <ref id="PY201-PUBLIC-API"/>
+    </related>
+  </rule>
+  <rule id="PY201-PUBLIC-API">
+    <desc>Define `__all__` in each module (not in `__init__.py`) to control the public API.</desc>
+    <examples>
+      <example kind="good">The package `__init__.py` uses `from ._parser import *` to re-export these names.
+<code lang="python"><![CDATA[# In _parser.py
+__all__ = ["CsvParser", "JsonParser"]
+
+class CsvParser:
+    ...
+
+class JsonParser:
+    ...
+
+class _InternalHelper:  # Not in __all__, remains private
+    ...
+]]></code></example>
+    </examples>
+    <related>
+      <ref id="PY200-PACKAGE-INIT"/>
+    </related>
+    <tool_support>ruff checks `__all__` consistency.</tool_support>
+  </rule>
+  <rule id="PY202-EXPLICIT-EXPORTS">
+    <desc>Be explicit when importing from other modules. Avoid `import *` in application code.</desc>
+    <exceptions>Wildcard imports are appropriate in `__init__.py` files for
+re-exporting public APIs (see PY200-PACKAGE-INIT).
+</exceptions>
+    <examples>
+      <example kind="good">Import specific names: `from orders.models import Order, OrderItem`
+not `from orders.models import *`.
+</example>
+    </examples>
+    <related>
+      <ref id="PY200-PACKAGE-INIT"/>
+      <ref id="PY201-PUBLIC-API"/>
+    </related>
+    <tool_support>ruff F403 warns on wildcard imports (except in `__init__.py`).</tool_support>
+  </rule>
+  <rule id="PY203-PRIVATE-MODULES">
+    <desc>Use `_module.py` prefix for internal/private modules.</desc>
+    <examples>
+      <example kind="good">`_internal.py`, `_helpers.py` signal "don't import externally".</example>
+    </examples>
+  </rule>
+  <rule id="PY204-INIT-DEFINES-BEHAVIOR">
+    <desc>Constructor parameters define instance behavior and configuration; method parameters are call-specific data that varies per invocation.</desc>
+    <examples>
+      <example kind="good">`TransactionValidator(min_amount=0)` configures behavior in
+`__init__`, then `validate(transaction)` accepts data to process.
+</example>
+    </examples>
+    <related>
+      <ref id="Y100-SINGLE-RESPONSIBILITY"/>
+      <ref id="Y103-DEPENDENCY-INJECTION"/>
+      <ref id="Z114-TEMPORARY-FIELD"/>
+    </related>
+  </rule>
+</rules>

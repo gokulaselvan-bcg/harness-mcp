@@ -1,0 +1,38 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY11X-GENERICS-PY110-UNION-TYPES" title="py110 union types" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py110-union-types.md">
+  <rule id="PY110-UNION-TYPES">
+    <desc>Use modern union syntax `X | Y` (Python 3.10+) instead of `Union[X, Y]` or `Optional[X]`.</desc>
+    <rationale>Cleaner syntax, more readable, aligns with PEP 604.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - modern syntax (Python 3.10+)
+def parse_amount(value: str | int | float) -> float:
+    """Parse amount from multiple types."""
+    if isinstance(value, str):
+        return float(value.replace(",", ""))
+    return float(value)
+
+def find_transaction(txn_id: int) -> Transaction | None:
+    """Returns transaction or None if not found."""
+    ...
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - old syntax (pre-3.10)
+from typing import Union, Optional
+
+def parse_amount(value: Union[str, int, float]) -> float:
+    ...
+
+def find_transaction(txn_id: int) -> Optional[Transaction]:
+    ...
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY100-USE-TYPE-HINTS"/>
+      <ref id="PY101-PRECISE-TYPES"/>
+    </related>
+    <tool_support>Python 3.10+ required. mypy supports both syntaxes.</tool_support>
+  </rule>
+</rules>

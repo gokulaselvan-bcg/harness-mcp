@@ -1,0 +1,104 @@
+<rules id="CTX-CODING-STANDARDS-JAVA-JY3XX-JY3XX-ERROR-HANDLING" title="Error Handling &amp; Logging" kind="ruleset" version="2" updated="2026-02-20" status="active" source="jy3xx-error-handling.md">
+  <rule id="JY300-EXCEPTION-STRATEGY">
+    <desc>Use unchecked exceptions for programmer errors; use checked exceptions only when callers can realistically recover.</desc>
+    <rationale>Overusing checked exceptions increases boilerplate and hides
+root causes.
+</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[// Good - validation error
+if (amount < 0) {
+    throw new IllegalArgumentException("amount must be >= 0");
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JZ200-CATCH-EXCEPTION"/>
+    </related>
+  </rule>
+  <rule id="JY301-TRY-WITH-RESOURCES">
+    <desc>Use try-with-resources for `AutoCloseable` types.</desc>
+    <rationale>Guarantees deterministic cleanup and avoids leaks.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[try (InputStream in = Files.newInputStream(path)) {
+    return in.readAllBytes();
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JZ203-EXCEPTION-CONTROL-FLOW"/>
+    </related>
+  </rule>
+  <rule id="JY302-PRESERVE-CAUSE">
+    <desc>Wrap exceptions with a meaningful message and original cause.</desc>
+    <rationale>Preserves stack traces and root-cause analysis.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[catch (IOException ex) {
+    throw new StorageException("failed to load report", ex);
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JZ202-LOSE-CAUSE"/>
+    </related>
+  </rule>
+  <rule id="JY303-DO-NOT-CATCH-TOO-BROAD">
+    <desc>Catch the most specific exception type possible.</desc>
+    <rationale>Broad catches hide unrelated failures and reduce reliability.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[try {
+    parser.parse(input);
+} catch (ParseException ex) {
+    metrics.incrementParseFailure();
+    throw ex;
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JZ200-CATCH-EXCEPTION"/>
+    </related>
+  </rule>
+  <rule id="JY304-LOG-ONCE-AT-BOUNDARY">
+    <desc>Log errors at boundaries (API, job runner) and avoid re-logging the same exception.</desc>
+    <rationale>Duplicate logs obscure signal and inflate noise.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[try {
+    service.run();
+} catch (RuntimeException ex) {
+    logger.error("job failed", ex);
+    throw ex;
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JZ201-SWALLOW-EXCEPTIONS"/>
+    </related>
+  </rule>
+  <rule id="JY305-VALIDATE-BOUNDARIES">
+    <desc>Validate external inputs at the boundary and fail fast.</desc>
+    <rationale>Prevents invalid data from propagating into core logic.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[public void createOrder(CreateOrderRequest request) {
+    Objects.requireNonNull(request.customerId());
+    if (request.items().isEmpty()) {
+        throw new IllegalArgumentException("items required");
+    }
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="Y102-SEPARATION-OF-CONCERNS"/>
+    </related>
+  </rule>
+</rules>

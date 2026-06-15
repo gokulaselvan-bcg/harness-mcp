@@ -1,0 +1,33 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY12X-TYPING-CONSTRUCTS-PY120-TYPE-CHECKING" title="py120 type checking" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py120-type-checking.md">
+  <rule id="PY120-TYPE-CHECKING">
+    <desc>Use `if TYPE_CHECKING:` for import-only type hints to avoid circular imports.</desc>
+    <rationale>TYPE_CHECKING is False at runtime, allowing imports only needed for type checking.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    # Only imported for type checking, not at runtime
+    from parser import TransactionParser  # Circular import OK here
+
+# Use string literal in runtime code
+class Processor:
+    def __init__(self, parser: "TransactionParser"):
+        self.parser = parser
+
+# Or use PEP 563 (Python 3.7+)
+from __future__ import annotations
+
+class Processor:
+    def __init__(self, parser: TransactionParser):  # Quoted automatically
+        self.parser = parser
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY100-USE-TYPE-HINTS"/>
+      <ref id="PY121-FORWARD-REFS"/>
+    </related>
+    <tool_support>TYPE_CHECKING from `typing`. mypy evaluates as True.</tool_support>
+  </rule>
+</rules>

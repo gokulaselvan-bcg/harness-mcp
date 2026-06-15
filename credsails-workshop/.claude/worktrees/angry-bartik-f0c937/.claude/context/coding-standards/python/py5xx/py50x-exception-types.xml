@@ -1,0 +1,67 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY5XX-PY50X-EXCEPTION-TYPES" title="Exception Types and Boundaries" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py50x-exception-types.md">
+  <rule id="PY500-SPECIFIC-EXCEPTIONS">
+    <desc>Catch specific exceptions, not bare `except:`.</desc>
+    <examples>
+      <example kind="good">`except ValueError:` not `except:`.</example>
+    </examples>
+    <tool_support>ruff E722 warns on bare except.</tool_support>
+  </rule>
+  <rule id="PY501-EXCEPTION-HIERARCHY">
+    <desc>Create exception hierarchy for your domain.</desc>
+    <examples>
+      <example kind="good">`class ParsingError(ValueError): ...` then `class CsvParsingError(ParsingError): ...`.</example>
+    </examples>
+  </rule>
+  <rule id="PY502-RAISE-FROM">
+    <desc>Use `raise ... from ...` to preserve exception chain.</desc>
+    <examples>
+      <example kind="good">`raise ValidationError(msg) from exc` preserves original exception.</example>
+    </examples>
+  </rule>
+  <rule id="PY503-CONTEXT-MANAGERS">
+    <desc>Use context managers (`with`) for resource management.</desc>
+    <examples>
+      <example kind="good">`with open(file) as f:` ensures file closes.</example>
+    </examples>
+    <tool_support>`contextlib` module for custom context managers.</tool_support>
+  </rule>
+  <rule id="PY504-SUPPRESS-EXCEPTIONS">
+    <desc>Use `contextlib.suppress()` for expected exceptions to ignore.</desc>
+    <examples>
+      <example kind="good">`with suppress(FileNotFoundError): os.remove(path)`.</example>
+    </examples>
+  </rule>
+  <rule id="PY505-FINALLY-CLEANUP">
+    <desc>Use `finally` for cleanup that must happen regardless of exceptions.</desc>
+    <examples>
+      <example kind="good">`try: ... finally: cleanup()`.</example>
+    </examples>
+  </rule>
+  <rule id="PY506-ELSE-CLAUSE">
+    <desc>Use `else` in try/except for code that runs only if no exception.</desc>
+    <examples>
+      <example kind="good">`try: data = parse() except: handle() else: process(data)`.</example>
+    </examples>
+  </rule>
+  <rule id="PY507-CUSTOM-EXCEPTIONS">
+    <desc>Define custom exceptions for your domain errors.</desc>
+    <examples>
+      <example kind="good">`class InsufficientFundsError(Exception): ...`.</example>
+    </examples>
+    <related>
+      <ref id="PY501-EXCEPTION-HIERARCHY"/>
+    </related>
+  </rule>
+  <rule id="PY508-EXCEPTION-ARGS">
+    <desc>Pass useful information to exceptions.</desc>
+    <examples>
+      <example kind="good">`raise ValueError(f"Amount must be positive, got {amount}")`.</example>
+    </examples>
+  </rule>
+  <rule id="PY509-DONT-CATCH-ALL">
+    <desc>Don't catch `BaseException` or `Exception` at top level unless re-raising.</desc>
+    <examples>
+      <example kind="good">Only catch specific expected exceptions.</example>
+    </examples>
+  </rule>
+</rules>

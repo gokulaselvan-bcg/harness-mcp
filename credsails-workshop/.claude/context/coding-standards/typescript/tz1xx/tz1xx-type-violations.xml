@@ -1,0 +1,122 @@
+<rules id="CTX-CODING-STANDARDS-TYPESCRIPT-TZ1XX-TZ1XX-TYPE-VIOLATIONS" title="Type Safety Violations" kind="ruleset" version="2" updated="2026-03-12" status="active" source="tz1xx-type-violations.md">
+  <rule id="TZ100-OVERUSE-ANY">
+    <desc>Using `any` to bypass type checking instead of proper types.</desc>
+    <better>
+      <ref id="TY103-GENERICS"/>. Use `unknown` for truly unknown values, generics for reusable code, or specific union types.
+    </better>
+    <why_bad>Defeats the entire type system. Errors propagate silently through `any`-typed code, discovered only at runtime.</why_bad>
+    <notes>
+      <note title="Common Causes">- Lazily typing external data (use TY405-VALIDATE-BOUNDARIES)
+- Third-party lib without types (use @types or declaration file)
+- Complex generic expressions (simplify or use type aliases)
+</note>
+    </notes>
+  </rule>
+  <rule id="TZ101-TS-IGNORE">
+    <desc>Using `@ts-ignore` or `@ts-expect-error` to suppress type errors instead of fixing them.</desc>
+    <better>Fix the underlying type issue. If suppression is truly needed, use `@ts-expect-error` with an explanation (it fails when the error is fixed, unlike `@ts-ignore`).</better>
+    <why_bad>Hides real type errors. `@ts-ignore` suppresses future errors too, masking regressions.</why_bad>
+  </rule>
+  <rule id="TZ102-NON-NULL-ASSERTION">
+    <desc>Using the non-null assertion operator (`!`) instead of proper null checks.</desc>
+    <better>
+      <ref id="TY404-TYPE-GUARDS"/>. Use optional chaining (`?.`), nullish coalescing (`??`), or explicit guards.
+    </better>
+    <why_bad>The `!` operator lies to the compiler. If the value is actually `null`/`undefined`, it crashes at runtime.</why_bad>
+    <examples>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad
+const name = user!.name;
+const el = document.getElementById("root")!;
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="TZ103-UNSAFE-TYPE-ASSERTION">
+    <desc>Using `as Type` to force a type without runtime validation.</desc>
+    <better>
+      <ref id="TY405-VALIDATE-BOUNDARIES"/>. Parse with Zod/io-ts at boundaries; use type guards for narrowing.
+    </better>
+    <why_bad>Type assertions override the compiler without runtime checks. If the data doesn't match, errors appear far from the assertion.</why_bad>
+    <examples>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad
+const config = JSON.parse(raw) as Config;
+const user = req.body as User;
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="TZ104-OBJECT-AS-MAP">
+    <desc>Using plain objects (`Record&lt;string, T&gt;`) as maps when `Map&lt;K, V&gt;` is more appropriate.</desc>
+    <better>Use `Map&lt;K, V&gt;` for dynamic key/value stores. Use objects/interfaces for known shapes.</better>
+    <why_bad>Object keys are always strings, prototype pollution is possible, and `for...in` iterates inherited properties. `Map` has proper size tracking, iteration order, and supports non-string keys.</why_bad>
+  </rule>
+  <rule id="TZ105-IMPLICIT-ANY-RETURN">
+    <desc>Functions with inferred `any` return type due to missing annotation or unsafe operations.</desc>
+    <better>
+      <ref id="TY101-EXPLICIT-RETURN-TYPES"/>. Annotate return types on exported functions.
+    </better>
+    <why_bad>`any` return types infect callers, spreading unsafe types silently through the codebase.</why_bad>
+    <examples>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - JSON.parse returns any, infects return type
+export function loadConfig(path: string) {
+  return JSON.parse(readFileSync(path, "utf-8"));
+}
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="TZ106-STRING-TYPED-PARAMETERS">
+    <desc>Using bare `string` for parameters that accept only specific values.</desc>
+    <better>
+      <ref id="TY105-LITERAL-AND-CONST"/>. Use literal unions, branded types, or template literal types.
+    </better>
+    <why_bad>Accepts any string at compile time, deferring validation to runtime.</why_bad>
+    <examples>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad
+function setTheme(theme: string): void { ... }
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good
+function setTheme(theme: "light" | "dark" | "system"): void { ... }
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="TZ107-INTERFACE-FOR-UNION">
+    <desc>Using a single interface with optional fields to model variants instead of a discriminated union.</desc>
+    <better>
+      <ref id="TY106-DISCRIMINATED-UNIONS"/>. Model variants as separate types with a shared discriminant property.
+    </better>
+    <why_bad>Optional fields make every variant look the same. Callers must check multiple fields to determine the variant, and the compiler cannot enforce completeness.</why_bad>
+    <examples>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - optional fields for variants
+interface Shape {
+  kind: string;
+  radius?: number;    // only for circles
+  width?: number;     // only for rectangles
+  height?: number;    // only for rectangles
+}
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="TZ108-NAMESPACE-ABUSE">
+    <desc>Using TypeScript `namespace` for code organization instead of ES modules.</desc>
+    <better>
+      <ref id="TY200-ES-MODULES"/>. Use ES modules and files for code organization.
+    </better>
+    <why_bad>Namespaces are a legacy feature. They don't tree-shake, conflict with ES modules, and are unnecessary in modern TypeScript.</why_bad>
+    <tool_support>ESLint @typescript-eslint/no-namespace.</tool_support>
+  </rule>
+  <rule id="TZ109-FUNCTION-OVERLOADS-ABUSE">
+    <desc>Excessive function overloads when a union parameter or generic would be clearer.</desc>
+    <better>Use union types for simple cases. Reserve overloads for when the return type varies based on the input type.</better>
+    <why_bad>Overloads add complexity. The implementation signature must handle all cases anyway, and each overload is an additional surface to maintain.</why_bad>
+  </rule>
+</rules>

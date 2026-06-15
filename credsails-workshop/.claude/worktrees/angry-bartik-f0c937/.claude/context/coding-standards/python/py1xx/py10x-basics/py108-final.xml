@@ -1,0 +1,42 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY10X-BASICS-PY108-FINAL" title="py108 final" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py108-final.md">
+  <rule id="PY108-FINAL">
+    <desc>Use `Final` for constants that should never be reassigned.</desc>
+    <rationale>Final prevents accidental modification of constants, documents immutability intent.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - constants are Final
+DEFAULT_DATE_FORMAT: Final = "%Y-%m-%d"
+MAX_RETRIES: Final = 3
+API_BASE_URL: Final = "https://api.example.com"
+
+# In code
+date_str = date.strftime(DEFAULT_DATE_FORMAT)  # OK
+
+# Attempt to reassign
+DEFAULT_DATE_FORMAT = "%m/%d/%Y"  # mypy error: Cannot assign to final name
+
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - Final class attribute
+class Config:
+    DATABASE_URL: Final = "postgresql://localhost/db"
+    TIMEOUT: Final = 30
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - mutable constant (no Final)
+DEFAULT_DATE_FORMAT = "%Y-%m-%d"
+# ... later in code ...
+DEFAULT_DATE_FORMAT = "%m/%d/%Y"  # Accidentally modified, no error!
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY107-LITERAL-TYPES"/>
+      <ref id="PY300-IMMUTABILITY"/>
+    </related>
+    <tool_support>`Final` from `typing`. mypy enforces finality.</tool_support>
+  </rule>
+</rules>

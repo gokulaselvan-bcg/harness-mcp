@@ -1,0 +1,10 @@
+<index id="CTX-CODING-STANDARDS-PYTHON-PY4XX-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="PY40x" kind="tens" desc="Docstring format, coverage, layout." label="Docstrings and Documentation">
+      <doc_ref path="./py40x-docstrings.xml"/>
+    </entry>
+    <entry id="PY41x" kind="tens" desc="Quotes, f-strings, concatenation." label="Formatting and Strings">
+      <doc_ref path="./py41x-formatting-and-strings.xml"/>
+    </entry>
+  </section>
+</index>

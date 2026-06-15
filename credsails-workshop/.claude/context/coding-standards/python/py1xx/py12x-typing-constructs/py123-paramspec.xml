@@ -1,0 +1,42 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY12X-TYPING-CONSTRUCTS-PY123-PARAMSPEC" title="py123 paramspec" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py123-paramspec.md">
+  <rule id="PY123-PARAMSPEC">
+    <desc>Use ParamSpec to preserve function signatures in decorators.</desc>
+    <rationale>ParamSpec ensures decorators don't lose parameter type information.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - preserves signature
+def log_calls(func: Callable[P, R]) -> Callable[P, R]:
+    """Decorator that preserves exact signature."""
+    def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
+        print(f"Calling {func.__name__}")
+        return func(*args, **kwargs)
+    return wrapper
+
+@log_calls
+def process_transaction(txn: Transaction, validate: bool = True) -> bool:
+    """Process a transaction."""
+    ...
+
+# Type checking works correctly
+process_transaction(txn, validate=False)  # OK
+process_transaction(txn, invalid=True)     # mypy error
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - loses signature
+def log_calls(func):
+    def wrapper(*args, **kwargs):
+        print(f"Calling {func.__name__}")
+        return func(*args, **kwargs)
+    return wrapper
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY113-CALLABLE-TYPES"/>
+      <ref id="Y212-DECORATOR-PATTERN"/>
+    </related>
+    <tool_support>ParamSpec from `typing` (Python 3.10+) or `typing_extensions`.</tool_support>
+  </rule>
+</rules>

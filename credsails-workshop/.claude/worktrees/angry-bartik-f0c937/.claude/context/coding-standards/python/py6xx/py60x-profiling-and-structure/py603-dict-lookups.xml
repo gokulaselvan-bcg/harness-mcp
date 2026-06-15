@@ -1,0 +1,8 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY6XX-PY60X-PROFILING-AND-STRUCTURE-PY603-DICT-LOOKUPS" title="py603 dict lookups" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py603-dict-lookups.md">
+  <rule id="PY603-DICT-LOOKUPS">
+    <desc>Use dict lookups instead of long if/elif chains.</desc>
+    <examples>
+      <example kind="good">`PARSERS = {"csv": CsvParser, ...}; Parser = PARSERS[type]`.</example>
+    </examples>
+  </rule>
+</rules>

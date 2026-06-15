@@ -1,0 +1,84 @@
+<rules id="CTX-CODING-STANDARDS-JAVA-JY4XX-JY4XX-CONCURRENCY" title="Concurrency &amp; Immutability" kind="ruleset" version="2" updated="2026-02-20" status="active" source="jy4xx-concurrency.md">
+  <rule id="JY400-PREFER-IMMUTABLE-DATA">
+    <desc>Prefer immutable objects and defensive copies across threads.</desc>
+    <rationale>Immutability eliminates entire classes of race conditions.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[public List<String> tags() {
+    return List.copyOf(this.tags);
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JZ300-SHARED-MUTABLE-STATE"/>
+      <ref id="Y113-COMPOSITION-OVER-INHERITANCE"/>
+    </related>
+  </rule>
+  <rule id="JY401-USE-CONCURRENT-UTILS">
+    <desc>Use `java.util.concurrent` utilities instead of manual synchronization.</desc>
+    <rationale>Executors, queues, and atomics are safer and more scalable.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[ExecutorService pool = Executors.newFixedThreadPool(4);
+Future<Result> result = pool.submit(task);
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JZ303-THREAD-LEAKS"/>
+    </related>
+  </rule>
+  <rule id="JY402-LOCK-SCOPE-SMALL">
+    <desc>Keep synchronized sections minimal and lock on private objects.</desc>
+    <rationale>Reduces contention and avoids accidental lock sharing.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[private final Object lock = new Object();
+
+public void update() {
+    synchronized (lock) {
+        state = compute();
+    }
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JZ301-LOCK-ON-PUBLIC"/>
+    </related>
+  </rule>
+  <rule id="JY403-ATOMIC-OR-SYNC">
+    <desc>Use `Atomic*` for simple counters; use `synchronized` or locks for compound invariants.</desc>
+    <rationale>Atomics are fast but only safe for simple operations.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[private final AtomicInteger attempts = new AtomicInteger();
+
+public int increment() {
+    return attempts.incrementAndGet();
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="JZ302-DOUBLE-CHECK-LOCKING"/>
+    </related>
+  </rule>
+  <rule id="JY404-DOCUMENT-THREAD-SAFETY">
+    <desc>Document whether a class is thread-safe or not.</desc>
+    <rationale>Clear contracts avoid unsafe sharing and subtle bugs.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[// Thread-safe: immutable after construction
+public final class Config {
+    ...
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="Y300-EXPRESSIVE-NAMES"/>
+    </related>
+  </rule>
+</rules>

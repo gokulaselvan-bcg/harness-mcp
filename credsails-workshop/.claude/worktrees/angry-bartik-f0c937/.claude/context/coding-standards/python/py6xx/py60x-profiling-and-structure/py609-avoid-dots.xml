@@ -1,0 +1,9 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY6XX-PY60X-PROFILING-AND-STRUCTURE-PY609-AVOID-DOTS" title="py609 avoid dots" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py609-avoid-dots.md">
+  <rule id="PY609-AVOID-DOTS">
+    <desc>In hot loops, minimize attribute access.</desc>
+    <exceptions>Only in performance-critical code.</exceptions>
+    <examples>
+      <example kind="good">Cache `obj.attr` in local variable before loop.</example>
+    </examples>
+  </rule>
+</rules>

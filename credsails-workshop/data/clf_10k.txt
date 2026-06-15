@@ -1,0 +1,57 @@
+===PAGE 1===
+UNITED STATES SECURITIES AND EXCHANGE COMMISSION — FORM 10-K (ANNUAL REPORT)
+Registrant: Cleveland-Cliffs Inc.
+Commission File Number: 1-09844
+State of incorporation: Ohio
+Primary industry (NAICS): 331110 — Iron and Steel Mills and Ferroalloy Manufacturing
+Common stock ticker: CLF (New York Stock Exchange)
+Fiscal year covered: year ended December 31, 2024
+
+Cleveland-Cliffs is the largest flat-rolled steel producer in North America and a
+leading supplier of automotive-grade steel, serving automotive, infrastructure, and
+manufacturing end markets. This Annual Report on Form 10-K is filed with the SEC and
+is part of the public record.
+
+(This file is a trimmed, representative excerpt of the public 10-K used to make the
+demo self-contained. Drop in the full filing to extend live-mode extraction.)
+
+===PAGE 2===
+ITEM 8. CONSOLIDATED BALANCE SHEET (selected items, US GAAP, $ in millions, as of Dec 31, 2024)
+
+Cash and cash equivalents .......................................... 50
+Total current assets ............................................... 7,100
+Total assets ....................................................... 17,000
+Total current liabilities .......................................... 3,550
+Total debt (long-term debt plus current portion) ................... 3,777
+Total equity ....................................................... 6,500
+
+The Company maintains an asset-based lending (ABL) facility secured by inventory and
+accounts receivable. Long-term debt consists primarily of senior guaranteed notes and
+senior unsecured notes maturing 2026 through 2031.
+
+===PAGE 3===
+ITEM 7. MANAGEMENT'S DISCUSSION AND ANALYSIS — RESULTS OF OPERATIONS
+(US GAAP unless noted, $ in millions, year ended Dec 31, 2024)
+
+Revenues ........................................................... 19,185
+Net income (loss) attributable to the Company ...................... (708)
+Interest expense ................................................... 300
+Adjusted EBITDA (non-GAAP, management-prepared) .................... 1,200
+
+Adjusted EBITDA is a non-GAAP measure prepared by management and reconciled to net
+income in the non-GAAP reconciliation. Management uses leverage (net debt to Adjusted
+EBITDA) and interest coverage to monitor liquidity. The Company believes its liquidity
+and cash flows are sufficient to service near-term debt maturities.
+
+===PAGE 4===
+ITEM 1A. RISK FACTORS AND CREDIT RATINGS (excerpt)
+
+The steel industry is highly cyclical and sensitive to automotive demand, raw-material
+costs, and global overcapacity. A downturn could materially affect results.
+
+Collateral: borrowings under the ABL facility are secured by a first-priority lien on
+inventory and receivables; the senior guaranteed notes are secured on a junior basis.
+
+Credit ratings: the Company's senior notes are rated by S&P Global Ratings and Moody's.
+As of the filing date the corporate family / issuer rating was in the "BB" category
+(non-investment grade). Ratings are opinions of third-party agencies and may change.

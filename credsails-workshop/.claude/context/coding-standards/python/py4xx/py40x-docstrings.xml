@@ -1,0 +1,89 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY4XX-PY40X-DOCSTRINGS" title="Docstrings and Documentation" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py40x-docstrings.md">
+  <rule id="PY400-RST-DOCSTRINGS">
+    <desc>Use reStructuredText format for docstrings.</desc>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[def parse(text: str) -> Transaction:
+    """Parse transaction from text.
+
+    :param text: Transaction text to parse
+    :return: Parsed transaction object
+    :raises ValueError: If text is invalid
+    """
+]]></code>
+      </example>
+    </examples>
+    <tool_support>Sphinx uses RST docstrings.</tool_support>
+  </rule>
+  <rule id="PY401-DOCSTRING-COVERAGE">
+    <desc>Document all public functions, classes, and modules.</desc>
+    <examples>
+      <example kind="good">Every `def` in public API has a docstring.</example>
+    </examples>
+    <tool_support>ruff D100-D107 (some relaxed in pyproject.toml).</tool_support>
+  </rule>
+  <rule id="PY402-MODULE-DOCSTRINGS">
+    <desc>Every module has a docstring explaining its purpose.</desc>
+    <examples>
+      <example kind="good">`"""CSV data parser module."""` at top of file.</example>
+    </examples>
+  </rule>
+  <rule id="PY403-ONE-LINE-SUMMARY">
+    <desc>First line of docstring is a brief summary, then a blank line, then details.</desc>
+    <examples>
+      <example kind="good">`"""Parse transaction.\n\nDetailed description here..."""`.</example>
+    </examples>
+  </rule>
+  <rule id="PY404-TYPE-HINTS-AS-DOCS">
+    <desc>Type hints document expected types; don't repeat in docstrings.</desc>
+    <examples>
+      <example kind="good">Don't write `:param text: str - the text` when signature has
+`text: str`.
+</example>
+    </examples>
+  </rule>
+  <rule id="PY405-EXAMPLES-IN-DOCSTRINGS">
+    <desc>Include usage examples in docstrings for complex functions.</desc>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA["""Parse amount.
+
+Example:
+    >>> parse_amount("$1,234.56")
+    Decimal("1234.56")
+"""
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="PY406-LINE-LENGTH">
+    <desc>Max 88 characters per line (Black standard).</desc>
+    <tool_support>ruff E501 (relaxed for notebooks in pyproject.toml).</tool_support>
+  </rule>
+  <rule id="PY407-BLANK-LINES">
+    <desc>Two blank lines between top-level definitions, one within classes.</desc>
+    <tool_support>ruff E301-E306 enforce.</tool_support>
+  </rule>
+  <rule id="PY408-INDENTATION">
+    <desc>4 spaces per indentation level.</desc>
+    <tool_support>ruff formatter enforces.</tool_support>
+  </rule>
+  <rule id="PY409-CONTRACT-BASED-PRIVACY">
+    <desc>Use underscore prefix only for internal implementation details. Attributes that represent observable state or configuration should be public with a read-only contract.</desc>
+    <related>
+      <ref id="PY112-DATACLASS-TYPES"/>
+      <ref id="PY300-IMMUTABILITY"/>
+    </related>
+    <notes>
+      <note title="Make attributes PRIVATE (underscore prefix)">1. Helper methods implementing public methods
+2. Internal caches and performance optimizations
+3. Internal data structures for public APIs
+4. Runtime guards and one-time flags
+</note>
+      <note title="Make attributes PUBLIC (no underscore)">1. Configuration parameters passed to `__init__`
+2. Observable state external code needs to read
+3. Computed properties already exposed via `@property`
+</note>
+    </notes>
+  </rule>
+</rules>

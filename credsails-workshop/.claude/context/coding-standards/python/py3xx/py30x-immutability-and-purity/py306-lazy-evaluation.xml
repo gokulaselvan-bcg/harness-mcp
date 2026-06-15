@@ -1,0 +1,57 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY3XX-PY30X-IMMUTABILITY-AND-PURITY-PY306-LAZY-EVALUATION" title="py306 lazy evaluation" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py306-lazy-evaluation.md">
+  <rule id="PY306-LAZY-EVALUATION">
+    <desc>Prefer lazy evaluation over eager computation. Compute values only when actually needed. This reduces memory usage, enables working with infinite sequences, and can improve performance by avoiding unnecessary computation.</desc>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# GOOD: Lazy - only computes what's consumed
+def process_transactions(file) -> Iterator[Transaction]:
+    for line in file:
+        yield parse_transaction(line)
+
+# Caller controls materialization
+txns = process_transactions(file)
+first_ten = list(islice(txns, 10))  # Only parses 10 lines
+
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA[# GOOD: Chain multiple generators
+def all_files(dirs: list[Path]) -> Iterator[Path]:
+    return chain.from_iterable(d.iterdir() for d in dirs)
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# BAD: Eager - loads everything into memory
+def process_transactions(file) -> list[Transaction]:
+    return [parse_transaction(line) for line in file]  # All at once!
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY305-GENERATORS"/>
+      <ref id="PY310-ITERTOOLS"/>
+      <ref id="PY602-GENERATOR-VS-LIST"/>
+    </related>
+    <notes>
+      <note title="Key Techniques">- Generators and generator expressions (not list comprehensions)
+- `itertools` for lazy transformations (chain, islice, takewhile, etc.)
+- Return `Iterator[T]` instead of `list[T]` or `tuple[T]` when possible
+- Let callers materialize with `list()` only if they need the full sequence
+</note>
+      <note title="Performance Benefits">- Memory: O(1) vs O(n) for large sequences
+- Speed: Can start consuming immediately (no upfront delay)
+- Composability: Chain operations without intermediate lists
+</note>
+      <note title="Trade-offs">- Can only iterate once (unless using `itertools.tee()`)
+- Can't index or get length without consuming
+- Debugging harder (can't inspect full sequence)
+</note>
+      <note title="When to Materialize">- Need random access or indexing
+- Need length without consuming
+- Need to iterate multiple times
+- Returning from API where caller doesn't control iteration
+</note>
+    </notes>
+  </rule>
+</rules>

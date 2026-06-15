@@ -1,0 +1,147 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PZ1XX-PZ11X-TYPE-VIOLATIONS-PZ115-DATACLASS-WITH-BEHAVIOR" title="pz115 dataclass with behavior" kind="ruleset" version="2" updated="2026-02-20" status="active" source="pz115-dataclass-with-behavior.md">
+  <rule id="PZ115-DATACLASS-WITH-BEHAVIOR">
+    <desc>Using `@dataclass` decorator for classes with complex behavior, business logic, or methods beyond simple accessors.</desc>
+    <better>Use regular classes with explicit `__init__` for classes with behavior. Use `__slots__` for memory efficiency when appropriate. Reserve dataclasses for pure data containers (PY112-DATACLASS-TYPES).</better>
+    <why_bad>Dataclasses are designed for "dumb" data containers (DTOs, value objects) that primarily hold data. Using them for classes with behavior:
+- Confuses the purpose of the class (is it data or behavior?)
+- Encourages mixing data representation with business logic
+- Makes it harder to test (behavior mixed with data initialization)
+- Violates Y100-SINGLE-RESPONSIBILITY (data structure + behavior = two responsibilities)
+</why_bad>
+    <examples>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - Strategy with behavior as dataclass
+@dataclass(frozen=True)
+class RebalanceStrategy(Strategy):
+    target_allocations: dict[str, float]
+
+    def generate_actions(self, date: date, portfolio: Portfolio) -> Iterator[Action]:
+        # Complex rebalancing logic here...
+        pass  # This is behavior, not data!
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - Service with methods as dataclass
+@dataclass
+class TransactionProcessor:
+    config: Config
+
+    def process(self, txn: Transaction) -> Result:
+        # Complex processing logic...
+        pass
+
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - Strategy with behavior as regular class
+class RebalanceStrategy(Strategy):
+    def __init__(self, target_allocations: dict[str, float]) -> None:
+        """Initialize rebalancing strategy."""
+        if not (0.999 <= sum(target_allocations.values()) <= 1.001):
+            raise ValueError("Allocations must sum to 1.0")
+        self._target_allocations = target_allocations
+
+    def generate_actions(self, date: date, portfolio: Portfolio) -> Iterator[Action]:
+        # Complex rebalancing logic here...
+        pass
+
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - Data container as dataclass
+@dataclass(frozen=True)
+class Transaction:
+    """Dumb data container for transaction record."""
+    id: int
+    date: date
+    amount: Decimal
+    merchant: str
+    category: str | None = None
+    # No methods with business logic - just data!
+
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - Action parameter container as dataclass
+@dataclass(frozen=True)
+class BuyAction(Action):
+    """Encapsulates buy parameters - minimal behavior."""
+    asset_id: str
+    date: date
+    units: float | None
+    value: float | None
+
+    def execute(self, portfolio: Portfolio) -> ActionResult:
+        # Minimal behavior: just delegates to portfolio
+        return portfolio.buy(...)
+]]></code>
+      </example>
+    </examples>
+    <notes>
+      <note title="Example - Class with factory method">```python
+# Bad - Factory method makes this behavior, not just data
+@dataclass(frozen=True)
+class QueryResult:
+    _data: pd.DataFrame
+
+    @classmethod
+    def from_query(cls, sql: str, conn: Connection) -&gt; QueryResult:
+        # Factory method = behavior!
+        ...
+
+# Good - Regular class when factory methods are needed
+class QueryResult:
+    """Result of a database query."""
+    __slots__ = ("_data",)
+
+    def __init__(self, data: pd.DataFrame) -&gt; None:
+        self._data = data
+
+    @classmethod
+    def from_query(cls, sql: str, conn: Connection) -&gt; QueryResult:
+        data = pd.read_sql(sql, conn)
+        return cls(data)
+```
+</note>
+      <note title="Example - Collection with initialization logic">```python
+# Bad - Collection that sorts/transforms input as dataclass
+@dataclass(frozen=True)
+class EventSchedule:
+    events: tuple[Event, ...]
+    _by_date: dict[date, list[Event]] = field(init=False)  # Awkward!
+
+    def __post_init__(self) -&gt; None:
+        # Complex initialization doesn't belong in __post_init__
+        self._by_date = self._build_index()
+
+# Good - Regular class for collections with initialization logic
+class EventSchedule:
+    """Collection of events stored in sorted order."""
+    __slots__ = ("_events",)
+
+    def __init__(self, events: Iterable[Event]) -&gt; None:
+        self._events: tuple[Event, ...] = tuple(sorted(events))
+
+    @property
+    def events(self) -&gt; Sequence[Event]:
+        return self._events
+```
+</note>
+      <note title="Rule of thumb">If the class has a `@classmethod` factory method, non-trivial `__init__` logic, or methods beyond simple property access, it's not a "dumb" data container and shouldn't be a dataclass.</note>
+      <note title="When NOT to use dataclasses">- Strategy implementations (Y220-STRATEGY-PATTERN)
+- Service classes with business logic
+- Controllers/Managers with orchestration logic
+- Parsers/Processors with complex algorithms
+- Collection/container classes with factory methods or complex initialization
+- Any class where behavior &gt; data
+</note>
+      <note title="When to use dataclasses">- DTOs (Data Transfer Objects) between layers
+- Value objects (immutable data with no behavior)
+- Configuration containers (just data fields)
+- Action parameters (Command pattern parameters)
+- Test fixtures (simple data for tests)
+</note>
+    </notes>
+  </rule>
+</rules>

@@ -1,0 +1,42 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY10X-BASICS-PY101-PRECISE-TYPES" title="py101 precise types" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py101-precise-types.md">
+  <rule id="PY101-PRECISE-TYPES">
+    <desc>Use the most specific type possible. Prefer `Sequence[str]` over `list`, `Mapping[str, int]` over `dict`.</desc>
+    <rationale>Precise types communicate intent, enable better type checking, and document constraints.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - specific and flexible
+def process_names(names: Sequence[str]) -> list[str]:
+    """Process names, accepting any sequence type."""
+    return [name.upper() for name in names]
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - too specific, limits caller
+def process_names(names: list[str]) -> list[str]:
+    return [name.upper() for name in names]
+
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - precise return type
+def get_config() -> Mapping[str, str]:
+    """Returns immutable mapping."""
+    return {"host": "localhost"}
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - suggests mutability
+def get_config() -> dict[str, str]:
+    return {"host": "localhost"}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY102-USE-PROTOCOLS"/>
+      <ref id="PY106-COLLECTION-TYPES"/>
+    </related>
+    <tool_support>mypy detects type mismatches. Use `from collections.abc import Sequence, Mapping, Iterable`.</tool_support>
+  </rule>
+</rules>

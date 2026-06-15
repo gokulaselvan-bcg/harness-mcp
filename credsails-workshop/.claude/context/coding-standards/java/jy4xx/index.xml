@@ -1,0 +1,8 @@
+<index id="CTX-CODING-STANDARDS-JAVA-JY4XX-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Source" kind="other" desc=""/>
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="JY40x" kind="tens" desc="Thread safety and synchronization." label="Concurrency &amp; Immutability">
+      <doc_ref path="./jy4xx-concurrency.xml"/>
+    </entry>
+  </section>
+</index>

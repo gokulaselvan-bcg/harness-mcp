@@ -1,0 +1,78 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY3XX-PY31X-FUNCTIONAL-TOOLING" title="Functional Tooling" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py31x-functional-tooling.md">
+  <rule id="PY310-ITERTOOLS">
+    <desc>Use itertools for efficient iteration patterns.</desc>
+    <examples>
+      <example kind="good">`itertools.chain()`, `groupby()`, `accumulate()`.</example>
+    </examples>
+    <related>
+      <ref id="PY305-GENERATORS"/>
+    </related>
+  </rule>
+  <rule id="PY311-OPERATOR-MODULE">
+    <desc>Use `operator` module instead of lambdas for common operations.</desc>
+    <examples>
+      <example kind="good">`sorted(txns, key=operator.attrgetter('date'))` not `sorted(txns, key=lambda t: t.date)`.</example>
+    </examples>
+  </rule>
+  <rule id="PY312-DATACLASS-REPLACE">
+    <desc>Use `dataclasses.replace()` for immutable updates.</desc>
+    <examples>
+      <example kind="good">`updated = replace(txn, amount=Decimal("100"))`.</example>
+    </examples>
+    <related>
+      <ref id="PY300-IMMUTABILITY"/>
+    </related>
+  </rule>
+  <rule id="PY313-AVOID-MUTABLE-DEFAULTS">
+    <desc>Never use mutable default arguments.</desc>
+    <examples>
+      <example kind="good">`def func(items: list[int] | None = None)` not `def func(items: list[int] = [])`.</example>
+    </examples>
+    <related>
+      <ref id="PZ109-MUTABLE-DEFAULTS"/>
+    </related>
+  </rule>
+  <rule id="PY314-CLOSURES">
+    <desc>Use closures for encapsulation and factory functions.</desc>
+    <examples>
+      <example kind="good">`def make_adder(n): return lambda x: x + n`.</example>
+    </examples>
+  </rule>
+  <rule id="PY315-FIRST-CLASS-FUNCTIONS">
+    <desc>Pass functions as arguments, return from functions.</desc>
+    <examples>
+      <example kind="good">`def apply(f: Callable, x): return f(x)`.</example>
+    </examples>
+    <related>
+      <ref id="PY113-CALLABLE-TYPES"/>
+    </related>
+  </rule>
+  <rule id="PY316-HIGHER-ORDER-FUNCTIONS">
+    <desc>Functions that take or return functions.</desc>
+    <examples>
+      <example kind="good">Decorators, `sorted(key=...)`, `map()`, `filter()`.</example>
+    </examples>
+    <related>
+      <ref id="Y212-DECORATOR-PATTERN"/>
+    </related>
+  </rule>
+  <rule id="PY317-RECURSION">
+    <desc>Use recursion for naturally recursive problems (trees, etc.).</desc>
+    <exceptions>Python has recursion limit (~1000). Use iteration for deep structures.</exceptions>
+  </rule>
+  <rule id="PY318-TAIL-RECURSION">
+    <desc>Python doesn't optimize tail recursion. Use iteration instead.</desc>
+    <examples>
+      <example kind="good">Use `while` loop, not tail-recursive function.</example>
+    </examples>
+  </rule>
+  <rule id="PY319-IMMUTABLE-COLLECTIONS">
+    <desc>Use `tuple`, `frozenset` for immutable collections.</desc>
+    <examples>
+      <example kind="good">`ALLOWED_CATEGORIES: Final = frozenset(["Food", "Transport"])`.</example>
+    </examples>
+    <related>
+      <ref id="PY108-FINAL"/>
+    </related>
+  </rule>
+</rules>

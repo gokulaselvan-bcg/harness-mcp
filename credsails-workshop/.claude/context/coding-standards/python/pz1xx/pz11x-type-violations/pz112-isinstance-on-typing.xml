@@ -1,0 +1,7 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PZ1XX-PZ11X-TYPE-VIOLATIONS-PZ112-ISINSTANCE-ON-TYPING" title="pz112 isinstance on typing" kind="ruleset" version="2" updated="2026-02-20" status="active" source="pz112-isinstance-on-typing.md">
+  <rule id="PZ112-ISINSTANCE-ON-TYPING">
+    <desc>`isinstance(x, List[int])` doesn't work.</desc>
+    <better>`isinstance(x, list)` and validate elements manually.</better>
+    <why_bad>Runtime type info lost for generics.</why_bad>
+  </rule>
+</rules>

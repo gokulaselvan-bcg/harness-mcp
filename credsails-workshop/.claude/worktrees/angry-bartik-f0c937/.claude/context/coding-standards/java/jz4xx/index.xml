@@ -1,0 +1,8 @@
+<index id="CTX-CODING-STANDARDS-JAVA-JZ4XX-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Source" kind="other" desc=""/>
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="JZ40x" kind="tens" desc="Inefficient patterns." label="Performance Anti-patterns">
+      <doc_ref path="./jz4xx-performance-antipatterns.xml"/>
+    </entry>
+  </section>
+</index>

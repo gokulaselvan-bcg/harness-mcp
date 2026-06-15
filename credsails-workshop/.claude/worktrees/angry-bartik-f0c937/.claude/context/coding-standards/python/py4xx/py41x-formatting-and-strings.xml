@@ -1,0 +1,27 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY4XX-PY41X-FORMATTING-AND-STRINGS" title="Formatting and Strings" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py41x-formatting-and-strings.md">
+  <rule id="PY410-DOUBLE-UNDERSCORE">
+    <desc>Avoid `__name__` (dunder) unless implementing protocols.</desc>
+    <examples>
+      <example kind="good">`__init__`, `__str__` OK. Don't use `__my_var` for privacy.</example>
+    </examples>
+  </rule>
+  <rule id="PY411-STRING-QUOTES">
+    <desc>Consistent quote style. Double quotes `"` preferred.</desc>
+    <tool_support>ruff formatter enforces consistent quotes.</tool_support>
+  </rule>
+  <rule id="PY412-F-STRINGS">
+    <desc>Use f-strings for formatting, not `%` or `.format()`.</desc>
+    <examples>
+      <example kind="good">`f"{name}: {amount}"` not `"%s: %s" % (name, amount)`.</example>
+    </examples>
+  </rule>
+  <rule id="PY413-STRING-CONCATENATION">
+    <desc>Use f-strings or `str.join()`, not `+` in loops.</desc>
+    <examples>
+      <example kind="good">`"".join(parts)` not `s = ""; for p in parts: s += p`.</example>
+    </examples>
+    <related>
+      <ref id="PY605-STRING-PERFORMANCE"/>
+    </related>
+  </rule>
+</rules>

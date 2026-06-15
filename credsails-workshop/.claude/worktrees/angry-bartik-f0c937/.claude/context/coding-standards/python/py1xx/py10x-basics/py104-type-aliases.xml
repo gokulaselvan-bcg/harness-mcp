@@ -1,0 +1,34 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY10X-BASICS-PY104-TYPE-ALIASES" title="py104 type aliases" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py104-type-aliases.md">
+  <rule id="PY104-TYPE-ALIASES">
+    <desc>Use type aliases for complex types. Use `TypeAlias` annotation for clarity.</desc>
+    <rationale>Type aliases improve readability, reduce duplication, and centralize type definitions.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - clear and reusable
+TransactionList: TypeAlias = list[Transaction]
+ConfigDict: TypeAlias = dict[str, str | int | bool]
+ParseResult: TypeAlias = tuple[bool, TransactionList | None, str | None]
+
+def parse_file(path: str) -> ParseResult:
+    """Returns (success, transactions, error_message)."""
+    ...
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - repeated complex type
+def parse_file(path: str) -> tuple[bool, list[Transaction] | None, str | None]:
+    ...
+
+def validate_file(path: str) -> tuple[bool, list[Transaction] | None, str | None]:
+    ...
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY101-PRECISE-TYPES"/>
+      <ref id="PY105-NEWTYPE"/>
+    </related>
+    <tool_support>Use `TypeAlias` from `typing` (Python 3.10+) or `typing_extensions`.</tool_support>
+  </rule>
+</rules>

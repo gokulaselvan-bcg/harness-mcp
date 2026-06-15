@@ -1,0 +1,49 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY10X-BASICS-PY102-USE-PROTOCOLS" title="py102 use protocols" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py102-use-protocols.md">
+  <rule id="PY102-USE-PROTOCOLS">
+    <desc>Prefer Protocol over ABC for structural subtyping. Use ABC only when inheritance is semantically important.</desc>
+    <exceptions>Use ABC when you need shared implementation via inheritance (template method pattern), or when semantic inheritance is important for your domain.</exceptions>
+    <rationale>Protocols enable duck typing with type safety. They're more flexible than ABCs and don't require explicit inheritance.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - structural subtyping
+class Parser(Protocol[T]):
+    """Protocol for any parser."""
+    def parse(self, text: str) -> T:
+        ...
+
+class CsvParser:
+    """Concrete parser - no inheritance needed."""
+    def parse(self, text: str) -> list[Transaction]:
+        ...
+
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - works due to structural compatibility
+def run_parser(parser: Parser[T], text: str) -> T:
+    return parser.parse(text)
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - requires inheritance
+from abc import ABC, abstractmethod
+
+class ParserABC(ABC):
+    @abstractmethod
+    def parse(self, text: str) -> Any:
+        ...
+
+class CsvParser(ParserABC):  # Forced inheritance
+    def parse(self, text: str) -> list[Transaction]:
+        ...
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="Y101-INTERFACE-SEGREGATION"/>
+      <ref id="Y220-STRATEGY-PATTERN"/>
+    </related>
+    <tool_support>mypy supports Protocol from `typing`. Python 3.8+.</tool_support>
+  </rule>
+</rules>

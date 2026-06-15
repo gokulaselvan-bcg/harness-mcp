@@ -1,0 +1,24 @@
+<rules id="CTX-CODING-STANDARDS-JAVA-JZ4XX-JZ4XX-PERFORMANCE-ANTIPATTERNS" title="Performance Anti-patterns" kind="ruleset" version="2" updated="2026-02-20" status="active" source="jz4xx-performance-antipatterns.md">
+  <rule id="JZ400-PREMATURE-OPTIMIZATION">
+    <desc>Optimizing without evidence of a bottleneck.</desc>
+    <better>
+      <ref id="JY504-MEASURE-BEFORE-OPTIMIZING"/>
+    </better>
+    <why_bad>Adds complexity and hides real issues.</why_bad>
+  </rule>
+  <rule id="JZ401-STREAMS-SIDE-EFFECTS">
+    <desc>Using streams with side effects or shared mutable state.</desc>
+    <better>Keep stream operations pure or use a loop.</better>
+    <why_bad>Hard to reason about and unsafe for parallel streams.</why_bad>
+  </rule>
+  <rule id="JZ402-INEFFICIENT-CONTAINS">
+    <desc>Using `List.contains` in hot paths with large lists.</desc>
+    <better>Use `HashSet` or `HashMap` for membership tests.</better>
+    <why_bad>O(n) lookups in tight loops.</why_bad>
+  </rule>
+  <rule id="JZ403-RECOMPILING-REGEX">
+    <desc>Compiling regex patterns repeatedly in loops.</desc>
+    <better>Cache a `Pattern` as `static final`.</better>
+    <why_bad>Pattern compilation is expensive.</why_bad>
+  </rule>
+</rules>

@@ -1,0 +1,30 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY11X-GENERICS-PY119-TYPE-COMMENTS" title="py119 type comments" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py119-type-comments.md">
+  <rule id="PY119-TYPE-COMMENTS">
+    <desc>Avoid type comments. Use modern annotation syntax instead.</desc>
+    <rationale>Type comments are legacy syntax for Python &lt;3.6. Modern annotations are clearer.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - modern annotations (Python 3.6+)
+def process(data: list[int]) -> int:
+    total: int = 0
+    items: list[str] = []
+    return total
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - type comments (legacy)
+def process(data):
+    # type: (list[int]) -> int
+    total = 0  # type: int
+    items = []  # type: list[str]
+    return total
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY100-USE-TYPE-HINTS"/>
+    </related>
+    <tool_support>Modern annotations work in Python 3.6+. Use them exclusively.</tool_support>
+  </rule>
+</rules>

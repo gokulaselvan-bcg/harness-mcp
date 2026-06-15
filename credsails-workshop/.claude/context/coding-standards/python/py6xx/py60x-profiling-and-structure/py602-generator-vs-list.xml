@@ -1,0 +1,72 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY6XX-PY60X-PROFILING-AND-STRUCTURE-PY602-GENERATOR-VS-LIST" title="py602 generator vs list" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py602-generator-vs-list.md">
+  <rule id="PY602-GENERATOR-VS-LIST">
+    <desc>**Favor generators over lists by default.** Use generator expressions for large datasets to save memory and enable lazy evaluation. Only materialize to lists when you need random access, length, or multiple iterations.</desc>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# GOOD: Default to generator for transformations
+def parse_file(path: Path) -> Iterator[Record]:
+    """Parse records lazily - caller controls materialization."""
+    with path.open() as f:
+        for line in f:
+            yield parse_line(line)
+
+# Caller decides when to materialize
+records = parse_file(path)
+first_100 = list(itertools.islice(records, 100))  # Only parses 100 lines
+
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA[# GOOD: Generator expression for filtering
+large_txns = (txn for txn in transactions if txn.amount > 1000)
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# BAD: List comprehension loads everything into memory
+def parse_file(path: Path) -> list[Record]:
+    with path.open() as f:
+        return [parse_line(line) for line in f]  # All at once!
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# BAD: Unnecessary list creation
+large_txns = [txn for txn in transactions if txn.amount > 1000]
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY305-GENERATORS"/>
+      <ref id="PY306-LAZY-EVALUATION"/>
+      <ref id="Y224-ITERATOR-PATTERN"/>
+    </related>
+    <notes>
+      <note title="Default Choice">Generator (lazy evaluation)
+- Use `(x for x in items)` generator expression
+- Return `Iterator[T]` from functions
+- Let caller decide when/if to materialize with `list()`
+</note>
+      <note title="Memory Impact">- List: O(n) memory for n items (all stored)
+- Generator: O(1) memory (one item at a time)
+- For 1M transactions: ~800MB (list) vs ~80 bytes (generator)
+</note>
+      <note title="Migration Pattern">When converting tuple/list returns to generators:
+1. Change return type: `tuple[T, ...]` → `Iterator[T]`
+2. Replace list building with `yield`
+3. Update callers to use `list()` only where needed
+4. Update tests to materialize before assertions
+</note>
+      <note title="Performance Impact">- Generator: Immediate start, incremental results
+- List: Upfront delay to build entire list
+- Generator wins when: processing streams, early termination, partial consumption
+</note>
+      <note title="When List is Better">- Need to iterate multiple times over same data
+- Need random access (`result[3]`)
+- Need length without consuming (`len(result)`)
+- Small datasets where memory isn't a concern
+- Returning from public API where lazy evaluation complicates usage
+</note>
+    </notes>
+  </rule>
+</rules>

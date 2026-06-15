@@ -1,0 +1,134 @@
+<rules id="CTX-CODING-STANDARDS-TYPESCRIPT-TY5XX-TY5XX-ASYNC" title="Async &amp; Promises" kind="ruleset" version="2" updated="2026-03-12" status="active" source="ty5xx-async.md">
+  <rule id="TY500-ASYNC-AWAIT">
+    <desc>Use `async`/`await` over raw Promise chains (`.then`/`.catch`).</desc>
+    <rationale>Async/await produces linear, readable code with proper stack traces and straightforward error handling via try/catch.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good
+async function fetchUser(id: string): Promise<User> {
+  const response = await fetch(`/api/users/${id}`);
+  if (!response.ok) throw new HttpError(response.status);
+  const data: unknown = await response.json();
+  return validateUser(data); // validate/transform at boundary per TY405
+}
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - nested .then chains
+function fetchUser(id: string): Promise<User> {
+  return fetch(`/api/users/${id}`)
+    .then((res) => {
+      if (!res.ok) throw new HttpError(res.status);
+      return res.json();
+    })
+    .then((data) => data as User);
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TZ300-UNHANDLED-PROMISES"/>
+    </related>
+    <tool_support>ESLint @typescript-eslint/no-floating-promises, @typescript-eslint/promise-function-async.</tool_support>
+  </rule>
+  <rule id="TY501-PROMISE-CONCURRENCY">
+    <desc>Use `Promise.all` for independent concurrent operations; use `Promise.allSettled` when partial failure is acceptable.</desc>
+    <rationale>Sequential awaits for independent work waste time. `Promise.all` fails fast; `Promise.allSettled` reports all results.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - concurrent independent fetches
+const [user, orders] = await Promise.all([
+  fetchUser(id),
+  fetchOrders(id),
+]);
+
+// Good - partial failure OK
+const results = await Promise.allSettled(urls.map(fetch));
+const successes = results.filter(
+  (r): r is PromiseFulfilledResult<Response> => r.status === "fulfilled"
+);
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="typescript"><![CDATA[// Bad - sequential when independent
+const user = await fetchUser(id);
+const orders = await fetchOrders(id);
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY500-ASYNC-AWAIT"/>
+      <ref id="TZ305-SEQUENTIAL-INDEPENDENT-AWAITS"/>
+    </related>
+  </rule>
+  <rule id="TY502-ABORT-SIGNALS">
+    <desc>Accept `AbortSignal` for cancellable async operations. Propagate signals through the call chain.</desc>
+    <rationale>AbortSignal is the standard cancellation mechanism for fetch, streams, and long-running operations. Without it, abandoned work wastes resources.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good
+async function fetchWithRetry(
+  url: string,
+  opts: { retries: number; signal?: AbortSignal },
+): Promise<Response> {
+  for (let i = 0; i <= opts.retries; i++) {
+    opts.signal?.throwIfAborted();
+    try {
+      return await fetch(url, { signal: opts.signal });
+    } catch (err) {
+      if (i === opts.retries) throw err;
+    }
+  }
+  throw new Error("unreachable");
+}
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="TY503-TYPED-EVENT-EMITTERS">
+    <desc>Use typed event emitters or observable patterns instead of untyped string-based events.</desc>
+    <rationale>Typed events catch misspelled event names, wrong payload types, and missing handlers at compile time.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - typed event map
+interface ServerEvents {
+  connection: (socket: Socket) => void;
+  error: (err: Error) => void;
+  close: () => void;
+}
+
+interface TypedEmitter<T extends Record<string, (...args: unknown[]) => void>> {
+  on<K extends keyof T>(event: K, listener: T[K]): void;
+  emit<K extends keyof T>(event: K, ...args: Parameters<T[K]>): void;
+}
+
+const server: TypedEmitter<ServerEvents> = createServer();
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="TY103-GENERICS"/>
+    </related>
+  </rule>
+  <rule id="TY504-ASYNC-ITERATORS">
+    <desc>Use `for await...of` with async iterables for streaming data. Prefer async generators over manual iterator implementation.</desc>
+    <rationale>Async iterators handle backpressure naturally, compose well, and are the standard pattern for streaming data in Node.js and web streams.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="typescript"><![CDATA[// Good - async generator
+async function* readLines(path: string): AsyncGenerator<string> {
+  const stream = createReadStream(path);
+  for await (const chunk of stream) {
+    yield* chunk.toString().split("\n");
+  }
+}
+
+// Good - consumption
+for await (const line of readLines("data.csv")) {
+  process(line);
+}
+]]></code>
+      </example>
+    </examples>
+  </rule>
+</rules>

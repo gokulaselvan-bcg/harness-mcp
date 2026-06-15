@@ -1,0 +1,7 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PZ1XX-PZ11X-TYPE-VIOLATIONS-PZ113-MIXED-SYNC-ASYNC" title="pz113 mixed sync async" kind="ruleset" version="2" updated="2026-02-20" status="active" source="pz113-mixed-sync-async.md">
+  <rule id="PZ113-MIXED-SYNC-ASYNC">
+    <desc>Confusing sync/async in type hints.</desc>
+    <better>Consistent async types, use `Awaitable`.</better>
+    <why_bad>Runtime errors, unclear behavior.</why_bad>
+  </rule>
+</rules>

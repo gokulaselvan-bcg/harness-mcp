@@ -1,0 +1,104 @@
+<rules id="CTX-CODING-STANDARDS-JAVA-JY2XX-JY2XX-ORGANIZATION-AND-DESIGN" title="Code Organization &amp; Design" kind="ruleset" version="2" updated="2026-02-20" status="active" source="jy2xx-organization-and-design.md">
+  <rule id="JY200-PACKAGE-BY-FEATURE">
+    <desc>Organize packages by feature, not by technical layer.</desc>
+    <rationale>Feature-based packages improve cohesion and local reasoning.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="text"><![CDATA[com.acme.orders
+com.acme.orders.api
+com.acme.orders.store
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="Y106-MODULE-STRUCTURE"/>
+      <ref id="Y107-COHESION"/>
+    </related>
+  </rule>
+  <rule id="JY201-BOUNDARY-INTERFACES">
+    <desc>Define interfaces at system boundaries; keep implementations package-private.</desc>
+    <rationale>Interfaces enable testing, substitution, and stable contracts.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[public interface OrderRepository {
+    Optional<Order> findById(OrderId id);
+}
+
+final class SqlOrderRepository implements OrderRepository {
+    ...
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="Y101-INTERFACE-SEGREGATION"/>
+      <ref id="Y103-DEPENDENCY-INJECTION"/>
+    </related>
+  </rule>
+  <rule id="JY202-MINIMUM-VISIBILITY">
+    <desc>Use the smallest visibility that works; avoid public fields.</desc>
+    <rationale>Smaller surface area reduces coupling and misuse.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[class OrderService { // package-private
+    private final Clock clock;
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="Y108-COUPLING"/>
+      <ref id="Z100-TIGHT-COUPLING"/>
+    </related>
+  </rule>
+  <rule id="JY203-BUILDER-FOR-MANY-PARAMS">
+    <desc>Use builders when a constructor has more than 4 parameters.</desc>
+    <rationale>Builders improve readability and reduce parameter order bugs.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[Order order = Order.builder()
+    .id(id)
+    .customer(customer)
+    .createdAt(now)
+    .status(Status.NEW)
+    .build();
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="Y202-BUILDER-PATTERN"/>
+    </related>
+  </rule>
+  <rule id="JY204-STATIC-FACTORY-NAMES">
+    <desc>Prefer named static factories over overloaded constructors.</desc>
+    <rationale>Names communicate intent and allow caching.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[public static Money ofCents(long cents) {
+    return new Money("USD", cents);
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="Y200-FACTORY-METHOD"/>
+    </related>
+  </rule>
+  <rule id="JY205-UTILITY-CLASS-DISCIPLINE">
+    <desc>Utility classes must be `final` with a private constructor.</desc>
+    <rationale>Prevents instantiation and subclassing of static helpers.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[public final class Hashing {
+    private Hashing() {}
+
+    public static String sha256(String input) { ... }
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="Y111-UTILS-ANTIPATTERN"/>
+    </related>
+  </rule>
+</rules>

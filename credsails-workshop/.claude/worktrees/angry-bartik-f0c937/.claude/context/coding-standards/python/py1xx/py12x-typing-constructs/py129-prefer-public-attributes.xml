@@ -1,0 +1,118 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY12X-TYPING-CONSTRUCTS-PY129-PREFER-PUBLIC-ATTRIBUTES" title="py129 prefer public attributes" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py129-prefer-public-attributes.md">
+  <rule id="PY129-PREFER-PUBLIC-ATTRIBUTES">
+    <desc>Prefer public attributes for simple stored values over private attributes with `@property` decorators.</desc>
+    <rationale>- Type hints provide compile-time encapsulation without runtime overhead (PY125-ENFORCE-IMMUTABILITY-VIA-TYPES)
+- Properties should be reserved for computed values, validation, or lazy initialization (PZ205-PROPERTY-WITH-SIDE-EFFECTS)
+- Python's Uniform Access Principle allows refactoring public attributes to properties later without breaking callers
+- Avoid premature abstraction (YAGNI) - don't add indirection until needed
+</rationale>
+    <related>
+      <ref id="PY125-ENFORCE-IMMUTABILITY-VIA-TYPES"/>
+      <ref id="PY301-FROZEN-DATACLASSES"/>
+      <ref id="PZ205-PROPERTY-WITH-SIDE-EFFECTS"/>
+      <ref id="Y206-LAZY-INITIALIZATION"/>
+    </related>
+    <tool_support>- mypy enforces type hints regardless of public/private
+- ruff can detect unnecessary properties (consider adding custom rule)
+</tool_support>
+    <notes>
+      <note title="Example (Bad - Unnecessary Property)">```python
+class Config:
+    """Over-engineered configuration."""
+
+    def __init__(self, port: int) -&gt; None:
+        self._port = port  # Private backing field
+
+    @property
+    def port(self) -&gt; int:
+        """Unnecessary property - just returns stored value."""
+        return self._port  # No computation, validation, or logic!
+
+# BAD: Every access pays function call overhead for no benefit
+print(config.port)  # Slower than direct attribute access
+```
+</note>
+      <note title="Example (Good - Property for Computed Value)">```python
+class Circle:
+    """Circle with radius and computed area."""
+
+    def __init__(self, radius: float) -&gt; None:
+        self.radius = radius  # Public - simple stored value
+
+    @property
+    def area(self) -&gt; float:
+        """Computed value - appropriate use of @property."""
+        return 3.14159 * self.radius ** 2
+```
+</note>
+      <note title="Example (Good - Property for Validation)">```python
+class Server:
+    """Server with port validation."""
+
+    def __init__(self, port: int) -&gt; None:
+        self.port = port  # Triggers setter validation
+
+    @property
+    def port(self) -&gt; int:
+        return self._port
+
+    @port.setter
+    def port(self, value: int) -&gt; None:
+        """Validate port range."""
+        if not (1024 &lt;= value &lt;= 65535):
+            raise ValueError(f"Port must be 1024-65535, got {value}")
+        self._port = value
+```
+</note>
+      <note title="Example (Good - Public Attributes)">```python
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class Config:
+    """Simple configuration with public immutable attributes."""
+    host: str
+    port: int
+    timeout_seconds: float = 30.0
+
+# Usage - direct access, zero overhead
+config = Config(host="localhost", port=8080)
+print(config.port)  # Direct attribute access
+```
+</note>
+      <note title="Refactoring Path">Public attributes can be refactored to properties later without breaking callers:
+```python
+# Version 1: Simple public attribute
+class User:
+    def __init__(self, email: str) -&gt; None:
+        self.email = email
+
+# Version 2: Refactored to property with validation (callers unchanged!)
+class User:
+    def __init__(self, email: str) -&gt; None:
+        self.email = email  # Still works - triggers setter
+
+    @property
+    def email(self) -&gt; str:
+        return self._email
+
+    @email.setter
+    def email(self, value: str) -&gt; None:
+        if "@" not in value:
+            raise ValueError("Invalid email")
+        self._email = value
+```
+</note>
+      <note title="When to Use `@property`">- Computed values calculated on access
+- Validation required on setting (with `@property.setter`)
+- Lazy initialization (use `@cached_property` from functools)
+- Mutable state requiring controlled access
+- Complex logic or side effects on access
+</note>
+      <note title="When to Use Public Attributes">- Simple stored values (not computed on access)
+- Immutable after initialization
+- No validation or transformation needed
+- Frequently accessed (zero overhead matters)
+</note>
+    </notes>
+  </rule>
+</rules>

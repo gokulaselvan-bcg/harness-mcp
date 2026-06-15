@@ -1,0 +1,4 @@
+{
+  "answer": "The ~3.11x leverage is net debt / Adjusted EBITDA: total debt of $3,777M less $50M cash, divided by management-prepared Adjusted EBITDA of $1,200M. Total debt comes from the balance sheet (10-K p.2) and Adjusted EBITDA from MD&A (10-K p.3).",
+  "cited_keys": ["leverage_net_debt_ebitda", "total_debt", "adjusted_ebitda"]
+}

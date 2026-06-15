@@ -1,0 +1,70 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PZ1XX-PZ10X-MISSING-OR-WEAK-TYPES" title="Missing or Weak Types" kind="ruleset" version="2" updated="2026-02-20" status="active" source="pz10x-missing-or-weak-types.md">
+  <rule id="PZ100-OVERUSE-ANY">
+    <desc>Using `Any` everywhere instead of proper types.</desc>
+    <better>
+      <ref id="PY103-USE-GENERICS"/>
+      <ref id="PY109-AVOID-ANY"/>
+    </better>
+    <why_bad>Defeats type checking, loses safety.</why_bad>
+  </rule>
+  <rule id="PZ101-MISSING-RETURN-TYPE">
+    <desc>Functions without return type annotations.</desc>
+    <better>
+      <ref id="PY115-RETURN-TYPE-HINTS"/>
+    </better>
+    <why_bad>Unclear contract, no type checking.</why_bad>
+  </rule>
+  <rule id="PZ102-IGNORING-TYPE-ERRORS">
+    <desc>Using `# type: ignore` comments instead of fixing root causes.</desc>
+    <better>Fix the underlying type issue rather than suppressing the error. Define contracts in code, not documentation.</better>
+    <why_bad>Hides real problems, prevents type checking benefits, causes maintenance issues.</why_bad>
+    <notes>
+      <note title="Common Causes">- Documenting contracts in docstrings instead of defining them in code (use PY127-DEFINE-CONTRACTS-IN-CODE)
+- Missing base class attributes (define them explicitly)
+- Imprecise types (use PY101-PRECISE-TYPES)
+</note>
+    </notes>
+  </rule>
+  <rule id="PZ103-TYPE-CASTING-WITHOUT-VALIDATION">
+    <desc>`cast(Type, value)` without runtime check.</desc>
+    <better>Use PY111-TYPE-NARROWING with isinstance.</better>
+    <why_bad>Unsafe, can crash at runtime.</why_bad>
+  </rule>
+  <rule id="PZ104-IMPLICIT-OPTIONAL">
+    <desc>`def func(x: int = None)` without `| None`.</desc>
+    <better>`def func(x: int | None = None)`</better>
+    <why_bad>Type checker error, unclear intent.</why_bad>
+  </rule>
+  <rule id="PZ105-MIXED-TYPES-COLLECTIONS">
+    <desc>`List[Union[int, str, dict]]` grab bag.</desc>
+    <better>Define proper types or use PY103-USE-GENERICS.</better>
+    <why_bad>Hard to use safely, unclear purpose.</why_bad>
+  </rule>
+  <rule id="PZ106-UNTYPED-DICTS">
+    <desc>`Dict[str, Any]` for structured data.</desc>
+    <better>PY112-DATACLASS-TYPES, TypedDict</better>
+    <why_bad>No validation, no IDE support.</why_bad>
+  </rule>
+  <rule id="PZ107-MISSING-PARAMETER-TYPES">
+    <desc>Function parameters without type hints.</desc>
+    <better>
+      <ref id="PY100-USE-TYPE-HINTS"/>
+    </better>
+    <why_bad>Unclear expectations, no checking.</why_bad>
+  </rule>
+  <rule id="PZ108-RETURN-MULTIPLE-TYPES">
+    <desc>Returning different types without union.</desc>
+    <better>PY110-UNION-TYPES or raise exception.</better>
+    <why_bad>Unclear contract.</why_bad>
+    <examples>
+      <example kind="bad">`return "error"` sometimes, `return 0` other times.</example>
+    </examples>
+  </rule>
+  <rule id="PZ109-MUTABLE-DEFAULTS">
+    <desc>`def func(items=[])`  or `def func(config={})`.</desc>
+    <better>
+      <ref id="PY313-AVOID-MUTABLE-DEFAULTS"/>
+    </better>
+    <why_bad>Shared mutable default across calls, classic Python gotcha.</why_bad>
+  </rule>
+</rules>

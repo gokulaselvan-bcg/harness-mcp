@@ -1,0 +1,6 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY6XX-PY60X-PROFILING-AND-STRUCTURE-PY601-PROFILE-FIRST" title="py601 profile first" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py601-profile-first.md">
+  <rule id="PY601-PROFILE-FIRST">
+    <desc>Use profiler (cProfile, line_profiler) to find actual bottlenecks.</desc>
+    <tool_support>`python -m cProfile script.py`.</tool_support>
+  </rule>
+</rules>

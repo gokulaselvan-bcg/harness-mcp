@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "sdlc-discipline": {
+      "command": "${HARNESS_MCP_HOME:-/Users/putatundarishav/cases/crisil/harness-mcp}/.venv/bin/python",
+      "args": ["-m", "sdlc_mcp"],
+      "cwd": "${HARNESS_MCP_HOME:-/Users/putatundarishav/cases/crisil/harness-mcp}",
+      "env": {
+        "PYTHONPATH": "${HARNESS_MCP_HOME:-/Users/putatundarishav/cases/crisil/harness-mcp}/src",
+        "SDLC_MCP_DB": "${HARNESS_MCP_HOME:-/Users/putatundarishav/cases/crisil/harness-mcp}/data/harness.db",
+        "SDLC_MCP_BACKUP_DIR": "${HARNESS_MCP_HOME:-/Users/putatundarishav/cases/crisil/harness-mcp}/backups",
+        "SDLC_MCP_LOG": "${HARNESS_MCP_HOME:-/Users/putatundarishav/cases/crisil/harness-mcp}/sdlc_mcp.log"
+      }
+    }
+  }
+}

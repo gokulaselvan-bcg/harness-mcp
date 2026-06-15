@@ -1,0 +1,129 @@
+<catalog id="CTX-CODING-STANDARDS-TYPESCRIPT-INDEX-CATALOG" title="index catalog" kind="manifest" version="2" updated="2026-03-12" status="active" entrypoint="../../coding-standards.md" language="typescript" sourceRoot=".claude/context/coding-standards/typescript">
+  <section kind="guidelines" desc="Normative rules to follow." label="Guidelines">
+    <hundreds id="TY1xx" desc="Strict mode, annotations, generics, utility types." label="Type System &amp; Type Safety">
+      <file>
+        <doc_ref path="ty1xx/ty1xx-type-system.xml"/>
+        <tens id="TY10x" desc="Strict mode, annotations, interfaces, generics, utility types." label="Type System &amp; Type Safety">
+          <rule id="TY100-STRICT-MODE" desc="Enable `strict: true` in `tsconfig.json` for all projects."/>
+          <rule id="TY101-EXPLICIT-RETURN-TYPES" desc="Annotate return types on exported functions and public methods."/>
+          <rule id="TY102-INTERFACES-VS-TYPES" desc="Prefer `interface` for object shapes that may be extended; use `type` for unions, intersections, mapped types, and primitives."/>
+          <rule id="TY103-GENERICS" desc="Use generics for reusable components that work with multiple types. Constrain type parameters with `extends` when possible."/>
+          <rule id="TY104-UTILITY-TYPES" desc="Use built-in utility types (`Partial`, `Required`, `Pick`, `Omit`, `Record`, `Readonly`) instead of manual type construction."/>
+          <rule id="TY105-LITERAL-AND-CONST" desc="Use literal types and `as const` assertions for values that must be specific constants."/>
+          <rule id="TY106-DISCRIMINATED-UNIONS" desc="Use discriminated unions with a shared literal property for type-safe variants."/>
+          <rule id="TY107-BRANDED-TYPES" desc="Use branded types to distinguish semantically different values that share a primitive representation."/>
+          <rule id="TY108-TEMPLATE-LITERAL-TYPES" desc="Use template literal types for string patterns that follow a known format."/>
+          <rule id="TY109-AVOID-ENUMS" desc="Prefer union types or `as const` objects over TypeScript enums. Use enums only when numeric reverse mapping is required."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="TY2xx" desc="Modules, exports, barrel files, dependency direction." label="Code Organization &amp; Modules">
+      <file>
+        <doc_ref path="ty2xx/ty2xx-modules.xml"/>
+        <tens id="TY20x" desc="Module structure, exports, barrel files, dependency direction." label="Code Organization &amp; Modules">
+          <rule id="TY200-ES-MODULES" desc="Use ES modules (`import`/`export`) exclusively. Avoid CommonJS `require`/`module.exports`."/>
+          <rule id="TY201-EXPLICIT-EXPORTS" desc="Export only what consumers need. Use named exports over default exports."/>
+          <rule id="TY202-BARREL-FILES" desc="Use barrel files (`index.ts`) sparingly for package boundaries. Avoid deep barrel nesting."/>
+          <rule id="TY203-TYPE-ONLY-IMPORTS" desc="Use `import type` for imports used only in type positions."/>
+          <rule id="TY204-DEPENDENCY-DIRECTION" desc="Dependencies flow inward: infrastructure depends on domain, never the reverse."/>
+          <rule id="TY205-PATH-ALIASES" desc="Use path aliases in `tsconfig.json` for cross-cutting imports instead of deep relative paths."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="TY3xx" desc="Readonly, const assertions, pure functions." label="Immutability &amp; Functional Patterns">
+      <file>
+        <doc_ref path="ty3xx/ty3xx-immutability.xml"/>
+        <tens id="TY30x" desc="Readonly, const assertions, pure functions, immutable patterns." label="Immutability &amp; Functional Patterns">
+          <rule id="TY300-READONLY-BY-DEFAULT" desc="Mark properties, parameters, and arrays as `readonly` by default. Remove `readonly` only when mutation is intentional."/>
+          <rule id="TY301-CONST-ASSERTIONS" desc="Use `as const` for literal objects and arrays that should not change."/>
+          <rule id="TY302-PURE-FUNCTIONS" desc="Prefer pure functions: same input produces same output, no side effects."/>
+          <rule id="TY303-RETURN-NEW-VALUES" desc="Return new objects or arrays instead of mutating inputs. Use spread syntax or utility methods."/>
+          <rule id="TY304-ARRAY-METHODS-OVER-LOOPS" desc="Prefer `map`, `filter`, `reduce`, and other array methods over imperative loops for data transformations."/>
+          <rule id="TY305-AVOID-MUTABLE-GLOBALS" desc="Avoid module-level mutable state. Use dependency injection or factory functions instead."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="TY4xx" desc="Custom errors, exhaustive checks, Result types." label="Error Handling">
+      <file>
+        <doc_ref path="ty4xx/ty4xx-error-handling.xml"/>
+        <tens id="TY40x" desc="Custom errors, exhaustive checks, Result types, type guards." label="Error Handling">
+          <rule id="TY400-EXHAUSTIVE-CHECKS" desc="Use exhaustive checks with `never` to ensure all union members are handled."/>
+          <rule id="TY401-CUSTOM-ERROR-CLASSES" desc="Extend `Error` for domain-specific errors. Include structured context, not just message strings."/>
+          <rule id="TY402-TYPE-SAFE-CATCH" desc="Narrow caught errors with `instanceof` or type guards. Never assume `catch (e)` is an `Error`."/>
+          <rule id="TY403-RESULT-TYPE" desc="Consider Result/Either types for operations where failure is expected and should be handled by callers."/>
+          <rule id="TY404-TYPE-GUARDS" desc="Use type guard functions (`is` return type) and assertion functions (`asserts` return type) for complex type narrowing."/>
+          <rule id="TY405-VALIDATE-BOUNDARIES" desc="Validate and parse external data at system boundaries using runtime validation (e.g., Zod, io-ts, Valibot)."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="TY5xx" desc="Async/await, Promises, concurrency patterns." label="Async &amp; Promises">
+      <file>
+        <doc_ref path="ty5xx/ty5xx-async.xml"/>
+        <tens id="TY50x" desc="Async/await, Promise patterns, concurrency, cancellation." label="Async &amp; Promises">
+          <rule id="TY500-ASYNC-AWAIT" desc="Use `async`/`await` over raw Promise chains (`.then`/`.catch`)."/>
+          <rule id="TY501-PROMISE-CONCURRENCY" desc="Use `Promise.all` for independent concurrent operations; use `Promise.allSettled` when partial failure is acceptable."/>
+          <rule id="TY502-ABORT-SIGNALS" desc="Accept `AbortSignal` for cancellable async operations. Propagate signals through the call chain."/>
+          <rule id="TY503-TYPED-EVENT-EMITTERS" desc="Use typed event emitters or observable patterns instead of untyped string-based events."/>
+          <rule id="TY504-ASYNC-ITERATORS" desc="Use `for await...of` with async iterables for streaming data. Prefer async generators over manual iterator implementation."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="TY6xx" desc="Type testing, mocking, assertion patterns." label="Testing &amp; Tooling">
+      <file>
+        <doc_ref path="ty6xx/ty6xx-testing.xml"/>
+        <tens id="TY60x" desc="Type testing, mocking, assertions, test structure." label="Testing &amp; Tooling">
+          <rule id="TY600-TYPE-LEVEL-TESTS" desc="Write type-level tests for complex generics and utility types using `Expect`/`Equal` helpers or `tsd`."/>
+          <rule id="TY601-TYPED-MOCKS" desc="Use typed mocking utilities that preserve interface contracts. Avoid `as any` in test doubles."/>
+          <rule id="TY602-AAA-STRUCTURE" desc="Structure tests with Arrange/Act/Assert (or Given/When/Then). One logical assertion group per test."/>
+          <rule id="TY603-DESCRIPTIVE-TEST-NAMES" desc="Use descriptive test names that state the behavior and context, not the implementation."/>
+          <rule id="TY604-MOCK-BOUNDARIES" desc="Mock external systems (HTTP, DB, clock, filesystem). Do not mock value objects, utility functions, or the module under test."/>
+          <rule id="TY605-PARAMETERIZED-TESTS" desc="Use `it.each` or `describe.each` for behavior with multiple inputs. Avoid copy-pasted test bodies."/>
+        </tens>
+      </file>
+    </hundreds>
+  </section>
+  <section kind="antipatterns" desc="Patterns to avoid." label="Anti-Patterns">
+    <hundreds id="TZ1xx" desc="Any abuse, unsafe assertions, weak types." label="Type Safety Violations">
+      <file>
+        <doc_ref path="tz1xx/tz1xx-type-violations.xml"/>
+        <tens id="TZ10x" desc="Any abuse, unsafe assertions, weak typing, ts-ignore." label="Type Safety Violations">
+          <rule id="TZ100-OVERUSE-ANY" desc="Using `any` to bypass type checking instead of proper types."/>
+          <rule id="TZ101-TS-IGNORE" desc="Using `@ts-ignore` or `@ts-expect-error` to suppress type errors instead of fixing them."/>
+          <rule id="TZ102-NON-NULL-ASSERTION" desc="Using the non-null assertion operator (`!`) instead of proper null checks."/>
+          <rule id="TZ103-UNSAFE-TYPE-ASSERTION" desc="Using `as Type` to force a type without runtime validation."/>
+          <rule id="TZ104-OBJECT-AS-MAP" desc="Using plain objects (`Record&lt;string, T&gt;`) as maps when `Map&lt;K, V&gt;` is more appropriate."/>
+          <rule id="TZ105-IMPLICIT-ANY-RETURN" desc="Functions with inferred `any` return type due to missing annotation or unsafe operations."/>
+          <rule id="TZ106-STRING-TYPED-PARAMETERS" desc="Using bare `string` for parameters that accept only specific values."/>
+          <rule id="TZ107-INTERFACE-FOR-UNION" desc="Using a single interface with optional fields to model variants instead of a discriminated union."/>
+          <rule id="TZ108-NAMESPACE-ABUSE" desc="Using TypeScript `namespace` for code organization instead of ES modules."/>
+          <rule id="TZ109-FUNCTION-OVERLOADS-ABUSE" desc="Excessive function overloads when a union parameter or generic would be clearer."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="TZ2xx" desc="Circular deps, barrel file pitfalls, re-export issues." label="Module &amp; Import Problems">
+      <file>
+        <doc_ref path="tz2xx/tz2xx-module-antipatterns.xml"/>
+        <tens id="TZ20x" desc="Circular deps, barrel file pitfalls, re-export problems." label="Module &amp; Import Problems">
+          <rule id="TZ200-CIRCULAR-DEPS" desc="Circular module dependencies that cause runtime initialization errors or `undefined` imports."/>
+          <rule id="TZ201-BARREL-BLOAT" desc="Barrel files (`index.ts`) that re-export everything from every module, causing bundle bloat and slow IDE performance."/>
+          <rule id="TZ202-SIDE-EFFECT-IMPORTS" desc="Modules that execute side effects on import (register globals, modify prototypes, start servers)."/>
+          <rule id="TZ203-WILDCARD-REEXPORTS" desc="Using `export * from` which leaks implementation details and creates name collisions."/>
+          <rule id="TZ204-DEFAULT-EXPORT-MISMATCH" desc="Default exports that lose their name binding, causing inconsistent names across imports."/>
+        </tens>
+      </file>
+    </hundreds>
+    <hundreds id="TZ3xx" desc="Unhandled promises, callback mixing, shared mutable state." label="Async &amp; Runtime Hazards">
+      <file>
+        <doc_ref path="tz3xx/tz3xx-async-hazards.xml"/>
+        <tens id="TZ30x" desc="Unhandled promises, callback mixing, shared mutable state." label="Async &amp; Runtime Hazards">
+          <rule id="TZ300-UNHANDLED-PROMISES" desc="Calling an async function without `await` or an attached rejection handler, leaving the Promise to reject unobserved."/>
+          <rule id="TZ301-CALLBACK-PROMISE-MIX" desc="Mixing callback-style and Promise-style APIs in the same flow."/>
+          <rule id="TZ302-ASYNC-VOID-EVENTS" desc="Passing `async` functions to event handlers or callbacks that expect synchronous `void` return."/>
+          <rule id="TZ303-SHARED-MUTABLE-STATE" desc="Sharing mutable state between async operations without coordination."/>
+          <rule id="TZ304-PROMISE-CONSTRUCTOR-ANTIPATTERN" desc="Wrapping an existing Promise in `new Promise()` unnecessarily."/>
+          <rule id="TZ305-SEQUENTIAL-INDEPENDENT-AWAITS" desc="Sequentially awaiting independent Promises instead of running them concurrently."/>
+        </tens>
+      </file>
+    </hundreds>
+  </section>
+</catalog>

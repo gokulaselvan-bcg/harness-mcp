@@ -1,0 +1,49 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY11X-GENERICS-PY115-RETURN-TYPE-HINTS" title="py115 return type hints" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py115-return-type-hints.md">
+  <rule id="PY115-RETURN-TYPE-HINTS">
+    <desc>Always specify return types, even for functions returning None.</desc>
+    <rationale>Explicit return types document intent, catch missing returns, and enable better type inference.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - explicit return types
+def parse_line(line: str) -> Transaction | None:
+    """Parse line, returns None if invalid."""
+    if not line.strip():
+        return None
+    return Transaction(...)
+
+def log_transaction(txn: Transaction) -> None:
+    """Log transaction, returns nothing."""
+    print(f"Transaction: {txn.id}")
+    # Explicit None documents side-effect-only function
+
+def process_batch(txns: list[Transaction]) -> tuple[int, int]:
+    """Process transactions, returns (success_count, error_count)."""
+    success, errors = 0, 0
+    for txn in txns:
+        if process_one(txn):
+            success += 1
+        else:
+            errors += 1
+    return success, errors
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - no return types
+def parse_line(line: str):  # Return type unclear
+    if not line.strip():
+        return None
+    return Transaction(...)
+
+def log_transaction(txn: Transaction):  # Looks like missing return?
+    print(f"Transaction: {txn.id}")
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY100-USE-TYPE-HINTS"/>
+      <ref id="PZ101-MISSING-RETURN-TYPE"/>
+    </related>
+    <tool_support>mypy --strict requires return type annotations. ruff ANN201/ANN202 enforce.</tool_support>
+  </rule>
+</rules>

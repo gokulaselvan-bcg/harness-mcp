@@ -1,0 +1,64 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY12X-TYPING-CONSTRUCTS-PY128-NO-EXPORT-TYPEVARS" title="py128 no export typevars" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py128-no-export-typevars.md">
+  <rule id="PY128-NO-EXPORT-TYPEVARS">
+    <desc>Never export TypeVar definitions in module __all__; TypeVars are implementation details, not public API.</desc>
+    <rationale>TypeVars are internal type machinery used for generic definitions. Exporting them pollutes the module's public API and suggests they should be used by callers, which is incorrect. With Python 3.12+ syntax, TypeVars become even more internal as they're declared inline.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - TypeVars not exported (pre-3.12 code)
+from typing import TypeVar, Generic
+
+T = TypeVar("T")
+K = TypeVar("K")
+V = TypeVar("V")
+
+__all__ = ["DataTool", "Parser", "Producer"]  # Only public classes
+
+class DataTool(Generic[T]):
+    """Generic I/O tool."""
+    ...
+
+class Parser(Generic[T]):
+    """Generic parser."""
+    ...
+
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - Python 3.12+ (no TypeVars to export)
+__all__ = ["DataTool", "Parser", "Producer"]
+
+class DataTool[T]:
+    """Generic I/O tool."""
+    ...
+
+class Parser[T]:
+    """Generic parser."""
+    ...
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - exporting TypeVars
+from typing import TypeVar, Generic
+
+T = TypeVar("T")
+
+__all__ = ["DataTool", "T"]  # BAD: T should not be exported
+
+class DataTool(Generic[T]):
+    """Generic I/O tool."""
+    ...
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY103-USE-GENERICS"/>
+      <ref id="PY201-PUBLIC-API"/>
+    </related>
+    <tool_support>ruff can check __all__ consistency with PLE0604.</tool_support>
+    <notes>
+      <note title="Python 3.12+ Migration">When migrating to Python 3.12+ syntax, remove all exported TypeVars as they're no longer defined separately.</note>
+      <note title="When TypeVars appear in signatures">Even if a TypeVar appears in public function signatures, don't export it. Users should reference the generic class/function, not the TypeVar directly.</note>
+    </notes>
+  </rule>
+</rules>

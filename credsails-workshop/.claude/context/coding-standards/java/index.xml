@@ -1,0 +1,42 @@
+<index id="CTX-CODING-STANDARDS-JAVA-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Guidelines" kind="guidelines" desc="Normative rules to follow.">
+    <entry id="JY1xx" kind="hundreds" desc="Nullness, equality, and records." label="Language &amp; Type Safety">
+      <doc_ref path="./jy1xx/index.xml"/>
+    </entry>
+    <entry id="JY2xx" kind="hundreds" desc="Packaging, visibility, and builders." label="Code Organization &amp; Design">
+      <doc_ref path="./jy2xx/index.xml"/>
+    </entry>
+    <entry id="JY3xx" kind="hundreds" desc="Exception strategy and logging." label="Error Handling &amp; Logging">
+      <doc_ref path="./jy3xx/index.xml"/>
+    </entry>
+    <entry id="JY4xx" kind="hundreds" desc="Thread safety and synchronization." label="Concurrency &amp; Immutability">
+      <doc_ref path="./jy4xx/index.xml"/>
+    </entry>
+    <entry id="JY5xx" kind="hundreds" desc="Collections and performance heuristics." label="Performance &amp; Collections">
+      <doc_ref path="./jy5xx/index.xml"/>
+    </entry>
+    <entry id="JY6xx" kind="hundreds" desc="JUnit testing practices." label="Testing &amp; Tooling">
+      <doc_ref path="./jy6xx/index.xml"/>
+    </entry>
+    <entry id="JY7xx" kind="hundreds" desc="Spring and Android testing guidance." label="Framework Addenda">
+      <doc_ref path="./jy7xx/index.xml"/>
+    </entry>
+  </section>
+  <section title="Anti-Patterns" kind="antipatterns" desc="Patterns to avoid.">
+    <entry id="JZ1xx" kind="hundreds" desc="Null/Optional pitfalls." label="Null &amp; Optional Misuse">
+      <doc_ref path="./jz1xx/index.xml"/>
+    </entry>
+    <entry id="JZ2xx" kind="hundreds" desc="Bad exception handling." label="Exception Misuse">
+      <doc_ref path="./jz2xx/index.xml"/>
+    </entry>
+    <entry id="JZ3xx" kind="hundreds" desc="Threading hazards." label="Concurrency Hazards">
+      <doc_ref path="./jz3xx/index.xml"/>
+    </entry>
+    <entry id="JZ4xx" kind="hundreds" desc="Inefficient patterns." label="Performance Anti-patterns">
+      <doc_ref path="./jz4xx/index.xml"/>
+    </entry>
+    <entry id="JZ5xx" kind="hundreds" desc="Testing pitfalls." label="Testing Anti-patterns">
+      <doc_ref path="./jz5xx/index.xml"/>
+    </entry>
+  </section>
+</index>

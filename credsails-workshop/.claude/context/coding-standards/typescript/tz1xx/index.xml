@@ -1,0 +1,7 @@
+<index id="CTX-CODING-STANDARDS-TYPESCRIPT-TZ1XX-INDEX" title="index" kind="manifest" version="2" updated="2026-03-12" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="TZ10x" kind="tens" desc="Any abuse, unsafe assertions, weak typing, ts-ignore." label="Type Safety Violations">
+      <doc_ref path="./tz1xx-type-violations.xml"/>
+    </entry>
+  </section>
+</index>

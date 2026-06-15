@@ -1,0 +1,7 @@
+<index id="CTX-CODING-STANDARDS-TYPESCRIPT-TY3XX-INDEX" title="index" kind="manifest" version="2" updated="2026-03-12" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="TY30x" kind="tens" desc="Readonly, const assertions, pure functions, immutable patterns." label="Immutability &amp; Functional Patterns">
+      <doc_ref path="./ty3xx-immutability.xml"/>
+    </entry>
+  </section>
+</index>

@@ -1,0 +1,11 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY6XX-PY60X-PROFILING-AND-STRUCTURE-PY604-CACHING" title="py604 caching" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py604-caching.md">
+  <rule id="PY604-CACHING">
+    <desc>Cache expensive computations with `@lru_cache` or `@cache`.</desc>
+    <examples>
+      <example kind="good">`@lru_cache(maxsize=128); def expensive_func(): ...`.</example>
+    </examples>
+    <related>
+      <ref id="PY309-FUNCTOOLS"/>
+    </related>
+  </rule>
+</rules>

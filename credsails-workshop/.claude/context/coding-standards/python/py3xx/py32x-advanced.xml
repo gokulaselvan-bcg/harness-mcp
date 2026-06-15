@@ -1,0 +1,45 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY3XX-PY32X-ADVANCED" title="Advanced Techniques" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py32x-advanced.md">
+  <rule id="PY320-AVOID-GLOBALS">
+    <desc>Minimize global mutable state. Use parameters/returns.</desc>
+    <examples>
+      <example kind="good">Pass configuration as parameter, don't use global config dict.</example>
+    </examples>
+    <related>
+      <ref id="PZ201-GLOBAL-STATE"/>
+    </related>
+  </rule>
+  <rule id="PY321-REFERENTIAL-TRANSPARENCY">
+    <desc>Function calls can be replaced with their return values.</desc>
+    <examples>
+      <example kind="good">Pure functions are referentially transparent.</example>
+    </examples>
+    <related>
+      <ref id="PY302-PURE-FUNCTIONS"/>
+    </related>
+  </rule>
+  <rule id="PY322-PIPELINE-PATTERN">
+    <desc>Chain transformations using function composition.</desc>
+    <examples>
+      <example kind="good">`data |&gt; parse |&gt; validate |&gt; transform` (via libraries or custom operator).</example>
+    </examples>
+    <related>
+      <ref id="PY305-GENERATORS"/>
+    </related>
+  </rule>
+  <rule id="PY323-MONADS">
+    <desc>Consider Result/Option types for error handling (via libraries).</desc>
+    <exceptions>Python idiom uses exceptions; monads less common.</exceptions>
+    <examples>
+      <example kind="good">`Result[T, Error]` instead of exceptions for expected failures.</example>
+    </examples>
+  </rule>
+  <rule id="PY324-PARTIAL-APPLICATION">
+    <desc>Use `functools.partial` to pre-fill function arguments.</desc>
+    <examples>
+      <example kind="good">`from functools import partial; process_all = partial(map, process_one)`.</example>
+    </examples>
+    <related>
+      <ref id="PY309-FUNCTOOLS"/>
+    </related>
+  </rule>
+</rules>

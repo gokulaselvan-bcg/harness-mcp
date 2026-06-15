@@ -1,0 +1,10 @@
+<index id="CTX-CODING-STANDARDS-PYTHON-PZ2XX-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="PZ20x" kind="tens" desc="Globals, shared mutable state, caching." label="Shared State Issues">
+      <doc_ref path="./pz20x-shared-state.xml"/>
+    </entry>
+    <entry id="PZ21x" kind="tens" desc="In-place ops, loop mutation, frozen violations." label="Mutation Hazards">
+      <doc_ref path="./pz21x-mutation-hazards.xml"/>
+    </entry>
+  </section>
+</index>

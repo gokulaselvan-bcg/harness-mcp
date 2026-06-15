@@ -1,0 +1,10 @@
+<index id="CTX-CODING-STANDARDS-JAVA-JY6XX-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="JY60x" kind="tens" desc="Naming, AAA, parameterized tests, assertions." label="Structure">
+      <doc_ref path="./structure.xml"/>
+    </entry>
+    <entry id="JY61x" kind="tens" desc="Fixtures, isolation, mocking, time control." label="Isolation and Determinism">
+      <doc_ref path="./isolation.xml"/>
+    </entry>
+  </section>
+</index>

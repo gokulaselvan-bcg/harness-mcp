@@ -1,0 +1,38 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PZ2XX-PZ21X-MUTATION-HAZARDS" title="Mutation Hazards" kind="ruleset" version="2" updated="2026-02-20" status="active" source="pz21x-mutation-hazards.md">
+  <rule id="PZ210-MUTATING-LOOP-VARIABLE">
+    <desc>Modifying loop variable inside loop.</desc>
+    <better>Use different variable.</better>
+    <why_bad>Confusing, doesn't affect loop.</why_bad>
+    <examples>
+      <example kind="bad">`for i in range(10): i += 1`  # doesn't work as expected</example>
+    </examples>
+  </rule>
+  <rule id="PZ211-DEFAULT-DICT-MUTATION">
+    <desc>Mutating default dict values.</desc>
+    <better>
+      <ref id="PY313-AVOID-MUTABLE-DEFAULTS"/>
+    </better>
+    <why_bad>Unexpected sharing.</why_bad>
+  </rule>
+  <rule id="PZ212-IN-PLACE-OPERATIONS">
+    <desc>`list.sort()` instead of `sorted(list)`.</desc>
+    <better>Use non-mutating versions when possible.</better>
+    <why_bad>Mutates original, can't chain.</why_bad>
+    <exceptions>In-place OK for performance when intentional.</exceptions>
+  </rule>
+  <rule id="PZ213-FROZEN-VIOLATION">
+    <desc>Working around frozen dataclass.</desc>
+    <better>Create new instance with PY312-DATACLASS-REPLACE.</better>
+    <why_bad>Defeats immutability guarantees.</why_bad>
+    <examples>
+      <example kind="bad">`object.__setattr__(frozen_obj, 'x', value)`</example>
+    </examples>
+  </rule>
+  <rule id="PZ214-MUTABLE-DATACLASS">
+    <desc>Dataclass without `frozen=True` when should be immutable.</desc>
+    <better>
+      <ref id="PY301-FROZEN-DATACLASSES"/>
+    </better>
+    <why_bad>Accidental mutations, harder to reason about.</why_bad>
+  </rule>
+</rules>

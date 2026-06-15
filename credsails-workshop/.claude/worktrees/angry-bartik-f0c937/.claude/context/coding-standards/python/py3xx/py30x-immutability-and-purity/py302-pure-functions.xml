@@ -1,0 +1,11 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY3XX-PY30X-IMMUTABILITY-AND-PURITY-PY302-PURE-FUNCTIONS" title="py302 pure functions" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py302-pure-functions.md">
+  <rule id="PY302-PURE-FUNCTIONS">
+    <desc>Functions without side effects, same input → same output.</desc>
+    <examples>
+      <example kind="good">`def calculate_tax(amount: Decimal) -&gt; Decimal: return amount * TAX_RATE`</example>
+    </examples>
+    <related>
+      <ref id="PY303-AVOID-SIDE-EFFECTS"/>
+    </related>
+  </rule>
+</rules>

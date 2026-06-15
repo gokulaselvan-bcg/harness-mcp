@@ -1,0 +1,9 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY6XX-PY60X-PROFILING-AND-STRUCTURE-PY606-SLOTS" title="py606 slots" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py606-slots.md">
+  <rule id="PY606-SLOTS">
+    <desc>Use `__slots__` for memory optimization in classes with many instances.</desc>
+    <exceptions>Only when profiling shows memory issues.</exceptions>
+    <examples>
+      <example kind="good">`class Point: __slots__ = ('x', 'y')`.</example>
+    </examples>
+  </rule>
+</rules>

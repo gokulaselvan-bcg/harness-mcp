@@ -1,0 +1,91 @@
+<rules id="CTX-CODING-STANDARDS-JAVA-JY6XX-STRUCTURE" title="Structure" kind="ruleset" version="2" updated="2026-02-20" status="active" source="structure.md">
+  <rule id="JY600-JUNIT5-DEFAULT">
+    <desc>Use JUnit 5 (`org.junit.jupiter`) as the default test runtime.</desc>
+    <exceptions>If a project is still on JUnit 4, isolate legacy tests
+and migrate incrementally.
+</exceptions>
+    <rationale>JUnit 5 is the current standard with better extensions and
+parameterized tests.
+</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[import org.junit.jupiter.api.Test;
+
+@Test
+void parsesCsv() {
+    ...
+}
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="JY601-TEST-NAMING">
+    <desc>Use descriptive test names that state behavior and context.</desc>
+    <rationale>Names are the primary documentation for test intent.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[@Test
+void shouldRejectOrder_whenItemsEmpty() {
+    ...
+}
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="Y300-EXPRESSIVE-NAMES"/>
+    </related>
+  </rule>
+  <rule id="JY602-AAA-STRUCTURE">
+    <desc>Structure tests with Arrange/Act/Assert or Given/When/Then.</desc>
+    <rationale>Consistent structure improves readability and review speed.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[// Arrange
+Order order = new Order(...);
+// Act
+Result result = service.submit(order);
+// Assert
+assertThat(result.status()).isEqualTo(Status.REJECTED);
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="JY603-PARAMETERIZED-TESTS">
+    <desc>Use `@ParameterizedTest` for behavior with multiple inputs.</desc>
+    <rationale>Reduces duplication and improves coverage.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[@ParameterizedTest
+@CsvSource({"A,1", "B,2"})
+void parsesIds(String prefix, int count) {
+    ...
+}
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="JY604-ASSERTION-STYLE">
+    <desc>Prefer fluent assertions (AssertJ). If not available, use JUnit assertions consistently.</desc>
+    <rationale>Fluent assertions produce clearer failures and intent.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[assertThat(user.id()).isEqualTo("U123");
+]]></code>
+      </example>
+    </examples>
+  </rule>
+  <rule id="JY605-EXCEPTION-ASSERTS">
+    <desc>Use `assertThrows` and assert on message or fields.</desc>
+    <rationale>Verifies both error type and meaning.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="java"><![CDATA[IllegalArgumentException ex = assertThrows(
+    IllegalArgumentException.class,
+    () -> service.create(null)
+);
+assertThat(ex.getMessage()).contains("customerId");
+]]></code>
+      </example>
+    </examples>
+  </rule>
+</rules>

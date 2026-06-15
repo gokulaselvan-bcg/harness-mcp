@@ -1,0 +1,7 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PZ1XX-PZ11X-TYPE-VIOLATIONS-PZ111-WRONG-VARIANCE" title="pz111 wrong variance" kind="ruleset" version="2" updated="2026-02-20" status="active" source="pz111-wrong-variance.md">
+  <rule id="PZ111-WRONG-VARIANCE">
+    <desc>Covariant/contravariant used incorrectly.</desc>
+    <better>Study variance rules, use TypeVar correctly.</better>
+    <why_bad>Type safety violated.</why_bad>
+  </rule>
+</rules>

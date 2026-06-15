@@ -1,0 +1,8 @@
+<index id="CTX-CODING-STANDARDS-JAVA-JZ1XX-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Source" kind="other" desc=""/>
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="JZ10x" kind="tens" desc="Null/Optional pitfalls." label="Null &amp; Optional Misuse">
+      <doc_ref path="./jz1xx-null-optional.xml"/>
+    </entry>
+  </section>
+</index>

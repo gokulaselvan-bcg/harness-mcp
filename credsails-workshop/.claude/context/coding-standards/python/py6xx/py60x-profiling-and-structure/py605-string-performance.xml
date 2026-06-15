@@ -1,0 +1,11 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY6XX-PY60X-PROFILING-AND-STRUCTURE-PY605-STRING-PERFORMANCE" title="py605 string performance" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py605-string-performance.md">
+  <rule id="PY605-STRING-PERFORMANCE">
+    <desc>Use `str.join()` for concatenating many strings.</desc>
+    <examples>
+      <example kind="good">`"".join(parts)` faster than repeated `+` in loop.</example>
+    </examples>
+    <related>
+      <ref id="PY413-STRING-CONCATENATION"/>
+    </related>
+  </rule>
+</rules>

@@ -1,0 +1,11 @@
+{
+  "populated": [
+    {"label": "Cash & equivalents",        "value": "862",  "source_page": 2, "confidence": "H"},
+    {"label": "Total current assets",      "value": "3421", "source_page": 2, "confidence": "H"},
+    {"label": "Total assets",              "value": "9134", "source_page": 3, "confidence": "H"},
+    {"label": "Total debt",                "value": "2985", "source_page": 3, "confidence": "M"},
+    {"label": "Total current liabilities", "value": "1710", "source_page": 3, "confidence": "H"},
+    {"label": "Total liabilities",         "value": "6248", "source_page": 3, "confidence": "H"},
+    {"label": "Total equity",              "value": "N/A",  "source_page": 4, "confidence": "L"}
+  ]
+}

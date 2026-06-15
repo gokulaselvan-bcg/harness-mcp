@@ -1,0 +1,11 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY3XX-PY30X-IMMUTABILITY-AND-PURITY-PY307-COMPREHENSIONS" title="py307 comprehensions" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py307-comprehensions.md">
+  <rule id="PY307-COMPREHENSIONS">
+    <desc>Use list/dict/set comprehensions for transformations.</desc>
+    <examples>
+      <example kind="good">`[txn.amount for txn in txns if txn.amount &gt; 100]`</example>
+    </examples>
+    <related>
+      <ref id="PY308-MAP-FILTER"/>
+    </related>
+  </rule>
+</rules>

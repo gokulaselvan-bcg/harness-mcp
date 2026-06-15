@@ -1,0 +1,12 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY3XX-PY30X-IMMUTABILITY-AND-PURITY-PY303-AVOID-SIDE-EFFECTS" title="py303 avoid side effects" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py303-avoid-side-effects.md">
+  <rule id="PY303-AVOID-SIDE-EFFECTS">
+    <desc>Don't modify arguments or global state. Return new values.</desc>
+    <examples>
+      <example kind="good">`def uppercase_merchant(txn: Transaction) -&gt; Transaction: return replace(txn, merchant=txn.merchant.upper())`</example>
+    </examples>
+    <related>
+      <ref id="PY302-PURE-FUNCTIONS"/>
+      <ref id="PZ200-MUTATING-ARGUMENTS"/>
+    </related>
+  </rule>
+</rules>

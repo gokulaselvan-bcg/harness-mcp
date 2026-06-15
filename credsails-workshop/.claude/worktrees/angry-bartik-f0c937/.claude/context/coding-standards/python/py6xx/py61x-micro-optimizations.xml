@@ -1,0 +1,35 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY6XX-PY61X-MICRO-OPTIMIZATIONS" title="Micro-optimizations" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py61x-micro-optimizations.md">
+  <rule id="PY610-BUILT-INS">
+    <desc>Use built-in functions (C-optimized) when possible.</desc>
+    <examples>
+      <example kind="good">`sum()`, `min()`, `max()` faster than manual loops.</example>
+    </examples>
+  </rule>
+  <rule id="PY611-NUMPY-PANDAS">
+    <desc>For numerical data, use numpy/pandas (vectorized operations).</desc>
+    <examples>
+      <example kind="good">`df['new_col'] = df['col'] * 2` faster than row-by-row.</example>
+    </examples>
+  </rule>
+  <rule id="PY612-COMPILE-REGEX">
+    <desc>Compile regexes used repeatedly.</desc>
+    <examples>
+      <example kind="good">`PATTERN = re.compile(r"..."); PATTERN.match(text)` not `re.match(r"...", text)` in loop.</example>
+    </examples>
+  </rule>
+  <rule id="PY613-SET-MEMBERSHIP">
+    <desc>Use sets for membership testing (`in`), not lists.</desc>
+    <examples>
+      <example kind="good">`ALLOWED = {"a", "b", "c"}; if x in ALLOWED` faster than list.</example>
+    </examples>
+  </rule>
+  <rule id="PY614-LAZY-IMPORTS">
+    <desc>Import expensive modules only when needed.</desc>
+    <examples>
+      <example kind="good">`def plot(): import matplotlib; ...` if matplotlib not always used.</example>
+    </examples>
+    <related>
+      <ref id="PY213-LAZY-IMPORTS"/>
+    </related>
+  </rule>
+</rules>

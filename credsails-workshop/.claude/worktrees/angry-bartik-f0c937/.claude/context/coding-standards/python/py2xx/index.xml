@@ -1,0 +1,10 @@
+<index id="CTX-CODING-STANDARDS-PYTHON-PY2XX-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="PY20x" kind="tens" desc="Exports, privacy, package contracts." label="Public API and Interfaces">
+      <doc_ref path="./py20x-public-api.xml"/>
+    </entry>
+    <entry id="PY21x" kind="tens" desc="Import style, ordering, packaging rules." label="Imports and Packaging">
+      <doc_ref path="./py21x-imports-and-packaging.xml"/>
+    </entry>
+  </section>
+</index>

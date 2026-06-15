@@ -1,0 +1,51 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY10X-BASICS-PY106-COLLECTION-TYPES" title="py106 collection types" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py106-collection-types.md">
+  <rule id="PY106-COLLECTION-TYPES">
+    <desc>Use appropriate collection types from `collections.abc`: Sequence, Mapping, Iterable, Iterator, Collection.</desc>
+    <rationale>Abstract collection types are more flexible than concrete types, enabling broader compatibility.</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - flexible input, specific output
+def format_transactions(txns: Iterable[Transaction]) -> list[str]:
+    """Accepts any iterable, returns specific list."""
+    return [f"{t.date}: {t.amount}" for t in txns]
+
+# Can pass list, tuple, generator, etc.
+format_transactions([t1, t2, t3])  # list
+format_transactions((t1, t2))       # tuple
+format_transactions(t for t in txns if t.amount > 100)  # generator
+
+]]></code>
+      </example>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - read-only mapping
+def apply_categories(txn: Transaction, categories: Mapping[str, str]) -> Transaction:
+    """Applies categories, doesn't modify mapping."""
+    category = categories.get(txn.merchant, "Other")
+    return replace(txn, category=category)
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - too restrictive
+def format_transactions(txns: list[Transaction]) -> list[str]:
+    return [f"{t.date}: {t.amount}" for t in txns]
+
+# Can't pass tuple or generator without converting first!
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY101-PRECISE-TYPES"/>
+      <ref id="PY300-IMMUTABILITY"/>
+    </related>
+    <tool_support>Import from `collections.abc` (not `typing`). mypy checks compatibility.</tool_support>
+    <notes>
+      <note title="Collection Types">- `Iterable[T]`: Can be iterated (for loop), one pass
+- `Sequence[T]`: Ordered, indexed, can iterate multiple times (list, tuple)
+- `Mapping[K, V]`: Key-value pairs, read-only (dict, but immutable view)
+- `MutableMapping[K, V]`: Mutable key-value pairs
+- `Collection[T]`: Has length, contains checks, iterable
+</note>
+    </notes>
+  </rule>
+</rules>

@@ -1,0 +1,33 @@
+<index id="CTX-CODING-STANDARDS-PYTHON-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Guidelines" kind="guidelines" desc="Normative rules to follow.">
+    <entry id="PY1xx" kind="hundreds" desc="Typing rules and contracts." label="Type Hints &amp; Type Safety">
+      <doc_ref path="./py1xx/index.xml"/>
+    </entry>
+    <entry id="PY2xx" kind="hundreds" desc="Packaging, imports, and public API." label="Code Organization &amp; Modularity">
+      <doc_ref path="./py2xx/index.xml"/>
+    </entry>
+    <entry id="PY3xx" kind="hundreds" desc="Immutability and functional techniques." label="Functional Programming">
+      <doc_ref path="./py3xx/index.xml"/>
+    </entry>
+    <entry id="PY4xx" kind="hundreds" desc="Docstrings and formatting." label="Documentation &amp; Readability">
+      <doc_ref path="./py4xx/index.xml"/>
+    </entry>
+    <entry id="PY5xx" kind="hundreds" desc="Exception strategy and messages." label="Error Handling">
+      <doc_ref path="./py5xx/index.xml"/>
+    </entry>
+    <entry id="PY6xx" kind="hundreds" desc="Profiling and optimization guidance." label="Performance &amp; Best Practices">
+      <doc_ref path="./py6xx/index.xml"/>
+    </entry>
+  </section>
+  <section title="Anti-Patterns" kind="antipatterns" desc="Patterns to avoid.">
+    <entry id="PZ1xx" kind="hundreds" desc="Type misuse and variance issues." label="Type Safety Violations">
+      <doc_ref path="./pz1xx/index.xml"/>
+    </entry>
+    <entry id="PZ2xx" kind="hundreds" desc="Shared state and mutation pitfalls." label="Mutability Problems">
+      <doc_ref path="./pz2xx/index.xml"/>
+    </entry>
+    <entry id="PZ3xx" kind="hundreds" desc="Other Python-specific issues." label="Miscellaneous">
+      <doc_ref path="./pz3xx/index.xml"/>
+    </entry>
+  </section>
+</index>

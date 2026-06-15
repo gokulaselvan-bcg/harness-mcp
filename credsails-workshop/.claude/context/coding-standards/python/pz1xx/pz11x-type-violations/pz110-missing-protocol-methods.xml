@@ -1,0 +1,7 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PZ1XX-PZ11X-TYPE-VIOLATIONS-PZ110-MISSING-PROTOCOL-METHODS" title="pz110 missing protocol methods" kind="ruleset" version="2" updated="2026-02-20" status="active" source="pz110-missing-protocol-methods.md">
+  <rule id="PZ110-MISSING-PROTOCOL-METHODS">
+    <desc>Class claims to implement protocol but missing methods.</desc>
+    <better>Use PY102-USE-PROTOCOLS correctly, test compliance.</better>
+    <why_bad>Runtime AttributeError.</why_bad>
+  </rule>
+</rules>

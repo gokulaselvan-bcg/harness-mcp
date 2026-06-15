@@ -1,0 +1,10 @@
+<index id="CTX-CODING-STANDARDS-PYTHON-PZ1XX-INDEX" title="index" kind="manifest" version="2" updated="2026-02-20" status="active" source="index.md">
+  <section title="Tens" kind="tens" desc="Tens-level groupings within a hundreds bucket.">
+    <entry id="PZ10x" kind="tens" desc="Any overuse, missing hints, weak contracts." label="Missing or Weak Types">
+      <doc_ref path="./pz10x-missing-or-weak-types.xml"/>
+    </entry>
+    <entry id="PZ11x" kind="tens" desc="Variance, runtime misuse, dataclass misuse." label="Type Violations">
+      <doc_ref path="./pz11x-type-violations/index.xml"/>
+    </entry>
+  </section>
+</index>

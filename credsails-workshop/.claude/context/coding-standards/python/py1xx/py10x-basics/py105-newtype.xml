@@ -1,0 +1,44 @@
+<rules id="CTX-CODING-STANDARDS-PYTHON-PY1XX-PY10X-BASICS-PY105-NEWTYPE" title="py105 newtype" kind="ruleset" version="2" updated="2026-02-20" status="active" source="py105-newtype.md">
+  <rule id="PY105-NEWTYPE">
+    <desc>Use `NewType` to create distinct types from primitives when semantic distinction is important.</desc>
+    <exceptions>Don't overuse. Only create NewTypes when semantic confusion is a real risk.</exceptions>
+    <rationale>NewType prevents mixing semantically different values of the same primitive type (e.g., user_id vs transaction_id).</rationale>
+    <examples>
+      <example kind="good">
+        <code lang="python"><![CDATA[# Good - prevents mixing IDs
+UserId = NewType("UserId", int)
+TransactionId = NewType("TransactionId", int)
+
+def get_user(user_id: UserId) -> User:
+    ...
+
+def get_transaction(txn_id: TransactionId) -> Transaction:
+    ...
+
+user_id = UserId(123)
+txn_id = TransactionId(456)
+
+get_user(user_id)  # OK
+get_user(txn_id)   # mypy error: Expected UserId, got TransactionId
+
+]]></code>
+      </example>
+      <example kind="bad">
+        <code lang="python"><![CDATA[# Bad - no distinction
+def get_user(user_id: int) -> User:
+    ...
+
+def get_transaction(txn_id: int) -> Transaction:
+    ...
+
+get_user(456)  # Accidentally passed transaction_id - no error!
+]]></code>
+      </example>
+    </examples>
+    <related>
+      <ref id="PY100-USE-TYPE-HINTS"/>
+      <ref id="PY104-TYPE-ALIASES"/>
+    </related>
+    <tool_support>mypy enforces NewType distinctions.</tool_support>
+  </rule>
+</rules>
